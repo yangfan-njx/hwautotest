@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/bg2">
+    <TextView
+        android:id="@+id/messageTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="信息（当前数量：）"
+        android:textSize="20dp"
+        android:textColor="#0000FF" >
+
+    </TextView>
+  <View  
+	    android:layout_height="1px" 
+	    android:background="#C0C0C0"       
+        android:layout_width="fill_parent"
+          android:layout_below="@+id/numberSetting"
+        ></View>
+	<TextView 
+	    android:id="@+id/numberSetting"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	     android:layout_below="@+id/messageTitle"
+	    android:text="添加联系人选项:"/>
+	
+    <RadioGroup 
+        android:id="@+id/words"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberSetting">
+       
+        <RadioButton 
+            android:id="@+id/senventy"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="70字内中文短信"/>
+        
+        <RadioButton 
+            android:id="@+id/oneHundredsixty"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="180字内英文短信"/>
+        
+        <RadioButton 
+            android:id="@+id/eightHundreds"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="800字英文短信"/>
+    </RadioGroup>
+  <View  
+	    android:layout_height="1px" 
+	    android:background="#C0C0C0"       
+        android:layout_width="fill_parent"
+          android:layout_below="@+id/words"
+        ></View>
+    <RadioGroup 
+        android:id="@+id/type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/words">
+        <RadioButton 
+            android:id="@+id/inbox"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="收件箱短信"/>
+        <RadioButton 
+            android:id="@+id/sent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="发件箱短信"/>
+        <RadioButton 
+            android:id="@+id/drag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="草稿箱短信"/>
+        
+    </RadioGroup>
+    <View  
+	    android:layout_height="1px" 
+	    android:background="#C0C0C0"       
+        android:layout_width="fill_parent"
+          android:layout_below="@+id/type"
+        ></View>
+    <RadioGroup 
+        android:id="@+id/read"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/type">
+        <RadioButton 
+            android:id="@+id/alreadyRead"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:text="已读短信"/>
+         <RadioButton 
+            android:id="@+id/unRead"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:text="未读短信"/>
+    </RadioGroup>
+    <View  
+	    android:layout_height="1px" 
+	    android:background="#C0C0C0"       
+        android:layout_width="fill_parent"
+          android:layout_below="@+id/read"
+        ></View>
+    <Button
+        android:id="@+id/addMessage"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/read"
+        android:text="新增" />
+
+    <EditText
+        android:id="@+id/messageNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addMessage"
+        android:ems="10"
+        android:hint="输入增加信息条数"
+        android:textSize="18dp" >
+
+    </EditText>
+     <Button
+        android:id="@+id/clearMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/addMessage"
+        android:text="清空短信" />
+
+</RelativeLayout>

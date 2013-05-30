@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg2" >
+
+    <TextView
+        android:id="@+id/calllogTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="通话记录（当前数量：）"
+        android:textColor="#0000FF"
+        android:textSize="20dp" >
+    </TextView>
+
+    <RadioGroup
+        android:id="@+id/Type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calllogTitle"
+        android:orientation="vertical" >
+
+			
+        <RadioButton
+            android:id="@+id/Outgoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已拨电话" />
+
+        <RadioButton
+            android:id="@+id/Received"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已接电话" />
+
+        <RadioButton
+            android:id="@+id/Missed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未接电话" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/addCallLog"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/Type"
+        android:text="新增" />
+
+    <EditText
+        android:id="@+id/calllogNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addCallLog"
+        android:ems="10"
+        android:hint="输入增加通话记录条数"
+        android:textSize="18dp" >
+    </EditText>
+
+    <Button
+        android:id="@+id/clearCallLog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/addCallLog"
+        android:text="清空通话记录" />
+
+</RelativeLayout>

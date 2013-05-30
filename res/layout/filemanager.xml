@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg2" >
+
+    <TextView
+        android:id="@+id/SDTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="SD卡"
+        android:textColor="#0000FF"
+        android:textSize="20dp" />
+
+    <SeekBar
+        android:id="@+id/SDCardSeek"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SDTitle" />
+
+    <TextView
+        android:id="@+id/SDAvailaleSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/SDCardSeek" />
+
+    <Button
+        android:id="@+id/SDAddFile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SDAvailaleSize" 
+        android:text="添加文件"/>
+
+    <TextView
+        android:id="@+id/InternalTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SDAddFile"
+        android:text="内部管理器"
+        android:textColor="#0000FF"
+        android:textSize="20dp" />
+
+    <SeekBar
+        android:id="@+id/InternalSeek"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/InternalTitle" />
+
+    <TextView
+        android:id="@+id/InternalAvailaleSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/InternalSeek" />
+    
+     <Button
+        android:id="@+id/InternalAddFile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/InternalAvailaleSize" 
+        android:text="添加文件"/>
+
+</RelativeLayout>
