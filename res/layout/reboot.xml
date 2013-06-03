@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView 
+        android:id="@+id/rebootTimes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请输入重启次数:"
+        android:layout_marginTop="10dip"
+        android:textSize="20dp"
+        android:textColor="#0000FF"/>
+    
+    <EditText android:id="@+id/TimeInput"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+         android:layout_marginTop="10dip"/>
+    
+    <Button 
+    android:id="@+id/reboot"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/rebootTimes"
+    android:layout_marginTop="10dip"
+    android:text="自动重启" />
+    
+    
+    
+    
+
+</RelativeLayout>

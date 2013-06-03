@@ -16,6 +16,7 @@ import com.test.hwautotest.calllog.CallLogActivity;
 import com.test.hwautotest.contacts.ContactsActivity;
 import com.test.hwautotest.filemanager.FileManagerActivity;
 import com.test.hwautotest.mms.MMSActivity;
+import com.test.hwautotest.reboot.RebootActivity;
 import com.test.hwautotest.sms.SMSActivity;
 import com.test.hwautotest.txttoxls.TxtToXlsActivity;
 
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
      public static final int CALLLOG = 2;
      public static final int FILEMANAGER = 3;
      public static final int REPORT = 4;
-     public static final int MMS = 5;
+     public static final int REBOOT = 5;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -35,9 +36,10 @@ public class MainActivity extends Activity {
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 		
 		String[] title = { "联系人容量设置", "短信容量设置", "通话记录容量设置", "文件管理器容量设置",
-				"生成自动化测试报告"};
+				"生成自动化测试报告","自动重启"};
 		String[] text = { "自动添加中文联系人、英文联系人以及清除全部联系人", "自动添加短信以及删除全部短信",
-				"自动添加通话记录以及删除全部通话记录", "调整SD卡和内部管理器的容量", "自动生成xls的自动化测试报告"};
+				"自动添加通话记录以及删除全部通话记录", "调整SD卡和内部管理器的容量", "自动生成xls的自动化测试报告"
+				,"自动重启后获取Sim卡状态和内存的挂载状态"};
 
 		for (int i = 0; i < title.length; i++) {
 			HashMap<String, String> map = new HashMap<String, String>();
@@ -85,10 +87,15 @@ public class MainActivity extends Activity {
 							TxtToXlsActivity.class);
 					startActivity(TextIntent);
 					break;
-				case MMS:
-					Intent MmsIntent = new Intent(MainActivity.this,
-							MMSActivity.class);
-					startActivity(MmsIntent);
+//				case MMS:
+//					Intent MmsIntent = new Intent(MainActivity.this,
+//							MMSActivity.class);
+//					startActivity(MmsIntent);
+				case REBOOT :
+					Intent RebootIntent = new Intent(MainActivity.this,
+							RebootActivity.class);
+					startActivity(RebootIntent);
+					break;
 				default:
 					break;
 				}
