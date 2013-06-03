@@ -36,6 +36,7 @@ public class TxtToXlsActivity extends Activity {
 
 	private Button ft_btn;
 	private Button st_btn;
+	private Button reboot_btn;
 	private ProgressBar mProgressBar;
 	private String filePath = getSDPath() + "/TestReport/";
 	private XlsOperate xls = new XlsOperate(filePath);
@@ -55,6 +56,7 @@ public class TxtToXlsActivity extends Activity {
 
 		ft_btn = (Button) findViewById(R.id.button1);
 		st_btn = (Button) findViewById(R.id.button2);
+		reboot_btn = (Button)findViewById(R.id.button3);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 		version = SystemProperties.get("ro.gn.extvernumber");// 获得软件版本
 
@@ -135,6 +137,30 @@ public class TxtToXlsActivity extends Activity {
 				Log.i("YANG", "---------------end-------------------");
 			}
 		});
+		
+		reboot_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				caseTemplate = new File(getSDPath()
+						+ "/TestReport/reboot_testCase.xls");// FT测试模板
+				testReportName = version + "_RebootTestReport.xls";
+				
+				if(isWiFiActive(TxtToXlsActivity.this)){
+					File file = new File(getSDPath() + "/Reboot.txt");
+					if(file.exists()){
+						new creatTestReport().execute("reboot_testCase");
+					}else {
+						Toast.makeText(TxtToXlsActivity.this, "缺少生成报告的数据文件",
+								Toast.LENGTH_SHORT).show();
+					}	
+					
+				}else{
+					Toast.makeText(TxtToXlsActivity.this, "请连接WIFI后操作！", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 
 	}
 
@@ -156,11 +182,19 @@ public class TxtToXlsActivity extends Activity {
 			// TODO Auto-generated method stub
 			publishProgress(0);
 			DownLoadFTP(params[0]);
-			for(int i = 0; i < dirNames.size(); i++){
-				ArrayList<String> taskSummarys = xls.ReadTxtFile(dirNames.get(i)
-						+ "/taskSummary.txt");
-				HashSet<String> set = xls.fillResult(taskSummarys, params[0]);
-				xls.removeSheetRow(set, params[0]);
+			if(params[0].equals("reboot_testCase")){
+				ArrayList<String> taskSummarys = xls.ReadTxtFile(getSDPath() + "/Reboot.txt");
+				for(int i = 0; i < taskSummarys.size(); i++){
+					Log.i("YANG", taskSummarys.get(i)+"------------");
+				}
+				xls.fillRebootResult(taskSummarys);
+			}else{
+				for(int i = 0; i < dirNames.size(); i++){
+					ArrayList<String> taskSummarys = xls.ReadTxtFile(dirNames.get(i)
+							+ "/taskSummary.txt");
+					HashSet<String> set = xls.fillResult(taskSummarys, params[0]);
+					xls.removeSheetRow(set, params[0]);
+				}
 			}
 			// 重命名文件
 			new File(getSDPath() + "/TestReport/" + params[0] + ".xls")
