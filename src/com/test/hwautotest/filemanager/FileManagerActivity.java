@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.gionee.hwautotest.R;
+import com.test.hwautotest.R;
 
 public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarChangeListener {
 	

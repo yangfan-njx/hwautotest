@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.gionee.hwautotest.R;
+import com.test.hwautotest.R;
 import com.test.hwautotest.calllog.CallLogActivity;
 import com.test.hwautotest.contacts.ContactsActivity;
 import com.test.hwautotest.filemanager.FileManagerActivity;

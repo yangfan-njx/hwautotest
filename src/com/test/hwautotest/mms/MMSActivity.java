@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.gionee.hwautotest.R;
+import com.test.hwautotest.R;
 import com.test.hwautotest.mms.MMSUtils.AttachmentType;
 import com.test.hwautotest.mms.Telephony.Mms;
 import com.test.utils.ViewHolder;

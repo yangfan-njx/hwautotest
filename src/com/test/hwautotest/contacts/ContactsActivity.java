@@ -29,9 +29,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.gionee.hwautotest.R;
-import com.gionee.hwautotest.R.id;
-import com.gionee.hwautotest.R.layout;
+import com.test.hwautotest.R;
+import com.test.hwautotest.R.id;
+import com.test.hwautotest.R.layout;
 import com.test.utils.*;
 
 public class ContactsActivity extends Activity {

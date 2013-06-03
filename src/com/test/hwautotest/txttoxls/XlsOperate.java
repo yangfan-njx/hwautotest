@@ -144,10 +144,10 @@ public class XlsOperate {
 							sheetNames.add(sheet.getSheetName());// 将所有处理过的名字加入set里，保证唯一性
 							cell = sheet.getRow(j).createCell(6,HSSFCell.CELL_TYPE_STRING);
 							isSearch = true;
-							if (value.equals("0")) {
+							if (value.equals("1")) {
 								cell.setCellValue("Pass");
 								cell.setCellStyle(style);
-							} else if (value.equals("1")) {
+							} else if (value.equals("0")) {
 								cell.setCellValue("Fail");
 								cell.setCellStyle(style);
 							}

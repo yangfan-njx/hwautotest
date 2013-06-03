@@ -13,7 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.gionee.hwautotest.R;
+import com.test.hwautotest.R;
 
 public class CallLogActivity extends Activity {
 

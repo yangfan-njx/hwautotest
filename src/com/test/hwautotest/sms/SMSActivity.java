@@ -15,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.gionee.hwautotest.R;
+import com.test.hwautotest.R;
 import com.test.hwautotest.mms.Telephony.Sms;;
 
 public class SMSActivity extends Activity {

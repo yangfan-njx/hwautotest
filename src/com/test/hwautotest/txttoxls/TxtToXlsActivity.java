@@ -31,8 +31,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.gionee.hwautotest.R;
-
+import com.test.hwautotest.R;
 public class TxtToXlsActivity extends Activity {
 
 	private Button ft_btn;
