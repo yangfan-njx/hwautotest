@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.android.internal.telephony.ITelephony;
+
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Context;
@@ -17,6 +20,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -68,7 +73,7 @@ public class BootService extends Service {
 						}else{
 							SimStatus = false;		
 						}
-						content = count + "/" + SimStatus + "/" +
+						content = count + "/" + getNetType() + "/" +
 								getSimState() + "/" + IsCanUseSdCard();
 						Log.i("look", content);
 						writeFile(fileName, content);
@@ -97,7 +102,7 @@ public class BootService extends Service {
 			}
 		};
 		
-		if(getSimState().equals("未知状态")){
+		if(!getNetType()){
 			timer.schedule(timeTask, 1000, 1000);
 		}else{
 			timeTask.run();
@@ -114,23 +119,24 @@ public class BootService extends Service {
 //			if(isScreenLocked(getApplicationContext()))
 			if(count != 0){
 				if(recLen > 0){
-					if(!getSimState().equals("未知状态")){
+					Log.i("look", "getNetType = "+getNetType());
+					if(getNetType()){
 						handler.sendMessageDelayed(handler.obtainMessage(LOGINOVER),3000);
 						timer.cancel(); 
-						Log.i("warn","Choice 2");
+						Log.i("look","Choice 2");
 					}else {
 						handler.sendMessage(handler.obtainMessage(UNKNOW));
-						Log.i("warn","Choice 3");
+						Log.i("look","Choice 3");
 					}
 				}else{
 					handler.sendMessage(handler.obtainMessage(LOGINOVER));
 					timer.cancel(); 
-					Log.i("warn","Choice 4");
+					Log.i("look","Choice 4");
 				}
 			}else{
 				handler.sendMessage(handler.obtainMessage(LOGINOVER));
 				timer.cancel();
-				Log.i("warn","Choice 5");
+				Log.i("look","Choice 5");
 			}
 		}
 		
@@ -188,6 +194,7 @@ public class BootService extends Service {
 
 	public String getSimState() {
 		TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);// 取得相关系统服务
+		System.out.println(tm.getSimState());
 		switch (tm.getSimState()) { // getSimState()取得sim的状态 有下面6中状态
 		case TelephonyManager.SIM_STATE_ABSENT:
 			STATE = "无卡";
@@ -212,6 +219,7 @@ public class BootService extends Service {
 	}
 
 	public boolean IsCanUseSdCard() {
+		 
 		try {
 			return Environment.getExternalStorageState().equals(
 					Environment.MEDIA_MOUNTED);
@@ -220,5 +228,33 @@ public class BootService extends Service {
 		}
 		return false;
 	}
+	
+	public boolean getNetType(){
+		
+		boolean isConnent = false;
+		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
+		int i;
+		try {
+			i = phone.getNetworkType();
+			Log.i("look","net: "+ i);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if(getSimState().equals("良好")){
+			try {
+				if ((phone.getNetworkType() == 2) || (phone.getNetworkType() == 1) || (phone.getNetworkType() == 8) ||(phone.getNetworkType() == 10)){
+					isConnent = true;
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+		}
+		return isConnent;
+	}
+	
 	
 }
