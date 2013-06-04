@@ -21,6 +21,16 @@
         android:layout_centerVertical="true"
         android:layout_below="@id/button1"
         android:text="一键生成压力测试报告" />
+   
+      <Button
+        android:id="@+id/button3"
+        android:layout_width="210dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/button2"
+        android:text="一键生成重启测试报告" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -28,8 +38,8 @@
         android:layout_centerHorizontal="true"
         android:layout_width="250dip"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button1"
-        android:layout_marginTop="100dip"
+        android:layout_below="@id/button3"
+        android:layout_marginTop="10dip"
         android:visibility="gone">"
     </ProgressBar>
 

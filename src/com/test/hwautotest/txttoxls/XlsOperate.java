@@ -60,7 +60,7 @@ public class XlsOperate {
 				InputStream instream = new FileInputStream(file);
 				if (instream != null) {
 					InputStreamReader inputreader = new InputStreamReader(
-							instream, "gbk");
+							instream, "utf8");
 					BufferedReader buffreader = new BufferedReader(inputreader);
 					String line = null;
 					// 分行读取
@@ -104,13 +104,7 @@ public class XlsOperate {
 			wb = new HSSFWorkbook(fileIn);
 			
 			// 设置单元格通用样式
-			HSSFCellStyle style = wb.createCellStyle();
-			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 水平居中
-//			style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);//填充模式
-			style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-			style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			HSSFCellStyle style = setCellStyle(wb);
 
 			for (int k = 0; k < tasksummary.size(); k++) {
 				isSearch = false;
@@ -172,22 +166,19 @@ public class XlsOperate {
 			}
 			
 			sheet = wb.getSheet("Cover");
-			hwversion = SystemProperties.get("ro.gn.extHWvernumber");
-			swversion = SystemProperties.get("ro.gn.extvernumber");
-			project = "Gionee_Android_"
-					+ swversion.substring(0, swversion.indexOf("_"));
-			sheet.getRow(2).getCell(2).setCellValue(hwversion);
-			sheet.getRow(3).getCell(2).setCellValue(swversion);
+
 			if (caseName.equals("ft_testCase")) {
 				
 				// 注意模板如果修改了，必须修改刷新范围！！！
 				refreshFormula(sheet, 6, 16, 2, 6);// 重新刷新公式
 				// 填写项目名称
-				sheet.getRow(1).getCell(2).setCellValue(project + "_Auto Test Case");
+//				sheet.getRow(1).getCell(2).setCellValue(project + "_Auto Test Case");
+				setProjectInfo(sheet, "Auto Test Case");
 
 			}else if(caseName.equals("st_testCase")){
 				refreshFormula(sheet, 6, 8, 2, 7);//注意刷新范围！！！
-				sheet.getRow(1).getCell(2).setCellValue(project + "_Stable Test Case");
+//				sheet.getRow(1).getCell(2).setCellValue(project + "_Stable Test Case");
+				setProjectInfo(sheet, "Stable Test Case");
 			}
 			fileOut = new FileOutputStream(mFilePath + caseName + ".xls");
 			wb.write(fileOut);
@@ -204,6 +195,107 @@ public class XlsOperate {
 		return sheetNames;
 	}
 
+	public HSSFCellStyle setCellStyle(HSSFWorkbook wb){
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 水平居中
+//		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);//填充模式
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		return style;
+	}
+	public void fillRebootResult(ArrayList<String> tasksummary){
+		String index;
+		String simInfo;
+		String note;
+		String sdInfo;
+		String result;
+		
+		try {
+			fileIn = new FileInputStream(mFilePath + "reboot_testCase.xls");
+			wb = new HSSFWorkbook(fileIn);
+			sheet = wb.getSheet("Reboot");
+			for(int i = 0; i < tasksummary.size(); i++){
+				result = tasksummary.get(i);
+				index = result.substring(0, getCharacterPosition(result, 1));
+				simInfo = result.substring(getCharacterPosition(result, 1) + 1 , getCharacterPosition(result, 2));
+				note = result.substring(getCharacterPosition(result, 2) + 1, getCharacterPosition(result, 3));
+				sdInfo = result.substring(getCharacterPosition(result, 3) + 1);
+				Log.i("YANG", index + "-------" + simInfo + "-------" + note + "-------" + sdInfo);
+				HSSFCellStyle style = setCellStyle(wb);
+				//填充index
+//				cell = sheet.getRow(i + 1).createCell(0, HSSFCell.CELL_TYPE_NUMERIC);
+//				cell.setCellValue(Integer.parseInt(index));
+//				cell.setCellStyle(style);
+				cell = sheet.getRow(i + 1).createCell(0, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(index);
+				cell.setCellStyle(style);
+				//填充Step
+				cell = sheet.getRow(i + 1).createCell(1, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue("重启");
+				cell.setCellStyle(style);
+				//填充simInfo
+				cell = sheet.getRow(i + 1).createCell(2, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(simInfo));
+				cell.setCellStyle(style);
+				//填充note
+				cell = sheet.getRow(i + 1).createCell(4, HSSFCell.CELL_TYPE_STRING);//会被修改
+				if(!note.equals("null")){
+					cell.setCellValue(note);
+				}else{
+					cell.setCellValue("");
+				}
+				cell.setCellStyle(style);
+
+				//填充sdInfo
+				cell = sheet.getRow(i + 1).createCell(3, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(sdInfo));
+				cell.setCellStyle(style);
+				
+
+			}
+			
+			//刷新公式
+			sheet = wb.getSheet("Cover");
+			refreshFormula(sheet,6,7,2,6);//注意刷新范围！！！
+			setProjectInfo(sheet, "Reboot Test Case");
+			
+			fileOut = new FileOutputStream(mFilePath + "reboot_testCase.xls");
+			wb.write(fileOut);
+			fileOut.close();
+			fileIn.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (NumberFormatException e){
+			e.printStackTrace();
+		}
+
+		
+	}
+	
+	public void setProjectInfo(HSSFSheet sheet,String testType){
+		
+		hwversion = SystemProperties.get("ro.gn.extHWvernumber");
+		swversion = SystemProperties.get("ro.gn.extvernumber");
+		project = "Gionee_Android_"
+				+ swversion.substring(0, swversion.indexOf("_"));
+		sheet.getRow(2).getCell(2).setCellValue(hwversion);
+		sheet.getRow(3).getCell(2).setCellValue(swversion);
+		sheet.getRow(1).getCell(2).setCellValue(project + "_" + testType);
+	}
+	
+	public String booleanToStr(String boo){
+		if(boo.equals("true")){
+			return "Pass";
+		}else{
+			return "Fail";
+		}
+	}
 	public void test() {
 		Log.i("YANG", HSSFCell.CELL_TYPE_BLANK + "----------3");
 		Log.i("YANG", HSSFCell.CELL_TYPE_BOOLEAN + "----------4");
