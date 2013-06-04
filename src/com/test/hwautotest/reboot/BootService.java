@@ -55,18 +55,6 @@ public class BootService extends Service {
 		Log.i("look", "BootService Start");
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		read_status();
-		
-		if (count > 0) {
-			if(getSimState().equals("良好")){
-				SimStatus = true;
-			}else{
-				SimStatus = false;		
-			}
-			content = count + "/" + SimStatus + "/" +
-					getSimState() + "/" + IsCanUseSdCard();
-			Log.i("look", content);
-			writeFile(fileName, content);
-		}
 		HandlerThread myThread = new HandlerThread("myHandlerThread");
 		myThread.start();
 		handler = new Handler() {
@@ -74,7 +62,17 @@ public class BootService extends Service {
 			public void handleMessage(Message msg) {
 
 				if (msg.what == LOGINOVER) {
-					
+					if (count > 0) {
+						if(getSimState().equals("良好")){
+							SimStatus = true;
+						}else{
+							SimStatus = false;		
+						}
+						content = count + "/" + SimStatus + "/" +
+								getSimState() + "/" + IsCanUseSdCard();
+						Log.i("look", content);
+						writeFile(fileName, content);
+					}
 					if (isReboot) {
 						if (rebootTimes > 0) {
 							reboot();
