@@ -143,7 +143,6 @@ public class TxtToXlsActivity extends Activity {
 		
 		reboot_btn.setOnClickListener(new OnClickListener() {
 			
-			String filePath;
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -152,7 +151,8 @@ public class TxtToXlsActivity extends Activity {
 				testReportName = version + "_RebootTestReport.xls";
 				
 				filePath = prefs.getString("filename", null);
-				
+				Log.i("YANG", filePath + "-------------");
+				Log.i("YANG", "-----------end");
 				if(isWiFiActive(TxtToXlsActivity.this)){
 //					File file = new File(getSDPath() + "/Reboot.txt");
 					File file = new File(filePath);
@@ -190,7 +190,8 @@ public class TxtToXlsActivity extends Activity {
 			publishProgress(0);
 			DownLoadFTP(params[0]);
 			if(params[0].equals("reboot_testCase")){
-				ArrayList<String> taskSummarys = xls.ReadTxtFile(getSDPath() + "/Reboot.txt");
+				ArrayList<String> taskSummarys = xls.ReadTxtFile(filePath);
+//				ArrayList<String> taskSummarys = xls.ReadTxtFile(getSDPath() + "/Reboot.txt");
 				for(int i = 0; i < taskSummarys.size(); i++){
 					Log.i("YANG", taskSummarys.get(i)+"------------");
 				}
