@@ -17,12 +17,14 @@ import java.util.HashSet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemProperties;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -46,6 +48,7 @@ public class TxtToXlsActivity extends Activity {
 	private String testReportName;
 	private ArrayList<String> dirNames;
 	private boolean isExist;
+	private SharedPreferences prefs;
 	
 	private FTPClient mFTPClient;
 
@@ -70,7 +73,7 @@ public class TxtToXlsActivity extends Activity {
 			dir.mkdirs();
 		}
 		dirNames = listAllFiles(TxtToXlsActivity.this, getSDPath() + "/dzsoftSmart/taskLogs/");
-		
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		ft_btn.setOnClickListener(new OnClickListener() {
 
@@ -140,6 +143,7 @@ public class TxtToXlsActivity extends Activity {
 		
 		reboot_btn.setOnClickListener(new OnClickListener() {
 			
+			String filePath;
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -147,8 +151,11 @@ public class TxtToXlsActivity extends Activity {
 						+ "/TestReport/reboot_testCase.xls");// FT测试模板
 				testReportName = version + "_RebootTestReport.xls";
 				
+				filePath = prefs.getString("filename", null);
+				
 				if(isWiFiActive(TxtToXlsActivity.this)){
-					File file = new File(getSDPath() + "/Reboot.txt");
+//					File file = new File(getSDPath() + "/Reboot.txt");
+					File file = new File(filePath);
 					if(file.exists()){
 						new creatTestReport().execute("reboot_testCase");
 					}else {
