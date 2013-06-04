@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
@@ -45,6 +46,8 @@ public class BootService extends Service {
 	protected static final int UNKNOW = 1;
 	private Handler handler;
 	private boolean SimStatus;
+	Timer timer = new Timer(); 
+	private int recLen = 30; 
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -99,20 +102,20 @@ public class BootService extends Service {
 				}
 			}
 		};
+		timer.schedule(timeTask, 1000, 1000);
 		timeTask.run();
+//		handler.removeCallbacks(myThread);
 	}
 
 	TimerTask timeTask = new TimerTask() {
 		@Override
 		public void run() {
 			Log.i("look", Thread.currentThread().getName());
-			if(count == 0){
+			recLen--;
+			if(recLen > 0 && getSimState().equals("未知状态")&&count !=0){
+				handler.sendMessage(handler.obtainMessage(UNKNOW));
+			}else{
 				handler.sendMessage(handler.obtainMessage(LOGINOVER));
-			}else if(getSimState().equals("未知状态")){
-				handler.sendMessageDelayed(handler.obtainMessage(LOGINOVER), 15000);
-			}
-			else{
-				handler.sendMessageDelayed(handler.obtainMessage(LOGINOVER), 5000);
 			}
 		}
 	};
