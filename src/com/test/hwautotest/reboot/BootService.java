@@ -1,18 +1,12 @@
 package com.test.hwautotest.reboot;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import android.app.Activity;
 import android.app.KeyguardManager;
-import android.app.KeyguardManager.KeyguardLock;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +24,6 @@ import android.widget.Toast;
 
 public class BootService extends Service {
 	private KeyguardManager mKeyguard;
-	private KeyguardLock mKeylock;
 	private SharedPreferences prefs;
 	private int rebootTimes;
 	private int count;
@@ -44,6 +37,7 @@ public class BootService extends Service {
 	public String content;
 	protected static final int LOGINOVER = 0;
 	protected static final int UNKNOW = 1;
+	protected static final int STOP = 2;
 	private Handler handler;
 	private boolean SimStatus;
 	Timer timer = new Timer(); 
@@ -58,8 +52,21 @@ public class BootService extends Service {
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
+		Log.i("look", "BootService Start");
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		read_status();
+		
+		if (count > 0) {
+			if(getSimState().equals("良好")){
+				SimStatus = true;
+			}else{
+				SimStatus = false;		
+			}
+			content = count + "/" + SimStatus + "/" +
+					getSimState() + "/" + IsCanUseSdCard();
+			Log.i("look", content);
+			writeFile(fileName, content);
+		}
 		HandlerThread myThread = new HandlerThread("myHandlerThread");
 		myThread.start();
 		handler = new Handler() {
@@ -67,18 +74,7 @@ public class BootService extends Service {
 			public void handleMessage(Message msg) {
 
 				if (msg.what == LOGINOVER) {
-					if (count > 0) {
-						if(getSimState().equals("未知状态")){
-							SimStatus = false;
-						}else{
-							SimStatus = true;		
-						}
-						content = count + "/" + SimStatus + "/" +
-								getSimState() + "/" + IsCanUseSdCard();
-						Log.i("look", content);
-						writeFile(fileName, content);
-					}
-
+					
 					if (isReboot) {
 						if (rebootTimes > 0) {
 							reboot();
@@ -102,8 +98,12 @@ public class BootService extends Service {
 				}
 			}
 		};
-		timer.schedule(timeTask, 1000, 1000);
-		timeTask.run();
+		
+		if(getSimState().equals("未知状态")){
+			timer.schedule(timeTask, 1000, 1000);
+		}else{
+			timeTask.run();
+		}
 //		handler.removeCallbacks(myThread);
 	}
 
@@ -112,14 +112,37 @@ public class BootService extends Service {
 		public void run() {
 			Log.i("look", Thread.currentThread().getName());
 			recLen--;
-			if(recLen > 0 && getSimState().equals("未知状态")&&count !=0){
-				handler.sendMessage(handler.obtainMessage(UNKNOW));
+			Log.i("look", "recLen = "+recLen);
+//			if(isScreenLocked(getApplicationContext()))
+			if(count != 0){
+				if(recLen > 0){
+					if(!getSimState().equals("未知状态")){
+						handler.sendMessageDelayed(handler.obtainMessage(LOGINOVER),3000);
+						timer.cancel(); 
+						Log.i("warn","Choice 2");
+					}else {
+						handler.sendMessage(handler.obtainMessage(UNKNOW));
+						Log.i("warn","Choice 3");
+					}
+				}else{
+					handler.sendMessage(handler.obtainMessage(LOGINOVER));
+					timer.cancel(); 
+					Log.i("warn","Choice 4");
+				}
 			}else{
 				handler.sendMessage(handler.obtainMessage(LOGINOVER));
+				timer.cancel();
+				Log.i("warn","Choice 5");
 			}
 		}
+		
+			
 	};
-
+	
+	public final static boolean isScreenLocked(Context c) {
+        KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(Context.KEYGUARD_SERVICE);
+        return !mKeyguardManager.inKeyguardRestrictedInputMode();
+    }
 	private void read_status() {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		this.rebootTimes = prefs.getInt(REBOOT_TIMES, 1);
