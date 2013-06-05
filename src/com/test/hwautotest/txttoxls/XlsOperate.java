@@ -172,12 +172,10 @@ public class XlsOperate {
 				// 注意模板如果修改了，必须修改刷新范围！！！
 				refreshFormula(sheet, 6, 16, 2, 6);// 重新刷新公式
 				// 填写项目名称
-//				sheet.getRow(1).getCell(2).setCellValue(project + "_Auto Test Case");
 				setProjectInfo(sheet, "Auto Test Case");
 
 			}else if(caseName.equals("st_testCase")){
 				refreshFormula(sheet, 6, 8, 2, 7);//注意刷新范围！！！
-//				sheet.getRow(1).getCell(2).setCellValue(project + "_Stable Test Case");
 				setProjectInfo(sheet, "Stable Test Case");
 			}
 			fileOut = new FileOutputStream(mFilePath + caseName + ".xls");
@@ -225,11 +223,8 @@ public class XlsOperate {
 				Log.i("YANG", index + "-------" + simInfo + "-------" + note + "-------" + sdInfo);
 				HSSFCellStyle style = setCellStyle(wb);
 				//填充index
-//				cell = sheet.getRow(i + 1).createCell(0, HSSFCell.CELL_TYPE_NUMERIC);
-//				cell.setCellValue(Integer.parseInt(index));
-//				cell.setCellStyle(style);
-				cell = sheet.getRow(i + 1).createCell(0, HSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(index);
+				cell = sheet.getRow(i + 1).createCell(0, HSSFCell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(Integer.parseInt(index));
 				cell.setCellStyle(style);
 				//填充Step
 				cell = sheet.getRow(i + 1).createCell(1, HSSFCell.CELL_TYPE_STRING);
