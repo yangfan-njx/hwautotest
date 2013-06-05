@@ -18,6 +18,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,12 +37,13 @@ public class RebootActivity extends Activity implements OnClickListener {
 	private String COUNT = "count";
 	private String fileName;
 	private EditText timesInput;
-
+	RebootUtils mRebootUtils = new RebootUtils(this);
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.reboot);
 		Log.i("look","boot Start");
 		
@@ -60,7 +62,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 			rebootTimes = Integer.parseInt(times);
 			Log.i("look","rebootTimes: "+rebootTimes);
 			isReboot = true;
-			fileName = fileName();
+			fileName = mRebootUtils.fileName();
 			save_status(rebootTimes,isReboot,fileName);
 			Intent i = new Intent(RebootActivity.this,BootService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
