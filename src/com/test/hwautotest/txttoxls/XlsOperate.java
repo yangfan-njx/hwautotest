@@ -241,7 +241,7 @@ public class XlsOperate {
 				cell.setCellStyle(style);
 				//填充note
 				cell = sheet.getRow(i + 1).createCell(4, HSSFCell.CELL_TYPE_STRING);//会被修改
-				if(!note.equals("null")){
+				if(!note.equals("良好")){
 					cell.setCellValue(note);
 				}else{
 					cell.setCellValue("");
