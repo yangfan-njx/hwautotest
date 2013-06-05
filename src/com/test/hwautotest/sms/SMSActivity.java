@@ -129,6 +129,7 @@ public class SMSActivity extends Activity {
 				m_pDialog = new ProgressDialog(SMSActivity.this);
 				m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 				m_pDialog.setTitle("正在添加");
+				m_pDialog.setCanceledOnTouchOutside(false);
 				m_pDialog.setMax(number);
 				m_pDialog.setIndeterminate(false);
 				m_pDialog.setCancelable(true);

@@ -77,6 +77,7 @@ public class CallLogActivity extends Activity {
 					number = Integer.parseInt(mNumber);
 					m_pDialog = new ProgressDialog(CallLogActivity.this);
 					m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+					m_pDialog.setCanceledOnTouchOutside(false);
 					m_pDialog.setTitle("正在添加");
 					m_pDialog.setMax(number);
 					m_pDialog.setIndeterminate(false);

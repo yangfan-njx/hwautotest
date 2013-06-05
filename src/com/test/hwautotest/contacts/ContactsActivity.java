@@ -9,12 +9,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.RawContacts;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +28,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.test.hwautotest.R;
-import com.test.hwautotest.R.id;
-import com.test.hwautotest.R.layout;
-import com.test.utils.*;
+import com.test.utils.ViewHolder;
 
 public class ContactsActivity extends Activity {
 	public static final int EMAIL = 0;
@@ -120,6 +116,7 @@ public class ContactsActivity extends Activity {
 					m_pDialog = new ProgressDialog(ContactsActivity.this);
 					m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 					m_pDialog.setTitle("正在添加");
+					m_pDialog.setCanceledOnTouchOutside(false);
 					m_pDialog.setMax(number);
 					m_pDialog.setIndeterminate(false);
 					m_pDialog.setCancelable(true);
@@ -206,7 +203,6 @@ public class ContactsActivity extends Activity {
 				protected String doInBackground(Integer... params) {
 					// TODO Auto-generated method stub
 					int i = 0;
-					Random mRandom = new Random();
 					for (i = 0; i < number; i++) {
 				
 						try {
@@ -254,7 +250,6 @@ public class ContactsActivity extends Activity {
 	private static class MyAdapter extends BaseAdapter {
 
 		 private static HashMap<Integer, Boolean> isSelected;
-	     private Context context = null;
 	     private LayoutInflater inflater = null;
 	     private List<HashMap<String, Object>> list = null;
 	     private String keyString[] = null;
@@ -263,7 +258,6 @@ public class ContactsActivity extends Activity {
 
 	     private MyAdapter(Context context, List<HashMap<String, Object>> list,
 	             int resource, String[] from, int[] to) {
-	         this.context = context;
 	         this.list = list;
 	         keyString = new String[from.length];
 	         idValue = new int[to.length];

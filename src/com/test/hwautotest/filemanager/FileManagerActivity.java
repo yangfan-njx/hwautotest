@@ -2,11 +2,8 @@
 
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Pattern;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,7 +17,6 @@ import com.test.hwautotest.R;
 
 public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarChangeListener {
 	
-	private File SDRoad = null;
 	private SeekBar SDCardSeek;
 	private SeekBar InternalSeek;
 	private TextView SDCardAvailaleSize;
@@ -30,8 +26,6 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 	private ProgressDialog m_pDialog;
 	private String SDCardPath = Environment.getExternalStorageDirectory().getPath();
 	private String InternalPath = "/mnt/sdcard2";
-	private long TotalSize = 0;
-	private long UsedSize = 0;
 	private int SDAddSize = 0;
 	private int InternalAddSize = 0;
 	
@@ -83,6 +77,7 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 				m_pDialog = new ProgressDialog(FileManagerActivity.this);
 				m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 				m_pDialog.setTitle("正在添加");
+				m_pDialog.setCanceledOnTouchOutside(false);
 				m_pDialog.setMax(SDAddSize);
 				m_pDialog.setIndeterminate(false);
 				m_pDialog.setCancelable(true);
@@ -108,6 +103,7 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 			m_pDialog = new ProgressDialog(FileManagerActivity.this);
 			m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			m_pDialog.setTitle("正在添加");
+			m_pDialog.setCanceledOnTouchOutside(false);
 			m_pDialog.setMax(InternalAddSize);
 			m_pDialog.setIndeterminate(false);
 			m_pDialog.setCancelable(true);

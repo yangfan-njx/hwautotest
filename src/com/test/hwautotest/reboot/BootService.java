@@ -1,41 +1,26 @@
 package com.test.hwautotest.reboot;
 
-import java.io.BufferedWriter;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.android.internal.telephony.ITelephony;
-
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.PowerManager;
-import android.os.RemoteException;
-import android.os.ServiceManager;
 import android.preference.PreferenceManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
+@SuppressLint("HandlerLeak")
 public class BootService extends Service {
-	private KeyguardManager mKeyguard;
 	private SharedPreferences prefs;
 	private int rebootTimes;
 	private int count;
@@ -45,7 +30,6 @@ public class BootService extends Service {
 	private String COUNT = "count";
 	private String FILENAME = "filename";
 	private String fileName;
-	private String STATE;
 	public String content;
 	protected static final int LOGINOVER = 0;
 	protected static final int UNKNOW = 1;
@@ -69,6 +53,7 @@ public class BootService extends Service {
 		Log.i("look", "BootService Start");
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		telephoneManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		
 		read_status();
 		HandlerThread myThread = new HandlerThread("myHandlerThread");
 		myThread.start();
@@ -114,7 +99,7 @@ public class BootService extends Service {
 		}else{
 			timeTask.run();
 		}
-//		handler.removeCallbacks(myThread);
+
 	}
 	
 	
@@ -126,7 +111,6 @@ public class BootService extends Service {
 			Log.i("look", Thread.currentThread().getName());
 			recLen--;
 			Log.i("look", "recLen = "+recLen);
-//			if(isScreenLocked(getApplicationContext()))
 			if(count != 0){
 				if(recLen > 0){
 					Log.i("look", "getNetType = "+mRebootUtils.getNetType());

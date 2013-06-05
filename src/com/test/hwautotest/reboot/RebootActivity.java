@@ -1,28 +1,20 @@
 package com.test.hwautotest.reboot;
 
-import java.io.File;
-import java.io.IOException;
-
-import com.test.hwautotest.R;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.test.hwautotest.R;
 
 public class RebootActivity extends Activity implements OnClickListener {
 	private Button btnReboot;
@@ -91,15 +83,6 @@ public class RebootActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		Toast.makeText(RebootActivity.this, string, Toast.LENGTH_SHORT).show();
 	}
-	
-	private String path(){
-		File path = Environment.getExternalStorageDirectory();
-		return path.getPath();
-	}
-	
-	private String fileName(){
-		 return path()+"/"+"Reboot_"+System.currentTimeMillis()+".txt";
-	}
-	
-	
+
+
 }

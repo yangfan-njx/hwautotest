@@ -2,30 +2,17 @@ package com.test.hwautotest.reboot;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException; 
-import java.io.FileOutputStream; 
 import java.io.FileWriter;
-import java.io.IOException; 
-
-import com.android.internal.telephony.ITelephony;
-
-import android.app.Activity; 
+import java.io.IOException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap; 
-import android.graphics.Rect; 
 import android.os.Environment;
 import android.os.RemoteException;
 import android.os.ServiceManager;
-import android.preference.PreferenceManager;
-import android.telephony.PhoneStateListener;
-import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.View; 
 import android.widget.Toast;
+import com.android.internal.telephony.ITelephony;
 
 
 public class RebootUtils { 
