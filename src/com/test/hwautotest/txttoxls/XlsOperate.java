@@ -206,6 +206,7 @@ public class XlsOperate {
 	public void fillRebootResult(ArrayList<String> tasksummary){
 		String index;
 		String simInfo;
+		String dbm;
 		String note;
 		String sdInfo;
 		String result;
@@ -218,8 +219,9 @@ public class XlsOperate {
 				result = tasksummary.get(i);
 				index = result.substring(0, getCharacterPosition(result, 1));
 				simInfo = result.substring(getCharacterPosition(result, 1) + 1 , getCharacterPosition(result, 2));
-				note = result.substring(getCharacterPosition(result, 2) + 1, getCharacterPosition(result, 3));
-				sdInfo = result.substring(getCharacterPosition(result, 3) + 1);
+				dbm = result.substring(getCharacterPosition(result, 2) + 1 , getCharacterPosition(result, 3));
+				note = result.substring(getCharacterPosition(result, 3) + 1, getCharacterPosition(result, 4));
+				sdInfo = result.substring(getCharacterPosition(result, 4) + 1);
 				Log.i("YANG", index + "-------" + simInfo + "-------" + note + "-------" + sdInfo);
 				HSSFCellStyle style = setCellStyle(wb);
 				//填充index
@@ -230,22 +232,30 @@ public class XlsOperate {
 				cell = sheet.getRow(i + 1).createCell(1, HSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue("重启");
 				cell.setCellStyle(style);
+
 				//填充simInfo
 				cell = sheet.getRow(i + 1).createCell(2, HSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(booleanToStr(simInfo));
 				cell.setCellStyle(style);
+				
+				//填充dbm
+				cell = sheet.getRow(i + 1).createCell(3, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(dbm);
+				cell.setCellStyle(style);
+
+				//填充sdInfo
+				cell = sheet.getRow(i + 1).createCell(4, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(sdInfo));
+				cell.setCellStyle(style);
+				
+				
 				//填充note
-				cell = sheet.getRow(i + 1).createCell(4, HSSFCell.CELL_TYPE_STRING);//会被修改
+				cell = sheet.getRow(i + 1).createCell(5, HSSFCell.CELL_TYPE_STRING);//会被修改
 				if(!note.equals("良好")){
 					cell.setCellValue(note);
 				}else{
 					cell.setCellValue("");
 				}
-				cell.setCellStyle(style);
-
-				//填充sdInfo
-				cell = sheet.getRow(i + 1).createCell(3, HSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(booleanToStr(sdInfo));
 				cell.setCellStyle(style);
 				
 
