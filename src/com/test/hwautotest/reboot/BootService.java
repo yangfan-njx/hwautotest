@@ -31,6 +31,10 @@ public class BootService extends Service {
 	private String FILENAME = "filename";
 	private String fileName;
 	public String content;
+	private String ISSTOPSTORAGE = "isStopStorage";
+	private String ISSTOPNETWORK = "isStopNetwork";
+	boolean isStopStorage;
+	boolean isStopNetWork;
 	protected static final int LOGINOVER = 0;
 	protected static final int UNKNOW = 1;
 	protected static final int STOP = 2;
@@ -63,12 +67,23 @@ public class BootService extends Service {
 
 				if (msg.what == LOGINOVER) {
 					if (count > 0) {
-//						
-						content = count + "/" + mRebootUtils.getNetType() +"/"+strength+ "/" +
-								mRebootUtils.getSimState() + "/" + mRebootUtils.IsCanUseSdCard();
+						boolean isGetType = mRebootUtils.getNetType();
+						boolean isCanUseSdCard = mRebootUtils.IsCanUseSdCard();
+						content = count + "/" + isGetType +"/"+strength+ "/" +
+								mRebootUtils.getSimState() + "/" + isCanUseSdCard;
+						
+						if(isGetType == false && isStopNetWork == true){
+							rebootTimes = 0;
+						}else if (isCanUseSdCard == false && isStopStorage == true){
+							rebootTimes = 0;
+						}else if (isScreenLocked(BootService.this) == true){
+							rebootTimes = 0;
+						}
+						
 						Log.i("look", content);
 						mRebootUtils.writeFile(fileName, content);
 					}
+					
 					if (isReboot) {
 						if (rebootTimes > 0) {
 							mRebootUtils.reboot();
@@ -161,11 +176,14 @@ public class BootService extends Service {
         return !mKeyguardManager.inKeyguardRestrictedInputMode();
     }
 	private void read_status() {
+		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		this.rebootTimes = prefs.getInt(REBOOT_TIMES, 1);
 		this.isReboot = prefs.getBoolean(ISREBOOT, true);
 		this.count = prefs.getInt(COUNT, 0);
 		this.fileName = prefs.getString(FILENAME, null);
+		this.isStopNetWork = prefs.getBoolean(ISSTOPNETWORK, false);
+		this.isStopStorage = prefs.getBoolean(ISSTOPSTORAGE, false);
 		Log.i("look", "rebootTimes: " + rebootTimes);
 		Log.i("look", "fileName: " + fileName);
 		Log.i("look", "count: " + count);

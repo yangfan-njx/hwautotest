@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
      public static final int FILEMANAGER = 3;
      public static final int REPORT = 5;
      public static final int REBOOT = 4;
+//     public static final int MMS = 5;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

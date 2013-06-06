@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
     <TextView 
         android:id="@+id/rebootTimes"
@@ -13,16 +13,35 @@
         android:textColor="#0000FF"/>
     
     <EditText android:id="@+id/TimeInput"
-        android:layout_width="160dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-         android:layout_marginTop="10dip"/>
+     />
     
+  <CheckBox 
+      android:id="@+id/stopNetWork"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="搜网失败后停止"
+      
+   />
+   <CheckBox 
+      android:id="@+id/stopStorage"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="内存挂载失败后停止"
+      
+   />
+  <TextView android:id="@+id/note"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="注意:手动解锁后停止自动重启"
+     
+      />
     <Button 
     android:id="@+id/reboot"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/rebootTimes"
+    android:layout_below="@+id/note"
     android:layout_marginTop="10dip"
     android:text="自动重启" />
     
@@ -30,4 +49,4 @@
     
     
 
-</RelativeLayout>
+</LinearLayout>
