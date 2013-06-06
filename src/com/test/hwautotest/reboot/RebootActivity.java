@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +19,10 @@ import com.test.hwautotest.R;
 
 public class RebootActivity extends Activity implements OnClickListener {
 	private Button btnReboot;
+	private CheckBox stopStorage;
+	private CheckBox stopNetwork;
+	boolean isStopStorage;
+	boolean isStopNetWork;
 	private SharedPreferences prefs;
 	private int rebootTimes ;
 	private int count = 0;
@@ -28,6 +33,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 	private String ISREBOOT = "isRoot";
 	private String COUNT = "count";
 	private String fileName;
+	private String ISSTOPSTORAGE = "isStopStorage";
+	private String ISSTOPNETWORK = "isStopNetwork";
 	private EditText timesInput;
 	RebootUtils mRebootUtils = new RebootUtils(this);
 	
@@ -41,6 +48,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 		
 		btnReboot = (Button) findViewById(R.id.reboot);
 		timesInput = (EditText) findViewById(R.id.TimeInput);
+		stopNetwork = (CheckBox) findViewById(R.id.stopNetWork);
+		stopStorage = (CheckBox) findViewById(R.id.stopStorage);
 		btnReboot.setOnClickListener(this);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);  
 		
@@ -53,6 +62,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 			times = timesInput.getText().toString();
 			rebootTimes = Integer.parseInt(times);
 			Log.i("look","rebootTimes: "+rebootTimes);
+			isStopNetWork = stopNetwork.isChecked();
+			isStopStorage = stopStorage.isChecked();
 			isReboot = true;
 			fileName = mRebootUtils.fileName();
 			save_status(rebootTimes,isReboot,fileName);
@@ -74,7 +85,10 @@ public class RebootActivity extends Activity implements OnClickListener {
 	        Editor editor = prefs.edit();  
 	        editor.putInt(REBOOT_TIMES, rebootTimes);  
 	        editor.putBoolean(ISREBOOT, isReboot);
+	        editor.putBoolean(ISSTOPNETWORK, isStopNetWork);
+	        editor.putBoolean(ISSTOPSTORAGE, isStopStorage);
 	        editor.putString(FILENAME, fileName);
+	        
 	        editor.putInt(COUNT, count);
 	        editor.commit();  
 	   } 
