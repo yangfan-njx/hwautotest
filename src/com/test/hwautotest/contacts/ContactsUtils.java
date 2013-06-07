@@ -1,6 +1,7 @@
 ﻿package com.test.hwautotest.contacts;
 
 import com.test.utils.RandomUtils;
+import com.test.utils.Utils;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -22,17 +23,17 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ContactsUtils {
+public class ContactsUtils extends Utils{
+	
 	private Context mContext;
 	
 	RandomUtils mRandonUtils = new RandomUtils();
-	public ContactsUtils(Context mContext){
-		this.mContext = mContext;
+	
+	public ContactsUtils(Context mContext) {
+		super(mContext);
+		// TODO Auto-generated constructor stub
 	}
-	public void DisplayToast(String string) {
-		// TODO Auto-generated method stub
-		Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
-	}
+	
 
 	/**
 	 * 方法名：获取手机联系人数量

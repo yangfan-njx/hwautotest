@@ -10,11 +10,14 @@ import android.widget.Toast;
 import com.test.utils.*;
 
 
-public class SMSUtils {
+public class SMSUtils extends Utils{
+	
+
 	public Context mContext;
 	RandomUtils mRandomUtils = new RandomUtils();
-	public SMSUtils(Context mContext){
-		this.mContext = mContext;
+	public SMSUtils(Context mContext) {
+		super(mContext);
+		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * 方法名：获取手机短信数量

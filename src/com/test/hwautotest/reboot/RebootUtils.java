@@ -13,38 +13,27 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.android.internal.telephony.ITelephony;
+import com.test.utils.Utils;
 
 
-public class RebootUtils { 
+public class RebootUtils extends Utils{ 
+	
 	private Context mContext;
 	private String STATE;
 	
-	RebootUtils(Context mContext){
-		
-		this.mContext = mContext;
-		
+	public RebootUtils(Context mContext) {
+		super(mContext);
+		// TODO Auto-generated constructor stub
 	}
+
 	
-	public void DisplayToast(String string) {
-	// TODO Auto-generated method stub
-		Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
-	}
-
-	/**
-	 * 获取存储路径
-	 * @return
-	 */
-	private String path(){
-		File path = Environment.getExternalStorageDirectory();
-		return path.getPath();
-	}
-
+	
 	/**
 	 * 获取文件名字
 	 * @return
 	 */
 	public String fileName(){
-		String PATH = path()+"/Reboot";
+		String PATH = getSdPath()+"/Reboot";
 		File road =  new File(PATH);
 		if(!road.exists()){
 			road.mkdirs();
@@ -119,18 +108,14 @@ public class RebootUtils {
 
 	/**
 	 * 
-	 * 获取SD的挂载状态
+	 * 获取内存可读可写状态
 	 * @return
 	 */
-	public boolean IsCanUseSdCard() {
-		 
-		try {
-			return Environment.getExternalStorageState().equals(
-					Environment.MEDIA_MOUNTED);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+	public boolean IsCanUseMemory(String path) {
+		
+		File file =  new File(path);
+		return file.canWrite() && file.canRead();
+ 
 	}
 	
 	/**

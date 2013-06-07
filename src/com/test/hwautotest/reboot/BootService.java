@@ -68,7 +68,10 @@ public class BootService extends Service {
 				if (msg.what == LOGINOVER) {
 					if (count > 0) {
 						boolean isGetType = mRebootUtils.getNetType();
-						boolean isCanUseSdCard = mRebootUtils.IsCanUseSdCard();
+						boolean isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
+						boolean isCanUseInternal = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
+						
+						
 						content = count + "/" + isGetType +"/"+strength+ "/" +
 								mRebootUtils.getSimState() + "/" + isCanUseSdCard;
 						

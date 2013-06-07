@@ -19,7 +19,8 @@ import com.test.hwautotest.R;
 
 public class RebootActivity extends Activity implements OnClickListener {
 	private Button btnReboot;
-	private CheckBox stopStorage;
+	private CheckBox stopSd;
+	private CheckBox stopInternal;
 	private CheckBox stopNetwork;
 	boolean isStopStorage;
 	boolean isStopNetWork;
@@ -49,7 +50,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 		btnReboot = (Button) findViewById(R.id.reboot);
 		timesInput = (EditText) findViewById(R.id.TimeInput);
 		stopNetwork = (CheckBox) findViewById(R.id.stopNetWork);
-		stopStorage = (CheckBox) findViewById(R.id.stopStorage);
+		stopSd = (CheckBox) findViewById(R.id.stopSd);
 		btnReboot.setOnClickListener(this);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);  
 		

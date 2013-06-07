@@ -25,12 +25,20 @@
       
    />
    <CheckBox 
-      android:id="@+id/stopStorage"
+      android:id="@+id/stopSd"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="内存挂载失败后停止"
+      android:text="SD卡读写失败后停止"
       
    />
+   
+   <CheckBox 
+      android:id="@+id/stopInternal"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="内部存储器读写失败后停止"
+   />
+   
   <TextView android:id="@+id/note"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"

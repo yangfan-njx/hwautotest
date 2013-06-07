@@ -3,6 +3,7 @@
 import java.util.Random;
 
 import com.test.utils.RandomUtils;
+import com.test.utils.Utils;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -12,12 +13,15 @@ import android.net.Uri;
 import android.provider.CallLog;
 import android.widget.Toast;
 
-public class CallLogUtils {
-	public Context mContext;
+public class CallLogUtils extends Utils {
 	
-	public CallLogUtils(Context mContext){
-		this.mContext = mContext;
+
+	public Context mContext;
+	public CallLogUtils(Context mContext) {
+		super(mContext);
+		// TODO Auto-generated constructor stub
 	}
+	
 	/**
 	 * 方法名：获取通话记录的数量
 	 * 
@@ -31,10 +35,6 @@ public class CallLogUtils {
 		return amount;
 	}
 	
-	public void DisplayToast(String string) {
-		// TODO Auto-generated method stub
-		Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
-	}
 	
 	/**
 	 * 方法名:插入通话记录　(来电：CallLog.Calls.INCOMING_TYPE (常量值：1)
