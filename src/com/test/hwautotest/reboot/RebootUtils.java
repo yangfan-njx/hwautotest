@@ -126,6 +126,7 @@ public class RebootUtils extends Utils{
 	public boolean getNetType(){
 		
 		boolean isConnent = false;
+		TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);// 取得相关系统服务
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
 		int i;
 		try {
@@ -143,7 +144,11 @@ public class RebootUtils extends Utils{
 						||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_UMTS)||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_0)
 						||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_A )||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSPA)
 						||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSUPA ) ||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSPAP)){
-					isConnent = true; 
+					
+					if(!tm.getNetworkOperator().equals("")){
+						isConnent = true; 
+					}
+						
 				}
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
