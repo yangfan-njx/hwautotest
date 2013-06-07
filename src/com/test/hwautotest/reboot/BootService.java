@@ -30,10 +30,14 @@ public class BootService extends Service {
 	private String COUNT = "count";
 	private String FILENAME = "filename";
 	private String fileName;
-	public String content;
-	private String ISSTOPSTORAGE = "isStopStorage";
+	private String content;
+	private String ISSTOPSD = "isStopSd";
+	private String ISSTOPINTRENAL = "isStopInternal";
 	private String ISSTOPNETWORK = "isStopNetwork";
-	boolean isStopStorage;
+	private String SDStatus;
+	private String InternalStatus;
+	boolean isStopSd;
+	boolean isStopInternal;
 	boolean isStopNetWork;
 	protected static final int LOGINOVER = 0;
 	protected static final int UNKNOW = 1;
@@ -41,7 +45,7 @@ public class BootService extends Service {
 	private Handler handler;
 	private String strength = "null";
 	Timer timer = new Timer();
-	RebootUtils mRebootUtils = new RebootUtils(this);
+	RebootUtils mRebootUtils = new RebootUtils(BootService.this);
 	private int recLen = 60; 
 	private TelephonyManager telephoneManager;
 
@@ -68,13 +72,23 @@ public class BootService extends Service {
 				if (msg.what == LOGINOVER) {
 					if (count > 0) {
 						boolean isGetType = mRebootUtils.getNetType();
-						boolean isCanUseSdCard = mRebootUtils.IsCanUseSdCard();
+						boolean isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
+						boolean isCanUseInternal = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
+						SDStatus = String.valueOf(isCanUseSdCard);
+						InternalStatus = String.valueOf(isCanUseInternal);
+						
+						if(!mRebootUtils.isSdExists()){
+							SDStatus = "null";
+						}
+						
 						content = count + "/" + isGetType +"/"+strength+ "/" +
-								mRebootUtils.getSimState() + "/" + isCanUseSdCard;
+								mRebootUtils.getSimState() + "/" + InternalStatus + "/" + SDStatus;
 						
 						if(isGetType == false && isStopNetWork == true){
 							rebootTimes = 0;
-						}else if (isCanUseSdCard == false && isStopStorage == true){
+						}else if (isCanUseSdCard == false && isStopSd == true){
+							rebootTimes = 0;
+						}else if (isCanUseInternal == false && isStopInternal == true){
 							rebootTimes = 0;
 						}else if (isScreenLocked(BootService.this) == true){
 							rebootTimes = 0;
@@ -172,7 +186,7 @@ public class BootService extends Service {
 	};
 	
 	public final static boolean isScreenLocked(Context c) {
-        KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(KEYGUARD_SERVICE);
         return !mKeyguardManager.inKeyguardRestrictedInputMode();
     }
 	private void read_status() {
@@ -183,7 +197,8 @@ public class BootService extends Service {
 		this.count = prefs.getInt(COUNT, 0);
 		this.fileName = prefs.getString(FILENAME, null);
 		this.isStopNetWork = prefs.getBoolean(ISSTOPNETWORK, false);
-		this.isStopStorage = prefs.getBoolean(ISSTOPSTORAGE, false);
+		this.isStopSd = prefs.getBoolean(ISSTOPSD, false);
+		this.isStopInternal = prefs.getBoolean(ISSTOPINTRENAL, false);
 		Log.i("look", "rebootTimes: " + rebootTimes);
 		Log.i("look", "fileName: " + fileName);
 		Log.i("look", "count: " + count);

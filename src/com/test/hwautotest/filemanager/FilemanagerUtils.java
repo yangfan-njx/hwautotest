@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
+import com.test.utils.Utils;
+
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,22 +19,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FilemanagerUtils {
+public class FilemanagerUtils extends Utils{
+	
+	public FilemanagerUtils(Context mContext) {
+		super(mContext);
+		this.mContext = mContext;
+		// TODO Auto-generated constructor stub
+	}
+
 	private long TotalSize = 0;
 	private long UsedSize = 0;
 	private Context mContext;
-	
-	public FilemanagerUtils(Context mContext){
-		this.mContext = mContext;
-	}
-	/**
-	 * 显示Toast
-	 * @param string
-	 */
-	public void DisplayToast(String string) {
-		// TODO Auto-generated method stub
-		Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
-	}
+
 	
 	/**
 	 * 创建指定目录

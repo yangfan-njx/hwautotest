@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,9 +20,11 @@ import com.test.hwautotest.R;
 
 public class RebootActivity extends Activity implements OnClickListener {
 	private Button btnReboot;
-	private CheckBox stopStorage;
+	private CheckBox stopSd;
+	private CheckBox stopInternal;
 	private CheckBox stopNetwork;
-	boolean isStopStorage;
+	boolean isStopSd;
+	boolean isStopInternal;
 	boolean isStopNetWork;
 	private SharedPreferences prefs;
 	private int rebootTimes ;
@@ -33,7 +36,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 	private String ISREBOOT = "isRoot";
 	private String COUNT = "count";
 	private String fileName;
-	private String ISSTOPSTORAGE = "isStopStorage";
+	private String ISSTOPSD = "isStopSd";
+	private String ISSTOPINTRENAL = "isStopInternal";
 	private String ISSTOPNETWORK = "isStopNetwork";
 	private EditText timesInput;
 	RebootUtils mRebootUtils = new RebootUtils(this);
@@ -49,9 +53,22 @@ public class RebootActivity extends Activity implements OnClickListener {
 		btnReboot = (Button) findViewById(R.id.reboot);
 		timesInput = (EditText) findViewById(R.id.TimeInput);
 		stopNetwork = (CheckBox) findViewById(R.id.stopNetWork);
-		stopStorage = (CheckBox) findViewById(R.id.stopStorage);
+		stopSd = (CheckBox) findViewById(R.id.stopSd);
+		stopInternal = (CheckBox) findViewById(R.id.stopInternal);
 		btnReboot.setOnClickListener(this);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);  
+		prefs = PreferenceManager.getDefaultSharedPreferences(this); 
+		
+		stopSd.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				// TODO Auto-generated method stub
+				if(stopSd.isChecked() && !mRebootUtils.isSdExists()){
+					mRebootUtils.DisplayToast("未插入SD卡");
+					stopSd.setChecked(false);
+				}
+			}
+		});
 		
 	}
 
@@ -63,7 +80,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 			rebootTimes = Integer.parseInt(times);
 			Log.i("look","rebootTimes: "+rebootTimes);
 			isStopNetWork = stopNetwork.isChecked();
-			isStopStorage = stopStorage.isChecked();
+			isStopSd = stopSd.isChecked();
+			isStopInternal = stopInternal.isChecked();
 			isReboot = true;
 			fileName = mRebootUtils.fileName();
 			save_status(rebootTimes,isReboot,fileName);
@@ -86,7 +104,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 	        editor.putInt(REBOOT_TIMES, rebootTimes);  
 	        editor.putBoolean(ISREBOOT, isReboot);
 	        editor.putBoolean(ISSTOPNETWORK, isStopNetWork);
-	        editor.putBoolean(ISSTOPSTORAGE, isStopStorage);
+	        editor.putBoolean(ISSTOPSD, isStopSd);
+	        editor.putBoolean(ISSTOPINTRENAL, isStopInternal);
 	        editor.putString(FILENAME, fileName);
 	        
 	        editor.putInt(COUNT, count);

@@ -24,8 +24,8 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 	private Button SDAddFile;
 	private Button InternalAddFile;
 	private ProgressDialog m_pDialog;
-	private String SDCardPath = Environment.getExternalStorageDirectory().getPath();
-	private String InternalPath = "/mnt/sdcard2";
+	private String SDCardPath ;
+	private String InternalPath ;
 	private int SDAddSize = 0;
 	private int InternalAddSize = 0;
 	
@@ -39,15 +39,8 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 		Log.i("look", SDCardSeek + "");
 		Log.i("look",SDCardPath);
 		
-		
-		
-		
-		if(mFilemanagerUtils.isContain("mnt", SDCardPath)){
-			InternalPath = "/mnt/sdcard2";
-		}else{
-			InternalPath = "/storage/sdcard1";
-		}
-			
+		SDCardPath = mFilemanagerUtils.getSdPath();
+		InternalPath = mFilemanagerUtils.getInternalPath();
 		
 		SDCardSeek.setOnSeekBarChangeListener(this);
 		InternalSeek = (SeekBar) findViewById(R.id.InternalSeek);
@@ -62,7 +55,6 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 			mFilemanagerUtils.setDefault(SDCardPath, SDCardSeek,SDCardAvailaleSize);
 		}else{
 			SDCardAvailaleSize.setText("SD卡不可用");
-			InternalPath = SDCardPath ;
 			mFilemanagerUtils.setDefault(InternalPath, InternalSeek,InternalAvailaleSize);
 		}
 		
