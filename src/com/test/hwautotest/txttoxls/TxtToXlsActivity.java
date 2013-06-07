@@ -49,7 +49,6 @@ public class TxtToXlsActivity extends Activity {
 	private ArrayList<String> dirNames;
 	private boolean isExist;
 	private SharedPreferences prefs;
-	
 	private FTPClient mFTPClient;
 
 	@Override
@@ -74,7 +73,7 @@ public class TxtToXlsActivity extends Activity {
 		}
 		dirNames = listAllFiles(TxtToXlsActivity.this, getSDPath() + "/dzsoftSmart/taskLogs/");
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
+		
 		ft_btn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -83,7 +82,6 @@ public class TxtToXlsActivity extends Activity {
 				caseTemplate = new File(getSDPath()
 						+ "/TestReport/ft_testCase.xls");// FT测试模板
 				testReportName = version + "_AutoTestReport.xls";
-
 				if(isWiFiActive(TxtToXlsActivity.this)){
 					
 					// 检查数据源
