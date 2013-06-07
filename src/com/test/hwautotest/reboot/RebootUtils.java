@@ -23,8 +23,11 @@ public class RebootUtils extends Utils{
 	
 	public RebootUtils(Context mContext) {
 		super(mContext);
+		this.mContext = mContext;
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	
 	

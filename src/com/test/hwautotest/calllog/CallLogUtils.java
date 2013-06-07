@@ -19,6 +19,7 @@ public class CallLogUtils extends Utils {
 	public Context mContext;
 	public CallLogUtils(Context mContext) {
 		super(mContext);
+		this.mContext = mContext;
 		// TODO Auto-generated constructor stub
 	}
 	

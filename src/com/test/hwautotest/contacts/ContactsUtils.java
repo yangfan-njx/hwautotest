@@ -31,6 +31,7 @@ public class ContactsUtils extends Utils{
 	
 	public ContactsUtils(Context mContext) {
 		super(mContext);
+		this.mContext = mContext;
 		// TODO Auto-generated constructor stub
 	}
 	

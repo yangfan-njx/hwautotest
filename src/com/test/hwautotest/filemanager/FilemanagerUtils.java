@@ -23,6 +23,7 @@ public class FilemanagerUtils extends Utils{
 	
 	public FilemanagerUtils(Context mContext) {
 		super(mContext);
+		this.mContext = mContext;
 		// TODO Auto-generated constructor stub
 	}
 

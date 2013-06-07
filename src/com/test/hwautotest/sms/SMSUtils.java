@@ -17,6 +17,7 @@ public class SMSUtils extends Utils{
 	RandomUtils mRandomUtils = new RandomUtils();
 	public SMSUtils(Context mContext) {
 		super(mContext);
+		this.mContext = mContext;
 		// TODO Auto-generated constructor stub
 	}
 	/**
