@@ -18,10 +18,18 @@
      />
     
   <CheckBox 
-      android:id="@+id/stopNetWork"
+      android:id="@+id/stopSim1NetWork"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="搜网失败后停止"
+      android:text="SIM1搜网失败后停止"
+      
+   />
+  
+   <CheckBox 
+      android:id="@+id/stopSim2NetWork"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="SIM2搜网失败后停止"
       
    />
    <CheckBox 

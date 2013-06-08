@@ -45,6 +45,18 @@ public class Utils {
 		
 	}
 	
+	
+	public String getPath(){
+		
+		String InternalPath;
+		if(isContain("mnt", getSdPath())){
+			InternalPath = "/mnt/sdcard2";
+		}else{
+			InternalPath = "/storage/sdcard1";
+		}
+		return InternalPath;
+	}
+	
 	/**
 	 * 
 	 * 判断路径中是否包含字符
@@ -60,6 +72,8 @@ public class Utils {
 	public boolean isSdExists(){
 		return Environment.isExternalStorageRemovable();
 	}
+	
+	
 	
 	
 }

@@ -4,15 +4,21 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.android.internal.telephony.ITelephony;
+import com.android.internal.telephony.PhoneFactory;
+import com.android.internal.telephony.gemini.GeminiPhone;
+
 import com.test.utils.Utils;
 
 
@@ -83,10 +89,20 @@ public class RebootUtils extends Utils{
 	 * 获取SIM卡状态
 	 * @return
 	 */
-	public String getSimState() {
-		TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);// 取得相关系统服务
-		System.out.println(tm.getSimState());
-		switch (tm.getSimState()) { // getSimState()取得sim的状态 有下面6中状态
+	public String getSimState(int a) {
+//		TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);// 取得相关系统服务
+		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
+		int state = 0;
+		
+		try {
+			
+			System.out.println(phone.getSimState(a));
+			state = phone.getSimState(a);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		switch (state) { // getSimState()取得sim的状态 有下面6中状态
 		case TelephonyManager.SIM_STATE_ABSENT:
 			STATE = "无卡";
 			break;
@@ -121,36 +137,73 @@ public class RebootUtils extends Utils{
  
 	}
 	
+
+	public String getPath(){
+		
+		String InternalPath;
+		if(isContain("mnt", getSdPath())){
+			InternalPath = "/mnt/sdcard2";
+		}else{
+			InternalPath = "/storage/sdcard1";
+		}
+		return InternalPath;
+	}
+	
+	/**
+	 * 判断路径在SD卡存在时,是否可读可写
+	 * @param isSdExits
+	 * @return
+	 */
+	public boolean getStatus(boolean isSdExits){
+		boolean status = false;
+		if(isSdExits){
+			if(IsCanUseMemory(getPath())){
+				status = true;
+			}
+			
+		}
+		return status;
+	}
+	
 	/**
 	 * 
 	 * 获取SIM卡的网络状态
 	 * @return
 	 */
-	public boolean getNetType(){
+	public boolean getNetType(int a){
 		
 		boolean isConnent = false;
-		TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);// 取得相关系统服务
+//		TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);// 取得相关系统服务
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
-		int i;
+		
+		Log.i("look",phone+"");
 		try {
-			i = phone.getNetworkType();
-			Log.i("look","net: "+ i);
+			GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
+			Log.i("look",mGeminiPhone.isSimInsert(0)+"");
+			Log.i("look",phone.getNetworkOperatorNameGemini(1)+"");
+			Log.i("look",phone.getNetworkOperatorNameGemini(0)+"");
+			Log.i("look",phone.getNetworkOperatorNameGemini(1)+"");
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		if(getSimState().equals("良好")){
+		
+		if(getSimState(a).equals("良好")){
+			
 			try {
-				if ((phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_CDMA) || (phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_EDGE) 
-						|| (phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_GPRS ) || (phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSDPA)
-						||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_UMTS)||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_0)
-						||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_A )||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSPA)
-						||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSUPA ) ||(phone.getNetworkType() == TelephonyManager.NETWORK_TYPE_HSPAP)){
+				int type = phone.getNetworkTypeGemini(a);
+				if (type == TelephonyManager.NETWORK_TYPE_CDMA || type == TelephonyManager.NETWORK_TYPE_EDGE 
+						|| type == TelephonyManager.NETWORK_TYPE_GPRS || type == TelephonyManager.NETWORK_TYPE_HSDPA
+						|| type == TelephonyManager.NETWORK_TYPE_UMTS || type == TelephonyManager.NETWORK_TYPE_EVDO_0
+						|| type == TelephonyManager.NETWORK_TYPE_EVDO_A || type == TelephonyManager.NETWORK_TYPE_HSPA
+						|| type == TelephonyManager.NETWORK_TYPE_HSUPA || type == TelephonyManager.NETWORK_TYPE_HSPAP){
 					
-					if(!tm.getNetworkOperator().equals("")){
+					if(!phone.getNetworkOperatorNameGemini(a).equals("")){
 						isConnent = true; 
 					}
+					
+					
 						
 				}
 			} catch (RemoteException e) {
@@ -163,7 +216,26 @@ public class RebootUtils extends Utils{
 	}
 	
 	
-
+	public String getStrength(int a){
+		GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
+		SignalStrength signalStrength = mGeminiPhone.getSignalStrengthGemini(a);
+		String strength = null;
+		if (mGeminiPhone.isSimInsert(a)) {
+			int ASU = signalStrength.getGsmSignalStrength();
+			strength =String.valueOf(-113+(2*ASU))+"dBm";
+		}
+		Log.i("look","strength: "+strength);
+	
+	return strength;
+	}
+	
+	
+	public final boolean isScreenLocked(Context c) {
+        KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(Context.KEYGUARD_SERVICE);
+        return !mKeyguardManager.inKeyguardRestrictedInputMode();
+    }
+	
+	
 	
 }
 
