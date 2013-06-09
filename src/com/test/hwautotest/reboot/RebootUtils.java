@@ -179,7 +179,7 @@ public class RebootUtils extends Utils{
 		Log.i("look",phone+"");
 		try {
 			GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
-			Log.i("look",mGeminiPhone.isSimInsert(0)+"");
+//			Log.i("look",mGeminiPhone.isSimInsert(0)+"");
 			Log.i("look",phone.getNetworkOperatorNameGemini(1)+"");
 			Log.i("look",phone.getNetworkOperatorNameGemini(0)+"");
 			Log.i("look",phone.getNetworkOperatorNameGemini(1)+"");
@@ -193,19 +193,10 @@ public class RebootUtils extends Utils{
 			
 			try {
 				int type = phone.getNetworkTypeGemini(a);
-				if (type == TelephonyManager.NETWORK_TYPE_CDMA || type == TelephonyManager.NETWORK_TYPE_EDGE 
-						|| type == TelephonyManager.NETWORK_TYPE_GPRS || type == TelephonyManager.NETWORK_TYPE_HSDPA
-						|| type == TelephonyManager.NETWORK_TYPE_UMTS || type == TelephonyManager.NETWORK_TYPE_EVDO_0
-						|| type == TelephonyManager.NETWORK_TYPE_EVDO_A || type == TelephonyManager.NETWORK_TYPE_HSPA
-						|| type == TelephonyManager.NETWORK_TYPE_HSUPA || type == TelephonyManager.NETWORK_TYPE_HSPAP){
-					
-					if(!phone.getNetworkOperatorNameGemini(a).equals("")){
+				if(!phone.getNetworkOperatorNameGemini(a).equals("")){
 						isConnent = true; 
-					}
-					
-					
-						
 				}
+				
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -216,25 +207,26 @@ public class RebootUtils extends Utils{
 	}
 	
 	
-	public String getStrength(int a){
-		GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
-		SignalStrength signalStrength = mGeminiPhone.getSignalStrengthGemini(a);
-		String strength = null;
-		if (mGeminiPhone.isSimInsert(a)) {
-			int ASU = signalStrength.getGsmSignalStrength();
-			strength =String.valueOf(-113+(2*ASU))+"dBm";
-		}
-		Log.i("look","strength: "+strength);
-	
-	return strength;
-	}
-	
 	
 	public final boolean isScreenLocked(Context c) {
         KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(Context.KEYGUARD_SERVICE);
         return !mKeyguardManager.inKeyguardRestrictedInputMode();
     }
 	
+	
+	public boolean isSimInsert(int a){
+		boolean isSimInsert = false;
+		try {
+			ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
+			if(phone.getSimState(a) == 5 && phone.isSimInsert(a)){
+				isSimInsert = true;
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return isSimInsert;
+	}
 	
 	
 }

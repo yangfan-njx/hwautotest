@@ -37,7 +37,7 @@ public class FileManagerActivity extends Activity implements SeekBar.OnSeekBarCh
 		setContentView(R.layout.filemanager);
 		SDCardSeek = (SeekBar) findViewById(R.id.SDCardSeek);
 		Log.i("look", SDCardSeek + "");
-		Log.i("look",SDCardPath);
+		Log.i("look",SDCardPath+"");
 		
 		SDCardPath = mFilemanagerUtils.getSdPath();
 		InternalPath = mFilemanagerUtils.getInternalPath();

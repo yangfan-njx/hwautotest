@@ -73,15 +73,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this); 
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
 		isSdExist = mRebootUtils.isSdExists();
-		
-		try {
-			isSim1Insert = phone.isSimInsert(0);
-			isSim2Insert = phone.isSimInsert(1);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		isSim2Insert =mRebootUtils.isSimInsert(1);
+		isSim1Insert =mRebootUtils.isSimInsert(0);
 		Log.i("look",isSim1Insert+"");
 		Log.i("look",isSim2Insert+"");
 		Log.i("look", stopSim1Network+""+"a");

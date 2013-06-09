@@ -10,7 +10,6 @@ public class MyReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.i("look", "service start");
-		
 		Intent i = new Intent(context, BootService.class);
 		context.startService(i);
 	 }

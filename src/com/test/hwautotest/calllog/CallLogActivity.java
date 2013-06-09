@@ -154,6 +154,7 @@ public class CallLogActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			m_pDialog.setTitle("添加完成");
+			
 			m_pDialog.cancel();
 		}
 

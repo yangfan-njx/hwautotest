@@ -43,8 +43,6 @@ public class BootService extends Service {
 	private String ISSTOPINTRENAL = "isStopInternal";
 	private String ISSTOPSIM1NETWORK = "isStopSim1Network";
 	private String ISSTOPSIM2NETWORK = "isStopSim2Network";
-	private String strengthSim1 = "null";
-	private String strengthSim2 = "null";
 	private String SDStatus;
 	private String InternalStatus;
 	private String sim1Status;
@@ -84,16 +82,9 @@ public class BootService extends Service {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		telephoneManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 //		GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
-		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
-		
-		
-		try {
-			isSim2Insert = phone.isSimInsert(1);
-			isSim1Insert = phone.isSimInsert(0);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
+		isSim2Insert =mRebootUtils.isSimInsert(1);
+		isSim1Insert =mRebootUtils.isSimInsert(0);
 		isGetSim1Type = mRebootUtils.getNetType(0);
 		isGetSim2Type = mRebootUtils.getNetType(1);
 		
@@ -111,8 +102,7 @@ public class BootService extends Service {
 						
 						isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
 						isCanUseInternal = mRebootUtils.IsCanUseMemory(mRebootUtils.getInternalPath());
-						strengthSim1 = mRebootUtils.getStrength(0);
-						strengthSim2 = mRebootUtils.getStrength(1);
+					
 						sim1Status = String.valueOf(isGetSim1Type);
 						sim2Status = String.valueOf(isGetSim2Type);
 						SDStatus = String.valueOf(isCanUseSdCard);
@@ -130,8 +120,11 @@ public class BootService extends Service {
 							sim2Status = "null";
 						}
 						
-						content = count + "/" + sim1Status +"/"+strengthSim1+ "/"+ mRebootUtils.getSimState(0)+"/" + sim2Status +"/"+strengthSim2+ "/"
+						content = count + "/" + sim1Status +"/"+ mRebootUtils.getSimState(0)+"/" + sim2Status + "/"
 								+ mRebootUtils.getSimState(1) + "/" + InternalStatus + "/" + SDStatus;
+						Log.i("look", "rebootTimes: " + rebootTimes);
+						Log.i("look", content);
+						mRebootUtils.writeFile(fileName, content);
 						
 						if(isGetSim1Type == false && isStopSim1NetWork == true){
 							rebootTimes = 0;
@@ -143,10 +136,9 @@ public class BootService extends Service {
 							rebootTimes = 0;
 						}else if (mRebootUtils.isScreenLocked(BootService.this) == true){
 							rebootTimes = 0;
+							
 						}
 						
-						Log.i("look", content);
-						mRebootUtils.writeFile(fileName, content);
 					}
 					
 					if (isReboot) {
@@ -162,6 +154,7 @@ public class BootService extends Service {
 							isReboot = false;
 							editor.putBoolean(ISREBOOT, isReboot);
 							editor.commit();
+							mRebootUtils.DisplayToast("重启停止");
 							stopSelf();
 //							
 						}
@@ -246,6 +239,11 @@ public class BootService extends Service {
 		editor.putBoolean(ISREBOOT, isReboot);
 		editor.commit();
 	}
+	
+	
+	
+	
+	
 	
 	 
 }
