@@ -5,4 +5,31 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
 
+    <!-- FTP  黄圣权 -->
+    <string name="name_app">FTP速度测试</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
+    <string name="action_exit">退出</string>
+    <string name="tip_choose_testType">选择测试类型</string>
+    <string name="testType_download">FTP下载速度测试</string>
+    <string name="testType_upload">FTP上传速度测试</string>
+    <string name="tip_settings">设置测试参数</string>
+    <string name="tip_size_download">下载文件大小：</string>
+    <string name="tip_size_upload">上传文件大小：</string>
+    <string name="tip_size_default">(未选择文件)</string>
+    <string name="tip_choose_download">选择下载文件大小：</string>
+    <string name="tip_choose_upload">选择上传文件：</string>
+    <string name="btn_choose_upload">浏览 </string>
+    <string name="btn_reChoose">重选类型</string>
+    <string name="btn_finishChoose">完成设置 </string>
+    <string name="tip_test">执行测试</string>
+    <string name="button_start">启动测试</string>
+    <string name="button_stop">终止测试</string>
+    <string name="button_end">退出程序</string>
+    <string name="name_chooseAct">选择上传的文件</string>
+    <string name="tip_back">＜后退</string>
+    <string name="tip_forward">＞前进</string>
+    <string name="tip_close">╳退出</string>
+    <string name="space">-----</string>
+
 </resources>

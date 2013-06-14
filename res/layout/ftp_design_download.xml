@@ -1,0 +1,92 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="4"
+    android:columnOrderPreserved="false"
+    android:orientation="vertical"
+    android:rowCount="8"
+    android:useDefaultMargins="true" >
+
+    <TextView
+        android:layout_width="13dp"
+        android:layout_height="60dp"
+        android:layout_column="0"
+        android:layout_row="0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="1"
+        android:gravity="center"
+        android:text="@string/tip_choose_download" />
+
+    <Spinner
+        android:id="@+id/choose_download"
+        android:layout_width="138dp"
+        android:layout_height="46dp"
+        android:layout_column="2"
+        android:layout_gravity="fill_horizontal"
+        android:layout_row="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="left|top"
+        android:layout_row="2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="3"
+        android:visibility="invisible"
+        android:text="@string/tip_size_download" />
+
+    <TextView
+        android:id="@+id/size_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="2"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="3"
+        android:visibility="invisible"
+        android:text="@string/tip_size_default" />
+
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:layout_column="3"
+        android:layout_gravity="top"
+        android:layout_row="5" />
+    
+    <Button
+        android:id="@+id/btn_reChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="right|top"
+        android:layout_row="6"
+        android:gravity="center"
+        android:text="@string/btn_reChoose" />
+
+    <Button
+        android:id="@+id/btn_finishDownloadChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="2"
+        android:layout_gravity="right|top"
+        android:layout_row="6"
+        android:gravity="center"
+        android:text="@string/btn_finishChoose" />
+
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="66dp"
+        android:layout_column="3"
+        android:layout_row="7" />
+
+</GridLayout>

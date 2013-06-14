@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tvpath"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ff0000"
+        android:textSize="20sp" 
+        android:textIsSelectable="true"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="7"
+        android:columnOrderPreserved="false"
+        android:orientation="horizontal"
+        android:rowCount="1"
+        android:scrollbars="horizontal"
+        android:useDefaultMargins="true" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left"
+            android:layout_row="0"
+            android:gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:text="@string/tip_back" 
+            android:layout_gravity="center"
+             android:gravity="center"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_row="0"
+             android:text="@string/space"
+              android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/btnForward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_gravity="center"
+             android:gravity="center"
+            android:layout_row="0"
+            android:text="@string/tip_forward"
+            android:visibility="invisible"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="4"
+            android:layout_gravity="left"
+            android:layout_row="0" 
+             android:text="@string/space"
+             android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="5"
+           android:layout_gravity="center"
+             android:gravity="center"
+            android:layout_row="0"
+            android:text="@string/tip_close" >
+
+            <!-- android:background="@drawable/back_48" 使用背景 -->
+        </Button>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="6"
+            android:layout_gravity="left"
+            android:layout_row="0" 
+            />
+    </GridLayout>
+
+    <ListView
+        android:id="@+id/files"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>
