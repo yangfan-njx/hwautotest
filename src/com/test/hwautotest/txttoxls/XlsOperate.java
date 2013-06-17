@@ -209,7 +209,6 @@ public class XlsOperate {
 		String sim1_note;
 		String sim2;
 		String sim2_note;
-		String note;
 		String phoneStorage;
 		String sdInfo;
 		String result;
@@ -275,23 +274,11 @@ public class XlsOperate {
 				cell = sheet.getRow(i + 2).createCell(7, HSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(booleanToStr(sdInfo));
 				cell.setCellStyle(style);
-				
-				
-//				//填充note
-//				cell = sheet.getRow(i + 2).createCell(5, HSSFCell.CELL_TYPE_STRING);//会被修改
-//				if(!note.equals("良好")){
-//					cell.setCellValue(note);
-//				}else{
-//					cell.setCellValue("");
-//				}
-//				cell.setCellStyle(style);
-				
-
 			}
 			
 			//刷新公式
 			sheet = wb.getSheet("Cover");
-			refreshFormula(sheet,6,7,2,6);//注意刷新范围！！！
+			refreshFormula(sheet,6,9,2,6);//注意刷新范围！！！
 			setProjectInfo(sheet, "Reboot Test Case");
 			
 			fileOut = new FileOutputStream(mFilePath + "reboot_testCase.xls");
