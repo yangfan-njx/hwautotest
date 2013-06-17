@@ -72,11 +72,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this); 
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
 		isSdExist = mRebootUtils.isSdExists();
-		isSim2Insert =mRebootUtils.isSimInsert(1);
-		isSim1Insert =mRebootUtils.isSimInsert(0);
-		Log.i("look",isSim1Insert+"");
-		Log.i("look",isSim2Insert+"");
-		Log.i("look", stopSim1Network+""+"a");
+		
 		stopSd.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
 			
 			@Override
@@ -114,12 +110,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 			}
 		});
 	}
-@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		Log.i("look","onStrat");
-	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

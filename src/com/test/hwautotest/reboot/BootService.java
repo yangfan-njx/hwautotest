@@ -103,12 +103,10 @@ public class BootService extends Service {
 							stopSelf();
 						}
 						
-						isGetSim1Type = mRebootUtils.getNetType(0);
-						isGetSim2Type = mRebootUtils.getNetType(1);
 						isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
 						isCanUseInternal = mRebootUtils.IsCanUseMemory(mRebootUtils.getInternalPath());
-						sim1Status = String.valueOf(isGetSim1Type);
-						sim2Status = String.valueOf(isGetSim2Type);
+						sim1Status = mRebootUtils.getSimStauts(0);
+						sim2Status = mRebootUtils.getSimStauts(1);
 						SDStatus = String.valueOf(isCanUseSdCard);
 						InternalStatus = String.valueOf(isCanUseInternal);
 						
@@ -118,11 +116,7 @@ public class BootService extends Service {
 							SDStatus = "false";
 						}
 						
-						if(!isSim1Insert){
-							sim1Status = "null";
-						}else if (!isSim2Insert){
-							sim2Status = "null";
-						}
+						
 						
 						content = count + "/" + sim1Status +"/"+ mRebootUtils.getSimState(0)+"/" + sim2Status + "/"
 								+ mRebootUtils.getSimState(1) + "/" + InternalStatus + "/" + SDStatus;
@@ -131,13 +125,8 @@ public class BootService extends Service {
 						Log.i("look", content);
 						mRebootUtils.writeFile(fileName, content);
 						
-						if(isGetSim1Type == false && isStopSim1NetWork == true){
-							isReboot = false;
-						}else if(isGetSim2Type == false && isStopSim2NetWork == true){
-							isReboot = false;
-						}else if (isCanUseSdCard == false && isStopSd == true){
-							isReboot = false;
-						}else if (isCanUseInternal == false && isStopInternal == true){
+						if((isGetSim1Type == false && isStopSim1NetWork == true) || (isGetSim2Type == false && isStopSim2NetWork == true)
+								|| (isCanUseSdCard == false && isStopSd == true) || (isCanUseInternal == false && isStopInternal == true)){
 							isReboot = false;
 						}
 					}
