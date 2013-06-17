@@ -205,9 +205,12 @@ public class XlsOperate {
 	}
 	public void fillRebootResult(ArrayList<String> tasksummary){
 		String index;
-		String simInfo;
-		String dbm;
+		String sim1;
+		String sim1_note;
+		String sim2;
+		String sim2_note;
 		String note;
+		String phoneStorage;
 		String sdInfo;
 		String result;
 		
@@ -218,45 +221,70 @@ public class XlsOperate {
 			for(int i = 0; i < tasksummary.size(); i++){
 				result = tasksummary.get(i);
 				index = result.substring(0, getCharacterPosition(result, 1));
-				simInfo = result.substring(getCharacterPosition(result, 1) + 1 , getCharacterPosition(result, 2));
-				dbm = result.substring(getCharacterPosition(result, 2) + 1 , getCharacterPosition(result, 3));
-				note = result.substring(getCharacterPosition(result, 3) + 1, getCharacterPosition(result, 4));
-				sdInfo = result.substring(getCharacterPosition(result, 4) + 1);
-				Log.i("YANG", index + "-------" + simInfo + "-------" + note + "-------" + sdInfo);
+				sim1 = result.substring(getCharacterPosition(result, 1) + 1 , getCharacterPosition(result, 2));
+				sim1_note = result.substring(getCharacterPosition(result, 2) + 1 , getCharacterPosition(result, 3));
+				sim2 = result.substring(getCharacterPosition(result, 3) + 1, getCharacterPosition(result, 4));
+				sim2_note = result.substring(getCharacterPosition(result, 4) + 1, getCharacterPosition(result, 5));
+				phoneStorage = result.substring(getCharacterPosition(result, 5) + 1, getCharacterPosition(result, 6));
+				sdInfo = result.substring(getCharacterPosition(result, 6) + 1);
+//				Log.i("YANG", index + "-------" + simInfo + "-------" + note + "-------" + sdInfo);
 				HSSFCellStyle style = setCellStyle(wb);
 				//填充index
-				cell = sheet.getRow(i + 1).createCell(0, HSSFCell.CELL_TYPE_NUMERIC);
+				cell = sheet.getRow(i + 2).createCell(0, HSSFCell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(Integer.parseInt(index));
 				cell.setCellStyle(style);
 				//填充Step
-				cell = sheet.getRow(i + 1).createCell(1, HSSFCell.CELL_TYPE_STRING);
+				cell = sheet.getRow(i + 2).createCell(1, HSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue("重启");
 				cell.setCellStyle(style);
 
-				//填充simInfo
-				cell = sheet.getRow(i + 1).createCell(2, HSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(booleanToStr(simInfo));
+				//填充sim1
+				cell = sheet.getRow(i + 2).createCell(2, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(sim1));
 				cell.setCellStyle(style);
 				
-				//填充dbm
-				cell = sheet.getRow(i + 1).createCell(3, HSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(dbm);
-				cell.setCellStyle(style);
-
-				//填充sdInfo
-				cell = sheet.getRow(i + 1).createCell(4, HSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(booleanToStr(sdInfo));
-				cell.setCellStyle(style);
-				
-				
-				//填充note
-				cell = sheet.getRow(i + 1).createCell(5, HSSFCell.CELL_TYPE_STRING);//会被修改
-				if(!note.equals("良好")){
-					cell.setCellValue(note);
+				//填充sim1_note
+				cell = sheet.getRow(i + 2).createCell(3, HSSFCell.CELL_TYPE_STRING);
+				if(!sim1_note.equals("良好")){
+					cell.setCellValue(sim1_note);
 				}else{
 					cell.setCellValue("");
 				}
 				cell.setCellStyle(style);
+				
+				//填充sim2
+				cell = sheet.getRow(i + 2).createCell(4, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(sim2));
+				cell.setCellStyle(style);
+				
+				//填充sim2_note
+				cell = sheet.getRow(i + 2).createCell(5, HSSFCell.CELL_TYPE_STRING);
+				if(!sim2_note.equals("良好")){
+					cell.setCellValue(sim2_note);
+				}else{
+					cell.setCellValue("");
+				}
+				cell.setCellStyle(style);
+				
+				//填充phoneStorage
+				cell = sheet.getRow(i + 2).createCell(6, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(phoneStorage));
+				cell.setCellStyle(style);
+
+				//填充sdInfo
+				cell = sheet.getRow(i + 2).createCell(7, HSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(booleanToStr(sdInfo));
+				cell.setCellStyle(style);
+				
+				
+//				//填充note
+//				cell = sheet.getRow(i + 2).createCell(5, HSSFCell.CELL_TYPE_STRING);//会被修改
+//				if(!note.equals("良好")){
+//					cell.setCellValue(note);
+//				}else{
+//					cell.setCellValue("");
+//				}
+//				cell.setCellStyle(style);
 				
 
 			}

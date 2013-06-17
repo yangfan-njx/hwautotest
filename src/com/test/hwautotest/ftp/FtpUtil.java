@@ -69,7 +69,7 @@ public class FtpUtil {
 		//上传： 服务器192.168.110.93【1.9MB/手机；8.45MB电脑】路由18.8.8.37 【1.9MB/手机；3.69MB电脑】本机192.168.1.200【1.35MB手机；184MB本机】
 		mFTPPort=21;
 		mFTPUser = "hwadmin";//yangfan gongyy ftp 
-		mFTPPassword = "1314521";//gionee@2010 123456 ftp
+		mFTPPassword = "123456";//gionee@2010 123456 ftp
 		
 		FTPClient mFTPClient=new FTPClient();
 
