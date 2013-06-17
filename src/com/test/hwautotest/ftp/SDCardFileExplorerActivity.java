@@ -48,6 +48,7 @@ public class SDCardFileExplorerActivity extends Activity {
 	private String old_uploadFilePath=null;//原本的上传需要文件完整路径
 	private String old_uploadFileSize=null;//原本的上传需要文件大小
 	
+	private File topFiles=null;//默认打开位置和顶层位置，到达继续向上设计为退出
 
 
 	@Override
@@ -74,7 +75,6 @@ public class SDCardFileExplorerActivity extends Activity {
 		Log.w("look", "原本上传文件的大小："+old_uploadFileSize);
 		// 获取系统的SDCard的目录
 		File root = new File(Environment.getExternalStorageDirectory().toString());
-		Log.w("look", "启动路径："+root);
 		// 如果SD卡存在的话
 		if (root.exists()) {
 			currentParent = root;
@@ -82,6 +82,7 @@ public class SDCardFileExplorerActivity extends Activity {
 			// 使用当前目录下的全部文件、文件夹来填充ListView
 			inflateListView(currentFiles);
 		}
+		
 		//向上到存储位置选择的层
 		// 获取上一级目录
 		currentParent = currentParent.getParentFile();
@@ -89,6 +90,8 @@ public class SDCardFileExplorerActivity extends Activity {
 		currentFiles = currentParent.listFiles();
 		// 再次更新ListView
 		inflateListView(currentFiles);
+		topFiles=currentParent;//默认打开位置和顶层位置
+		Log.w("look","顶层路径[存储位置上层]："+topFiles);
 		
 		lvFiles.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -264,7 +267,8 @@ public class SDCardFileExplorerActivity extends Activity {
 //		Log.w("look", "onKeyUp ");
 		if(keyCode==KeyEvent.KEYCODE_BACK){
 			try {
-				if (!currentParent.getCanonicalPath().equals("/")) {
+//				if (!currentParent.getCanonicalPath().equals("/")) {
+				if (!currentParent.getCanonicalPath().equals(topFiles.getCanonicalPath())) {//顶层继续向上设计为退出
 					// 获取上一级目录
 					currentParent = currentParent.getParentFile();
 					// 列出当前目录下的所有文件
@@ -275,6 +279,12 @@ public class SDCardFileExplorerActivity extends Activity {
 				}else{
 //					Toast.makeText(SDCardFileExplorerActivity.this,
 //							"到顶啦！", Toast.LENGTH_SHORT).show();
+					ActivityUtil.goActivityWithString2(
+							SDCardFileExplorerActivity.this,
+							FtpDesignUpload.class, 
+							"uploadFilePath",old_uploadFilePath,
+							"uploadFileSize",old_uploadFileSize
+							,true);
 				}
 				return false;//返回true说明你已经处理了这个事件并且它应该就此终止，如果返回false就表示此事件还需要继续传递下去
 			} catch (IOException e) {
