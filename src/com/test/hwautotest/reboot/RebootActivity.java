@@ -72,6 +72,8 @@ public class RebootActivity extends Activity implements OnClickListener {
 		btnReboot.setOnClickListener(this);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this); 
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
+		isSim2Insert =mRebootUtils.isSimInsert(1);
+		isSim1Insert =mRebootUtils.isSimInsert(0);
 		isSdExist = mRebootUtils.isSdExists();
 		
 		stopSd.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
