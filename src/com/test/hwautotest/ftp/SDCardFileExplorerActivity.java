@@ -82,6 +82,13 @@ public class SDCardFileExplorerActivity extends Activity {
 			// 使用当前目录下的全部文件、文件夹来填充ListView
 			inflateListView(currentFiles);
 		}
+		//向上到存储位置选择的层
+		// 获取上一级目录
+		currentParent = currentParent.getParentFile();
+		// 列出当前目录下的所有文件
+		currentFiles = currentParent.listFiles();
+		// 再次更新ListView
+		inflateListView(currentFiles);
 		
 		lvFiles.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -102,7 +109,8 @@ public class SDCardFileExplorerActivity extends Activity {
 								SDCardFileExplorerActivity.this,
 								FtpDesignUpload.class, 
 								"uploadFilePath",uploadFilePath,
-								"uploadFileSize",uploadFileSize);
+								"uploadFileSize",uploadFileSize
+								,true);
 					}else if(f.length()<=0){
 						toast("请另选占用空间大于0的文件");
 					}
@@ -178,7 +186,8 @@ public class SDCardFileExplorerActivity extends Activity {
 						SDCardFileExplorerActivity.this,
 						FtpDesignUpload.class, 
 						"uploadFilePath",old_uploadFilePath,
-						"uploadFileSize",old_uploadFileSize);
+						"uploadFileSize",old_uploadFileSize
+						,true);
 			}
 		});
 
@@ -249,31 +258,32 @@ public class SDCardFileExplorerActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-//	@Override
-//	public boolean onKeyUp(int keyCode, KeyEvent event) {
-////		Log.w("look", "onKeyUp ");
-//		if(keyCode==KeyEvent.KEYCODE_BACK){
-//			try {
-//				if (!currentParent.getCanonicalPath().equals("/")) {
-//					// 获取上一级目录
-//					currentParent = currentParent.getParentFile();
-//					// 列出当前目录下的所有文件
-//					currentFiles = currentParent.listFiles();
-//					// 再次更新ListView
-//					inflateListView(currentFiles);
-//					lvFiles.setSelection(enterPosition);//滚动到之前进入的位置
-//				}else{
-////					Toast.makeText(SDCardFileExplorerActivity.this,
-////							"到顶啦！", Toast.LENGTH_SHORT).show();
-//				}
-//				return false;//返回true说明你已经处理了这个事件并且它应该就此终止，如果返回false就表示此事件还需要继续传递下去
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+//		Log.w("look", "onKeyUp ");
+		if(keyCode==KeyEvent.KEYCODE_BACK){
+			try {
+				if (!currentParent.getCanonicalPath().equals("/")) {
+					// 获取上一级目录
+					currentParent = currentParent.getParentFile();
+					// 列出当前目录下的所有文件
+					currentFiles = currentParent.listFiles();
+					// 再次更新ListView
+					inflateListView(currentFiles);
+					lvFiles.setSelection(enterPosition);//滚动到之前进入的位置
+				}else{
+//					Toast.makeText(SDCardFileExplorerActivity.this,
+//							"到顶啦！", Toast.LENGTH_SHORT).show();
+				}
+				return false;//返回true说明你已经处理了这个事件并且它应该就此终止，如果返回false就表示此事件还需要继续传递下去
+			} catch (IOException e) {
+				e.printStackTrace();
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public static File[] sortFiles(File[] files){
 		List<File>fList=new ArrayList<File>();

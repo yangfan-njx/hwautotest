@@ -22,14 +22,6 @@
         android:layout_row="1"
         android:gravity="center"
         android:text="@string/button_start" />
-    <!-- <Switch -->
-    <!-- android:id="@+id/button_do" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_column="1" -->
-    <!-- android:layout_row="1" -->
-    <!-- android:gravity="center" -->
-    <!-- android:textOn="@string/button_start" -->
-    <!-- android:textOff="@string/button_stop" /> -->
 
     <TextView
         android:layout_height="wrap_content"

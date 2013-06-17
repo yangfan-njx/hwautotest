@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/bg2">
 
     <TextView
         android:id="@+id/tvpath"
@@ -10,11 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="#ff0000"
-        android:textSize="20sp" 
+        android:textSize="18sp" 
         android:textIsSelectable="true"/>
 
     <GridLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="7"
         android:columnOrderPreserved="false"
@@ -40,7 +41,7 @@
             android:text="@string/tip_back" 
             android:layout_gravity="center"
              android:gravity="center"
-             />
+             android:visibility="invisible"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,13 +64,13 @@
              />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
             android:layout_column="4"
             android:layout_gravity="left"
-            android:layout_row="0" 
-             android:text="@string/space"
-             android:visibility="invisible"/>
+            android:layout_row="0"
+            android:text="@string/space"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/btnClose"
@@ -85,12 +86,12 @@
         </Button>
         
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="14dp"
             android:layout_height="wrap_content"
             android:layout_column="6"
             android:layout_gravity="left"
-            android:layout_row="0" 
-            />
+            android:layout_row="0" />
+
     </GridLayout>
 
     <ListView
