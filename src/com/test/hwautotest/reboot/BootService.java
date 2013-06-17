@@ -97,6 +97,12 @@ public class BootService extends Service {
 
 				if (msg.what == LOGINOVER) {
 					if (count > 0) {
+						
+						if (mRebootUtils.isScreenLocked(BootService.this) == true){
+							isReboot = false;
+							stopSelf();
+						}
+						
 						isGetSim1Type = mRebootUtils.getNetType(0);
 						isGetSim2Type = mRebootUtils.getNetType(1);
 						isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
@@ -126,18 +132,14 @@ public class BootService extends Service {
 						mRebootUtils.writeFile(fileName, content);
 						
 						if(isGetSim1Type == false && isStopSim1NetWork == true){
-							rebootTimes = 0;
+							isReboot = false;
 						}else if(isGetSim2Type == false && isStopSim2NetWork == true){
-							rebootTimes = 0;
+							isReboot = false;
 						}else if (isCanUseSdCard == false && isStopSd == true){
-							rebootTimes = 0;
+							isReboot = false;
 						}else if (isCanUseInternal == false && isStopInternal == true){
-							rebootTimes = 0;
-						}else if (mRebootUtils.isScreenLocked(BootService.this) == true){
-							rebootTimes = 0;
-							stopSelf();
+							isReboot = false;
 						}
-						
 					}
 					
 					if (isReboot) {
