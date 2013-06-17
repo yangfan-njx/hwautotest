@@ -4,45 +4,41 @@
     android:columnCount="4"
     android:columnOrderPreserved="false"
     android:orientation="vertical"
-    android:rowCount="7"
+    android:rowCount="12"
     android:scrollbars="horizontal"
-    android:useDefaultMargins="true" >
+    android:useDefaultMargins="true" 
+    android:background="@drawable/bg2">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_column="0"
-        android:layout_gravity="left"
-        android:layout_row="0" />
+    
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="left"
         android:layout_row="1"
         android:gravity="center"
         android:text="@string/tip_choose_upload" />
 
     <RelativeLayout
-        android:layout_width="177dp"
-        android:layout_height="64dp"
-        android:layout_column="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
         android:layout_gravity="fill_horizontal|top"
-        android:layout_row="1" >
+        android:layout_row="2" >
 
         <TextView
             android:id="@+id/uploadName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:layout_toLeftOf="@+id/btn_chooseUpload"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:gravity="top|left"
+            android:gravity="center"
             android:hint="@string/tip_size_default"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
@@ -54,23 +50,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:gravity="center_horizontal"
             android:text="@string/btn_choose_upload" />
 
     </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="31dp"
-        android:layout_column="1"
-        android:layout_gravity="left"
-        android:layout_row="2" />
-
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="left"
         android:layout_row="3"
         android:text="@string/tip_size_upload" />
 
@@ -78,41 +66,71 @@
         android:id="@+id/size_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:layout_gravity="center_horizontal"
+        android:layout_column="1"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_row="3"
-        android:text="@string/tip_size_default" />
+        android:hint="@string/tip_size_default" />
 
      <TextView
          android:layout_width="24dp"
-         android:layout_height="wrap_content"
+         android:layout_height="1dp"
          android:layout_column="3"
          android:layout_gravity="top"
          android:layout_row="4" />
 
      <Button
-        android:id="@+id/btn_reChoose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="5"
-        android:layout_gravity="right"
-        android:gravity="center"
-        android:text="@string/btn_reChoose" />
+         android:id="@+id/btn_reChoose"
+         android:layout_width="wrap_content"
+         android:layout_height="4dp"
+         android:layout_column="1"
+         android:layout_gravity="right"
+         android:layout_row="5"
+         android:gravity="center"
+         android:text="@string/btn_reChoose"
+         android:visibility="invisible" />
+
     <Button
         android:id="@+id/btn_finishUploadChoose"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="3dp"
         android:layout_column="2"
-        android:layout_row="5"
         android:layout_gravity="right"
+        android:layout_row="5"
         android:gravity="center"
-        android:text="@string/btn_finishChoose" />
+        android:text="@string/btn_finishChoose"
+        android:visibility="invisible" />
+    
+    <!-- 结果部分 -->
+    
+    <Button
+        android:id="@+id/button_do"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_row="6"
+        android:text="@string/button_start" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_row="7"
+        android:scrollbarStyle="outsideOverlay" >
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(未执行)" 
+            android:scrollHorizontally="true"
+            android:textIsSelectable="true"/>
+    </ScrollView>
 
     <TextView
-        android:layout_width="24dp"
-        android:layout_height="288dp"
-        android:layout_column="3"
-        android:layout_row="6" />
+        android:layout_width="27dp"
+        android:layout_height="120dp"
+        android:layout_column="2"
+        android:layout_row="8" />
 
 </GridLayout>

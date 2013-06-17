@@ -54,15 +54,37 @@ public class ActivityUtil extends Activity {
 	 * @param keyName
 	 * @param data_filePath
 	 */
-	public static void goActivityWithString2(Context context,
-			Class<?> tarActivityClass, String keyName, String data_filePath,
-			String key2, String data_fileSize) {// <?>通配所有类型
-		Intent intent = new Intent();
+
+	public   static void goActivityWithString2(Context context
+			,Class<?> tarActivityClass
+			,String keyName,String data_filePath,String key2,String data_fileSize
+			,boolean closeCurrent){//<?>通配所有类型
+		Intent intent=new Intent();
 		intent.putExtra(keyName, data_filePath);
 		intent.putExtra(key2, data_fileSize);
 
 		intent.setClass(context, tarActivityClass);
 		context.startActivity(intent);
+		if(closeCurrent){
+			((Activity)context).finish();
+		}
+
+
 	}
 
+	/**
+	 * 跳转界面，并传输字符值(默认不关闭当前界面)
+	 * @param context
+	 * @param tarActivityClass
+	 * @param keyName
+	 * @param data_filePath
+	 */
+	public   static void goActivityWithString2(Context context
+			,Class<?> tarActivityClass
+			,String keyName,String data_filePath,String key2,String data_fileSize
+			){//<?>通配所有类型
+		goActivityWithString2(context, tarActivityClass, keyName, data_filePath, key2, data_fileSize, false);
+
+
+	}
 }

@@ -97,12 +97,16 @@ public class BootService extends Service {
 
 				if (msg.what == LOGINOVER) {
 					if (count > 0) {
+						
+						if (mRebootUtils.isScreenLocked(BootService.this) == true){
+							isReboot = false;
+							stopSelf();
+						}
+						
 						isGetSim1Type = mRebootUtils.getNetType(0);
 						isGetSim2Type = mRebootUtils.getNetType(1);
-						
 						isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
 						isCanUseInternal = mRebootUtils.IsCanUseMemory(mRebootUtils.getInternalPath());
-					
 						sim1Status = String.valueOf(isGetSim1Type);
 						sim2Status = String.valueOf(isGetSim2Type);
 						SDStatus = String.valueOf(isCanUseSdCard);
@@ -122,23 +126,20 @@ public class BootService extends Service {
 						
 						content = count + "/" + sim1Status +"/"+ mRebootUtils.getSimState(0)+"/" + sim2Status + "/"
 								+ mRebootUtils.getSimState(1) + "/" + InternalStatus + "/" + SDStatus;
+						
 						Log.i("look", "rebootTimes: " + rebootTimes);
 						Log.i("look", content);
 						mRebootUtils.writeFile(fileName, content);
 						
 						if(isGetSim1Type == false && isStopSim1NetWork == true){
-							rebootTimes = 0;
+							isReboot = false;
 						}else if(isGetSim2Type == false && isStopSim2NetWork == true){
-							rebootTimes = 0;
+							isReboot = false;
 						}else if (isCanUseSdCard == false && isStopSd == true){
-							rebootTimes = 0;
+							isReboot = false;
 						}else if (isCanUseInternal == false && isStopInternal == true){
-							rebootTimes = 0;
-						}else if (mRebootUtils.isScreenLocked(BootService.this) == true){
-							rebootTimes = 0;
-							
+							isReboot = false;
 						}
-						
 					}
 					
 					if (isReboot) {
@@ -149,7 +150,7 @@ public class BootService extends Service {
 							save_status();
 
 						} else {
-							Log.i("look", "0");
+							
 							Editor editor = prefs.edit();
 							isReboot = false;
 							editor.putBoolean(ISREBOOT, isReboot);
@@ -172,6 +173,7 @@ public class BootService extends Service {
 			timer.schedule(timeTask, 1000, 1000);
 		}else {
 			timeTask.run();
+			Log.i("look", "no schedule");
 		}
 
 	}
@@ -191,7 +193,8 @@ public class BootService extends Service {
 					isGetSim1Type = mRebootUtils.getNetType(0);
 					isGetSim2Type = mRebootUtils.getNetType(1);
 					if((!isSim1Insert && isGetSim2Type) || (!isSim2Insert && isGetSim1Type) 
-							|| (isSim1Insert && isSim2Insert && isGetSim1Type &&isGetSim2Type)){
+							|| (isSim1Insert && isSim2Insert && isGetSim1Type &&isGetSim2Type)
+							|| (!isSim1Insert && !isSim2Insert)){
 							handler.sendMessageDelayed(handler.obtainMessage(LOGINOVER),5000);
 							timer.cancel(); 
 							Log.i("look","Choice 2");
@@ -207,6 +210,8 @@ public class BootService extends Service {
 				Log.i("look","Choice 5");
 			}
 		}
+		
+		
 		
 			
 	};

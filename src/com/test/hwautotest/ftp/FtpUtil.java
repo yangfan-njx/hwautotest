@@ -17,36 +17,58 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 
+import com.test.hwautotest.R;
+
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class FtpUtil {
 	private static final String TAG = "look";
 	
-//	protected  static double totolTransferred = 0;
-//	protected  static double fileSize = -1;
-//	
-//	private static Time time=new Time();
-//	private static long startTime=0;
-//	private static long endTime=0;
-//	private static double passTime=0;
-//	private static float percent = 0;
-//	
-//	
-//	public static String transSize;
-//	public static String percent2 ;
-//
-//	// 耗时
-//	public static String passTime2 ;
-//
-//	// 速度
-//	public static String speed ;
-//
-//	// 余时
-//	public static String leftTime ;
+	private static String mFTPHost= "18.8.8.48";
+	private static int mFTPPort=21;
+	private static String mFTPUser="hwadmin";
+	private static String mFTPPassword = "123456";
+	
+	public static void setmFTPHost(String mFTPHost) {
+		FtpUtil.mFTPHost = mFTPHost;
+	}
+
+	public static void setmFTPPort(int mFTPPort) {
+		FtpUtil.mFTPPort = mFTPPort;
+	}
+
+	public static void setmFTPUser(String mFTPUser) {
+		FtpUtil.mFTPUser = mFTPUser;
+	}
+
+	public static void setmFTPPassword(String mFTPPassword) {
+		FtpUtil.mFTPPassword = mFTPPassword;
+	}
+	
+	
+//	public void initFTP(){
+//		String host=FtpGo.getmFTPHost();
+//		int port=FtpGo.getmFTPPort();
+//		String user=FtpGo.getmFTPUser();
+//		String passward=FtpGo.getmFTPPassword();
+//		if(host==null ||port==-1 || user==null || passward==null){//修改配置
+//			
+//			
+//		}else{//默认配置
+//			mFTPHost = "18.8.8.48";
+//			mFTPPort=21;
+//			mFTPUser = 
+//			mFTPPassword
+//		}
+//		
+//	}
+	
+	
 	/**
 	 * 连接FTP服务器
 	 * 
@@ -60,16 +82,13 @@ public class FtpUtil {
 	 */
 
 	public static FTPClient connectFtp() {
-		String mFTPHost;
-		int mFTPPort;
-		String mFTPUser;
-		String mFTPPassword;
-		mFTPHost = "18.8.8.48";//黄圣权本机地址192.168.1.200 21 ftp  ftp //杨帆路由内网地址18.8.8.48 hwadmin 1314521
-		//《下载》Hinet ftp.speed.hinet.net【】服务器192.168.110.93【1,700KB/手机；9.6MB电脑】路由18.8.8.37 【2,539KB/秒手机；8.69MB电脑】; 本机192.168.1.200 【1,088KB/秒手机；154MB/秒-本机】;
-		//上传： 服务器192.168.110.93【1.9MB/手机；8.45MB电脑】路由18.8.8.37 【1.9MB/手机；3.69MB电脑】本机192.168.1.200【1.35MB手机；184MB本机】
-		mFTPPort=21;
-		mFTPUser = "hwadmin";//yangfan gongyy ftp 
-		mFTPPassword = "123456";//gionee@2010 123456 ftp
+		
+//		mFTPHost = "18.8.8.48";//黄圣权本机地址192.168.1.200 21 ftp  ftp //杨帆路由内网地址18.8.8.48 hwadmin 1314521
+//		//《下载》Hinet ftp.speed.hinet.net【】服务器192.168.110.93【1,700KB/手机；9.6MB电脑】路由18.8.8.37 【2,539KB/秒手机；8.69MB电脑】; 本机192.168.1.200 【1,088KB/秒手机；154MB/秒-本机】;
+//		//上传： 服务器192.168.110.93【1.9MB/手机；8.45MB电脑】路由18.8.8.37 【1.9MB/手机；3.69MB电脑】本机192.168.1.200【1.35MB手机；184MB本机】
+//		mFTPPort=21;
+//		mFTPUser = "hwadmin";//yangfan gongyy ftp 
+//		mFTPPassword = "123456";//gionee@2010 123456 ftp
 		
 		FTPClient mFTPClient=new FTPClient();
 
@@ -107,176 +126,9 @@ public class FtpUtil {
 	
 	}
 
-//	public static class HappenedFTPDataTransferListener implements
-//			FTPDataTransferListener {
-//
-////		private int totolTransferred = 0;
-////		private long fileSize = -1;
-////		
-////		Time time=new Time();
-////		private long startTime=0;
-////		private long endTime=0;
-////		public long passTime=0;
-////		public float percent = 0;
-//		
-//		public HappenedFTPDataTransferListener(long fileSize) {
-//			if (fileSize <= 0) {
-//				throw new RuntimeException(
-//						"the size of file muset be larger than zero.");
-//			}
-//			FtpUtil.fileSize = fileSize;
-//		}
-//
-//		@Override
-//		public void aborted() {
-//			// TODO Auto-generated method stub
-//			logv("FTPDataTransferListener : aborted");
-//			
-////			percent = (float) (totolTransferred / FtpUtil.fileSize);
-//			time.setToNow();
-//			endTime=time.toMillis(false);
-//			passTime=endTime-startTime;
-////			logv(" 百分比:" + percent*100.00+"%");
-////			logv(" 耗时s:"+passTime);
-////			logv(" 速度:" + totolTransferred/passTime);
-//			totolTransferred=0;//清空数据
-//		}
-//
-//		@Override
-//		public void completed() {
-//			logv("FTPDataTransferListener : completed");
-//			time.setToNow();
-//			endTime=time.toMillis(false);
-//			passTime=endTime-startTime;
-//			totolTransferred=0;//清空数据
-//			
-//		}
-//
-//		@Override
-//		public void failed() {
-//			// TODO Auto-generated method stub
-//			logv("FTPDataTransferListener : failed");
-//			logResult();
-//			
-//			DecimalFormat f = null;
-//
-//			// 大小
-//			f = new DecimalFormat(",###KB");
-//			String transedSize = f.format(FtpUtil.totolTransferred / 1000);
-//			String totalSize = f.format(FtpUtil.fileSize / 1000);
-//			String transSize = "已传输：" + transedSize + "/" + totalSize;
-//
-//			f = new DecimalFormat("(#.##%)");
-//			String percent = f.format(FtpUtil.totolTransferred
-//					/ FtpUtil.fileSize);
-//
-//			// 耗时
-//			f = new DecimalFormat("#.###秒");
-//			String passTime = "耗时:" + f.format(FtpUtil.passTime / 1000.000);
-//
-//			// 速度
-//			f = new DecimalFormat(",###KB/秒");
-//			String speed = " 速度:"
-//					+ f.format(FtpUtil.totolTransferred / FtpUtil.passTime);
-//
-//			// 余时
-//			f = new DecimalFormat("#.###秒");
-//			String leftTime = "余时:"
-//					+ f.format((FtpUtil.totolTransferred - FtpUtil.fileSize)
-//							/ (FtpUtil.totolTransferred / FtpUtil.passTime)
-//							/ 1000.000);
-////			TextView result = FtpDo.result;
-////			result.setText(transSize + percent + "\n" + passTime + " "
-////					+ leftTime + "\n" + speed);
-//			
-//			
-//			totolTransferred=0;//清空数据
-//		}
-//
-//		@Override
-//		public void started() {
-//			totolTransferred=0;//清空数据
-//			// TODO Auto-generated method stub
-//			logv("FTPDataTransferListener : started");
-//			time.setToNow();
-////			FtpUtil.startTime=time.toMillis(false);
-//			FtpUtil.startTime=System.currentTimeMillis();//使用java的高精确度毫秒
-//			
-//			time.setToNow();
-//			endTime=time.toMillis(false);
-//			passTime=endTime-startTime;
-//		}
-//
-//		@Override
-//		public void transferred(int length) {
-//			FtpDo.downTask.(FtpUtil.totolTransferred);
-//			totolTransferred += length;
-//			logResult();
-//			
-//			DecimalFormat f = null;
-//
-//			// 大小
-//			f = new DecimalFormat(",###KB");
-//			String transedSize = f.format(FtpUtil.totolTransferred / 1000);
-//			String totalSize = f.format(FtpUtil.fileSize / 1000);
-//			 transSize = "已传输：" + transedSize + "/" + totalSize;
-//
-//			f = new DecimalFormat("(#.##%)");
-//			 percent2 = f.format(FtpUtil.totolTransferred
-//					/ FtpUtil.fileSize);
-//
-//			// 耗时
-//			f = new DecimalFormat("#.###秒");
-//			 passTime2 = "耗时:" + f.format(FtpUtil.passTime / 1000.000);
-//
-//			// 速度
-//			f = new DecimalFormat(",###KB/秒");
-//			 speed = " 速度:"
-//					+ f.format(FtpUtil.totolTransferred / FtpUtil.passTime);
-//
-//			// 余时
-//			f = new DecimalFormat("#.###秒");
-//			 leftTime = "余时:"
-//					+ f.format((FtpUtil.totolTransferred - FtpUtil.fileSize)
-//							/ (FtpUtil.totolTransferred / FtpUtil.passTime)
-//							/ 1000.000);
-//			//不能在后台执行UI操作
-////			TextView result = FtpDo.result;
-////			result.setText(transSize + percent + "\n" + passTime + " "
-////					+ leftTime + "\n" + speed);
-//		}
-//	}
 	
 	public  static void logv(String log) {
 		Log.i(TAG, log);
 	}
-	
-//	public static void logResult(){
-//		percent =  (float)totolTransferred/(float)fileSize;
-//		
-////		time.setToNow();
-////		endTime=time.toMillis(false);
-//		endTime=System.currentTimeMillis();
-//		
-//		passTime=endTime-startTime;
-//		
-//		DecimalFormat f = null;
-//		
-//		//大小
-//		f=new DecimalFormat(",###KB");
-//		logv("已传输： " + f.format(totolTransferred/1000));
-//		logv("总大小： " + f.format(fileSize/1000));
-//		
-//		f = new DecimalFormat("#.##%");
-//		logv(" 百分比:" + f.format(totolTransferred/fileSize));
-//		
-//		//耗时
-//		f=new DecimalFormat("#.###秒");
-//		logv(" 耗时:"+f.format(passTime/1000.000));
-//		
-//		//速度
-//		f = new DecimalFormat(",###KB/秒");
-//		Log.i(TAG, " 速度:" + f.format(totolTransferred/passTime));
-//	}
 	
 }
