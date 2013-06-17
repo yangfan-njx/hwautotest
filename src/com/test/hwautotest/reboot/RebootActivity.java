@@ -1,3 +1,4 @@
+
 package com.test.hwautotest.reboot;
 
 import android.app.Activity;
@@ -59,7 +60,6 @@ public class RebootActivity extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.reboot);
 		Log.i("look","boot Start");
 //		GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
@@ -72,12 +72,10 @@ public class RebootActivity extends Activity implements OnClickListener {
 		btnReboot.setOnClickListener(this);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this); 
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
-		isSdExist = mRebootUtils.isSdExists();
 		isSim2Insert =mRebootUtils.isSimInsert(1);
 		isSim1Insert =mRebootUtils.isSimInsert(0);
-		Log.i("look",isSim1Insert+"");
-		Log.i("look",isSim2Insert+"");
-		Log.i("look", stopSim1Network+""+"a");
+		isSdExist = mRebootUtils.isSdExists();
+		
 		stopSd.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
 			
 			@Override
@@ -132,6 +130,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 			save_status(rebootTimes,isReboot,fileName);
 			Intent i = new Intent(RebootActivity.this,BootService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Log.i("look","isReboot: "+isReboot);
 			startService(i);
 			RebootActivity.this.finish();
 		} catch (Exception e) {

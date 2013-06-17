@@ -1,3 +1,4 @@
+
 package com.test.hwautotest.reboot;
 
 import java.io.BufferedWriter;
@@ -93,11 +94,12 @@ public class RebootUtils extends Utils{
 //		TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);// 取得相关系统服务
 		ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
 		int state = 0;
-		
+		boolean isInsert = false;
 		try {
 			
 			System.out.println(phone.getSimState(a));
 			state = phone.getSimState(a);
+			isInsert = phone.isSimInsert(a);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -218,7 +220,7 @@ public class RebootUtils extends Utils{
 		boolean isSimInsert = false;
 		try {
 			ITelephony phone = (ITelephony)ITelephony.Stub.asInterface(ServiceManager.getService("phone"));
-			if(phone.getSimState(a) == 5 && phone.isSimInsert(a)){
+			if(phone.getSimState(a) == TelephonyManager.SIM_STATE_READY && phone.isSimInsert(a)){
 				isSimInsert = true;
 			}
 		} catch (RemoteException e) {
@@ -229,7 +231,18 @@ public class RebootUtils extends Utils{
 	}
 	
 	
+	public String getSimStauts(int a){
+		boolean isGetSimType = getNetType(a);
+		String simStatus = String.valueOf(isGetSimType);
+		if(!isSimInsert(a)){
+			simStatus = "null";
+		}
+		
+		return simStatus;
+	}
+	
 }
+
 
 
 
