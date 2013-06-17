@@ -127,7 +127,8 @@ public class FtpDo extends Activity {
 		});
 
 	}
-	class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
+	public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
+		
 		@Override
 		protected FTPClient doInBackground(String... params) {
 		    
@@ -172,9 +173,6 @@ public class FtpDo extends Activity {
 		public String speedShow;
 		// 余时
 		public String leftTimeShow;
-		
-		
-		
 
 		public CmdUpload() {
 			round++;

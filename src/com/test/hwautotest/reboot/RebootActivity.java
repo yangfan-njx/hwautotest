@@ -1,3 +1,4 @@
+
 package com.test.hwautotest.reboot;
 
 import android.app.Activity;
@@ -159,3 +160,4 @@ public class RebootActivity extends Activity implements OnClickListener {
 
 
 }
+
