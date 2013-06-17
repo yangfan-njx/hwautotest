@@ -59,7 +59,6 @@ public class RebootActivity extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.reboot);
 		Log.i("look","boot Start");
 //		GeminiPhone mGeminiPhone = (GeminiPhone)PhoneFactory.getDefaultPhone();
@@ -115,7 +114,12 @@ public class RebootActivity extends Activity implements OnClickListener {
 			}
 		});
 	}
-
+@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		Log.i("look","onStrat");
+	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -132,6 +136,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 			save_status(rebootTimes,isReboot,fileName);
 			Intent i = new Intent(RebootActivity.this,BootService.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Log.i("look","isReboot: "+isReboot);
 			startService(i);
 			RebootActivity.this.finish();
 		} catch (Exception e) {

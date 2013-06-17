@@ -99,10 +99,8 @@ public class BootService extends Service {
 					if (count > 0) {
 						isGetSim1Type = mRebootUtils.getNetType(0);
 						isGetSim2Type = mRebootUtils.getNetType(1);
-						
 						isCanUseSdCard = mRebootUtils.IsCanUseMemory(mRebootUtils.getSdPath());
 						isCanUseInternal = mRebootUtils.IsCanUseMemory(mRebootUtils.getInternalPath());
-					
 						sim1Status = String.valueOf(isGetSim1Type);
 						sim2Status = String.valueOf(isGetSim2Type);
 						SDStatus = String.valueOf(isCanUseSdCard);
@@ -122,6 +120,7 @@ public class BootService extends Service {
 						
 						content = count + "/" + sim1Status +"/"+ mRebootUtils.getSimState(0)+"/" + sim2Status + "/"
 								+ mRebootUtils.getSimState(1) + "/" + InternalStatus + "/" + SDStatus;
+						
 						Log.i("look", "rebootTimes: " + rebootTimes);
 						Log.i("look", content);
 						mRebootUtils.writeFile(fileName, content);
@@ -136,7 +135,7 @@ public class BootService extends Service {
 							rebootTimes = 0;
 						}else if (mRebootUtils.isScreenLocked(BootService.this) == true){
 							rebootTimes = 0;
-							
+							stopSelf();
 						}
 						
 					}
@@ -149,7 +148,7 @@ public class BootService extends Service {
 							save_status();
 
 						} else {
-							Log.i("look", "0");
+							
 							Editor editor = prefs.edit();
 							isReboot = false;
 							editor.putBoolean(ISREBOOT, isReboot);
@@ -172,6 +171,7 @@ public class BootService extends Service {
 			timer.schedule(timeTask, 1000, 1000);
 		}else {
 			timeTask.run();
+			Log.i("look", "no schedule");
 		}
 
 	}
@@ -191,7 +191,8 @@ public class BootService extends Service {
 					isGetSim1Type = mRebootUtils.getNetType(0);
 					isGetSim2Type = mRebootUtils.getNetType(1);
 					if((!isSim1Insert && isGetSim2Type) || (!isSim2Insert && isGetSim1Type) 
-							|| (isSim1Insert && isSim2Insert && isGetSim1Type &&isGetSim2Type)){
+							|| (isSim1Insert && isSim2Insert && isGetSim1Type &&isGetSim2Type)
+							|| (!isSim1Insert && !isSim2Insert)){
 							handler.sendMessageDelayed(handler.obtainMessage(LOGINOVER),5000);
 							timer.cancel(); 
 							Log.i("look","Choice 2");
@@ -207,6 +208,8 @@ public class BootService extends Service {
 				Log.i("look","Choice 5");
 			}
 		}
+		
+		
 		
 			
 	};
