@@ -31,5 +31,6 @@
     <string name="tip_forward">＞前进</string>
     <string name="tip_close">╳退出</string>
     <string name="space">----</string>
+    <string name="update">版本升级</string>
 
 </resources>
