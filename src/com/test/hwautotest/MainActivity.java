@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.test.hwautotest.mms.MMSActivity;
 import com.test.hwautotest.reboot.RebootActivity;
 import com.test.hwautotest.sms.SMSActivity;
 import com.test.hwautotest.txttoxls.TxtToXlsActivity;
+import com.test.hwautotest.update.updateOnline;
 
 public class MainActivity extends Activity {
 	 public static final int CONTACTS = 0;
@@ -29,6 +31,7 @@ public class MainActivity extends Activity {
      public static final int REBOOT = 4;
      public static final int FTP = 5;
      public static final int REPORT = 6;
+     public static final int UPDATE = 7;
 //     public static final int MMS = 5;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +42,10 @@ public class MainActivity extends Activity {
 		ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
 		
 		String[] title = { "联系人容量设置", "短信容量设置", "通话记录容量设置", "文件管理器容量设置",
-				"自动重启","FTP速度测试","生成自动化测试报告"};
+				"自动重启","FTP速度测试","生成自动化测试报告","版本更新"};
 		String[] text = { "自动添加中文联系人、英文联系人以及清除全部联系人", "自动添加短信以及删除全部短信",
 				"自动添加通话记录以及删除全部通话记录", "调整SD卡和内部管理器的容量", "自动重启后获取Sim卡状态和内存的挂载状态"
-				,"测试上传/下载传输速度","自动生成xls的自动化测试报告"};
+				,"测试上传/下载传输速度","自动生成xls的自动化测试报告","升级apk的版本"};
 
 		for (int i = 0; i < title.length; i++) {
 			HashMap<String, String> map = new HashMap<String, String>();
@@ -104,6 +107,10 @@ public class MainActivity extends Activity {
 							FtpGo.class);
 					startActivity(FTPIntent);
 					break;	
+				case UPDATE:
+					Intent updateIntent = new Intent(MainActivity.this,
+							updateOnline.class);
+					startActivity(updateIntent);
 				default:
 					break;
 				}
