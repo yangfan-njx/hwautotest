@@ -32,7 +32,7 @@ public class MyApplication extends Application {
 	// 添加Activity到容器中
 	public void addActivity(Activity activity) {
 		activityList.add(activity);
-		Log.i("look","add activity !size:"+ activityList.size());
+//		Log.i("look","add activity !size:"+ activityList.size());
 	} 
 	
 	// 遍历所有Activity并finish

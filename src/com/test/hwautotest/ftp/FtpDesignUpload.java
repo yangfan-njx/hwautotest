@@ -69,7 +69,7 @@ public class FtpDesignUpload extends Activity {
 	Button doBtn;
 	public static TextView result;
 	
-	private final int ftpType=1;//下载为0，上传为1
+	private final static int ftpType=1;//下载为0，上传为1
 	private static String uploadFilePath=null;//上传需要文件完整路径
 	private static String uploadFileSize=null;//上传需要文件大小
 	
@@ -146,7 +146,7 @@ public class FtpDesignUpload extends Activity {
 						SDCardFileExplorerActivity.class, 
 						"uploadFilePath",uploadFilePath,
 						"uploadFileSize",uploadFileSize
-						,true);
+						,true,"ftpType",ftpType);
 //				ActivityUtil.toast(FtpDesignUpload.this, "选择上传的文件");
 			}
 		});
@@ -293,8 +293,9 @@ public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			path = params[0];
+			String workDir = "/autoTestTemp/upload";// /测试组/autoTestTemp/download
 			try {
-				String workDir = "/autoTestTemp/upload";// /测试组/autoTestTemp/download
+				
 				mFTPClient.setCharset("GB2312");// 金立服务器中文路径需要设置中文GB2312字符集
 				mFTPClient.changeDirectory(workDir);
 				Log.i(TAG, "currentDirectory:" + mFTPClient.currentDirectory());
@@ -306,6 +307,24 @@ public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
 				Log.i(TAG, "CmdUpload e:" + ex);
 				ex.printStackTrace();
 				return false;
+			}
+			finally{//清理上传的文件
+				Log.i(TAG, "删除FTP文件:" + (workDir+path.substring(params[0].lastIndexOf("/"))));
+				try {
+					mFTPClient.deleteFile(workDir+path.substring(params[0].lastIndexOf("/")));
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FTPIllegalReplyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FTPException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return true;
 		}

@@ -29,11 +29,20 @@ import android.widget.TextView;
 public class FtpUtil {
 	private static final String TAG = "look";
 	
-	private static String mFTPHost= "18.8.8.48";
+	private static String mFTPHost= "18.8.8.252";
 	private static int mFTPPort=21;
 	private static String mFTPUser="hwadmin";
 	private static String mFTPPassword = "123456";
+	public static FTPClient ftpClient=null;
 	
+	public static FTPClient getFtpClient() {
+		return ftpClient;
+	}
+
+	public static void setFtpClient(FTPClient ftpClient) {
+		FtpUtil.ftpClient = ftpClient;
+	}
+
 	public static void setmFTPHost(String mFTPHost) {
 		FtpUtil.mFTPHost = mFTPHost;
 	}
@@ -83,7 +92,7 @@ public class FtpUtil {
 
 	public static FTPClient connectFtp() {
 		
-//		mFTPHost = "18.8.8.48";//黄圣权本机地址192.168.1.200 21 ftp  ftp //杨帆路由内网地址18.8.8.48 hwadmin 1314521
+//		mFTPHost = "18.8.8.48";//黄圣权本机地址192.168.1.200 21 ftp  ftp //杨帆路由内网地址18.8.8.252 hwadmin 123456
 //		//《下载》Hinet ftp.speed.hinet.net【】服务器192.168.110.93【1,700KB/手机；9.6MB电脑】路由18.8.8.37 【2,539KB/秒手机；8.69MB电脑】; 本机192.168.1.200 【1,088KB/秒手机；154MB/秒-本机】;
 //		//上传： 服务器192.168.110.93【1.9MB/手机；8.45MB电脑】路由18.8.8.37 【1.9MB/手机；3.69MB电脑】本机192.168.1.200【1.35MB手机；184MB本机】
 //		mFTPPort=21;
@@ -122,7 +131,7 @@ public class FtpUtil {
 					e.printStackTrace();
 					Log.i("look " ,"FTPException"+e);
 				}
-				return mFTPClient;
+				return ftpClient=mFTPClient;
 	
 	}
 

@@ -64,7 +64,7 @@
         android:ems="8"
         android:enabled="false"
         android:inputType="textUri"
-        android:text="18.8.8.48"
+        android:text="18.8.8.252"
         android:textSize="10sp"
         android:selectAllOnFocus="true" 
         android:focusable="false">

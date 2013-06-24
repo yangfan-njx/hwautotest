@@ -1,9 +1,13 @@
 ﻿package com.test.hwautotest.ftp;
 
+import it.sauronsoftware.ftp4j.FTPAbortedException;
 import it.sauronsoftware.ftp4j.FTPClient;
+import it.sauronsoftware.ftp4j.FTPDataTransferException;
 import it.sauronsoftware.ftp4j.FTPDataTransferListener;
 import it.sauronsoftware.ftp4j.FTPException;
+import it.sauronsoftware.ftp4j.FTPFile;
 import it.sauronsoftware.ftp4j.FTPIllegalReplyException;
+import it.sauronsoftware.ftp4j.FTPListParseException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -64,7 +68,10 @@ public class FtpDesignDownload extends Activity {
 //		, "2GB" 
 		};
 //	private TextView size_download;
-	private Spinner choose_download;
+//	private Spinner choose_download;
+	private Button btn_chooseDownload;
+	private TextView downloadName;
+	private TextView size_download;
 	private Button btn_finishDownloadChoose;
 	private Button btn_reChoose;
 	
@@ -72,20 +79,23 @@ public class FtpDesignDownload extends Activity {
 	
 	
 	
-	public FTPClient mFTPClient;
+	public  static FTPClient mFTPClient;
+	public  static FTPFile[] files;
 	Button doBtn;
 	public static TextView result;
 
-	public final int ftpType=0;//下载为0，上传为1
+	public static final int ftpType=0;//下载为0，上传为1
 	public String fileName="";//下载实质只需要文件名
 	protected static String downloadSize=null;
+	private static String downloadFilePath=null;//原本的下载需要文件完整路径
+	private static String downloadFileSize=null;//原本的下载需要文件大小
 	
 	public boolean isDoing=false;
 	AsyncTask<String, Double, Boolean> transTask=null;
 	
 	private  double allTransferred = 0;
 	private double allPassTime = 0;
-	private static String fileSize;
+	private static String fileSize1;
 	//平均速度
 	private double speedAve=0;
 	private String speedAveStr;
@@ -119,86 +129,121 @@ public class FtpDesignDownload extends Activity {
 		MyApplication.getInstance().addActivity(this);
 		// 声明要添加代码的控件
 //		size_download=(TextView)findViewById(R.id.size_download);
-		choose_download = (Spinner) findViewById(R.id.choose_download);  
+//		choose_download = (Spinner) findViewById(R.id.choose_download);  
+		btn_chooseDownload=(Button)findViewById(R.id.btn_chooseDownload);
+		size_download=(TextView)findViewById(R.id.size_download);
 		btn_finishDownloadChoose=(Button)findViewById(R.id.btn_finishDownloadChoose);
-		
+		downloadName=(TextView)findViewById(R.id.downloadName);
 		
 		doBtn = (Button) findViewById(R.id.button_do);
 		result = (TextView) findViewById(R.id.result);
-        //将可选内容与ArrayAdapter连接起来  
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,downloadFileNames);  
-          
-        //设置下拉列表的风格  
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  
-          
-        //将adapter 添加到spinner中  
-        choose_download.setAdapter(adapter);  
-          
-        //添加事件Spinner事件监听    
-        choose_download.setOnItemSelectedListener(new SpinnerSelectedListener());  
-          
-        //设置默认值  
-        choose_download.setVisibility(View.VISIBLE);  
+		
+		
+		// 选择后获取下载路径
+		Intent intent = getIntent();
+		downloadFilePath = intent.getStringExtra("downloadFilePath");
+		Log.w("look", "获取要下载文件的路径：" + downloadFilePath);
+		downloadFileSize = intent.getStringExtra("downloadFileSize");
+		Log.w("look", "获取要下载文件的大小：" + downloadFileSize);
+		// 显示获取上传文件路径和大小到两处文本框
+		if (downloadFilePath != null) {
+			downloadName.setText(downloadFilePath);
+			size_download.setText(downloadFileSize);
+		}
+				
+				
+		// 将可选内容与ArrayAdapter连接起来
+		adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, downloadFileNames);
 
-		// 绑定触发事件
-        btn_finishDownloadChoose.setOnClickListener(new OnClickListener() {
+		// 设置下拉列表的风格
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		// 将adapter 添加到spinner中
+		// choose_download.setAdapter(adapter);
+		//
+		// //添加事件Spinner事件监听
+		// choose_download.setOnItemSelectedListener(new
+		// SpinnerSelectedListener());
+		//
+		// //设置默认值
+		// choose_download.setVisibility(View.VISIBLE);
+
+		btn_chooseDownload.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.w("look", "下载文件名："+fileName);
-				ActivityUtil.goActivityWithDoData(FtpDesignDownload.this, FtpDo.class, ftpType, fileName);
-//				ActivityUtil.toast(FtpDesignDownload.this,"设置完成");
+				ActivityUtil.goActivityWithString2(FtpDesignDownload.this,
+						SDCardFileExplorerActivity.class, "downloadFilePath",
+						downloadFilePath, "downloadFileSize", downloadFileSize,
+						true,"ftpType",ftpType);
+				// ActivityUtil.toast(FtpDesignUpload.this, "选择上传的文件");
 			}
 		});
-     // 绑定触发事件
-     		doBtn.setOnClickListener(new OnClickListener() {
-     			@Override
-     			public void onClick(View v) {
-     				Log.w(TAG, "transTask："+transTask+" isDoing："+isDoing);
-     				if(!isDoing && transTask==null){//未启动状态
-     					new ConnectTask().execute();//连接
-     					switch (ftpType) {
-     					case 0:
-     						transTask=new CmdDownLoad().execute(fileName);//下载
-     						break;
-     					case 1:
-     						new CmdUpload().execute(fileName);//上传
-     						break;
-     					}
-     					isDoing=!isDoing;//改变状态
-     				}else if(isDoing && transTask!=null){//可停止状态，强制停止
-     					Date data=new Date();
-     					transTask.cancel(false);
-     							toast("终止中...");
-//     					new DisConnectTask().execute();
-     					isDoing=!isDoing;//改变状态
-     				}
-     				
-     			}
-     		});
+
+		// 绑定触发事件
+		btn_finishDownloadChoose.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.w("look", "下载文件名：" + fileName);
+				ActivityUtil.goActivityWithDoData(FtpDesignDownload.this,
+						FtpDo.class, ftpType, fileName);
+				// ActivityUtil.toast(FtpDesignDownload.this,"设置完成");
+			}
+		});
+		// 绑定触发事件
+		doBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.w(TAG, "transTask：" + transTask + " isDoing：" + isDoing);
+				if(downloadFilePath!=null){
+					if (!isDoing && transTask == null) {// 未启动状态
+						new ConnectTask().execute();//连接
+						switch (ftpType) {
+						case 0:
+//							transTask = new CmdDownLoad().execute(fileName);// 下载
+							transTask = new CmdDownLoad().execute(downloadFilePath);// 下载
+							break;
+						case 1:
+//							new CmdUpload().execute(fileName);// 上传
+							break;
+						}
+						isDoing = !isDoing;// 改变状态
+					} else if (isDoing && transTask != null) {// 可停止状态，强制停止
+						Date data = new Date();
+						transTask.cancel(false);
+						toast("终止中...");
+						// new DisConnectTask().execute();
+						isDoing = !isDoing;// 改变状态
+					}
+				}else{
+					ActivityUtil.toast(FtpDesignDownload.this, "请点“浏览”选择下载文件");
+				}
+			}
+		});
 
 	}
 	 //使用数组形式操作  
-    class SpinnerSelectedListener implements OnItemSelectedListener{  
-    	
-        public void onItemSelected(AdapterView<?> arg0, View arg1, int order,  
-                long arg3) {  
-			String chooseFileName=downloadFileNames[order]+".rar";
-        	
-        	//更改下载文件时，清空统计基数
-			if (!fileName.isEmpty() && !chooseFileName.equals(fileName)) {
-				clearDownloadCount();
-			}
-			fileName = chooseFileName;
-			// int endIndex=downloadFileNames[order].indexOf(".");
-			// String size=downloadFileNames[order].substring(0,endIndex);
-			// size_download.setText(downloadFileNames[order]);
-			downloadSize = downloadFileNames[order];
-        	
-        }  
-  
-        public void onNothingSelected(AdapterView<?> arg0) {
-        }  
-    }  
+//    class SpinnerSelectedListener implements OnItemSelectedListener{  
+//    	
+//        public void onItemSelected(AdapterView<?> arg0, View arg1, int order,  
+//                long arg3) {  
+//			String chooseFileName=downloadFileNames[order]+".rar";
+//        	
+//        	//更改下载文件时，清空统计基数
+//			if (!fileName.isEmpty() && !chooseFileName.equals(fileName)) {
+//				clearDownloadCount();
+//			}
+//			fileName = chooseFileName;
+//			// int endIndex=downloadFileNames[order].indexOf(".");
+//			// String size=downloadFileNames[order].substring(0,endIndex);
+//			// size_download.setText(downloadFileNames[order]);
+//			downloadSize = downloadFileNames[order];
+//        	
+//        }  
+//  
+//        public void onNothingSelected(AdapterView<?> arg0) {
+//        }  
+//    }  
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -214,7 +259,7 @@ public class FtpDesignDownload extends Activity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		int selectId=item.getItemId();
-		Log.i(TAG, "selectId:"+selectId);
+//		Log.i(TAG, "selectId:"+selectId);
 		switch (selectId) {
 		// 响应每个菜单项(通过菜单项的ID)
 		case R.id.action_about://关于
@@ -240,6 +285,36 @@ public class FtpDesignDownload extends Activity {
 			// TODO Auto-generated method stub
 			mFTPClient=FtpUtil.connectFtp();
 			Log.i(TAG,mFTPClient.toString());
+			try {
+				FTPFile[] files=mFTPClient.list();
+				for(FTPFile f:files){
+					Log.i(TAG,".."+f.getName());
+					Log.i(TAG,".."+f.getSize());
+				}
+				
+				Log.i(TAG,"初始工作目录"+mFTPClient.currentDirectory());
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FTPIllegalReplyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FTPException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FTPDataTransferException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FTPAbortedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FTPListParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return mFTPClient;
 		}
 		@Override
@@ -285,6 +360,7 @@ public class FtpDesignDownload extends Activity {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
+			mFTPClient=FtpUtil.getFtpClient();
 			path = params[0];
 			try {
 				String workDir = "/autoTestTemp/upload";// /测试组/autoTestTemp/download
@@ -310,7 +386,7 @@ public class FtpDesignDownload extends Activity {
 //			result.setText(p[0] + p[1] + "\n" + p[2] + " " + p[3] + "\n" + p[4]);
 			result.setText(
 					roundStr+"\n"
-					+FtpDesignDownload.fileSize+"\n"
+					+FtpDesignDownload.downloadSize+"\n"
 					+"[综合速度] "+"\n"
 					+speedMaxStr+"\n"
 					+speedMinStr+"\n"
@@ -327,7 +403,7 @@ public class FtpDesignDownload extends Activity {
 			doBtn.setText(R.string.button_start);
 			toast(result1 ? path + "上传成功" : "上传失败");
 			isDoing=!isDoing;//改变状态
-			choose_download.setEnabled(true);
+//			choose_download.setEnabled(true);
 		}
 
 		@Override
@@ -335,7 +411,7 @@ public class FtpDesignDownload extends Activity {
 			super.onPreExecute();
 			doBtn.setText(R.string.button_stop);
 			result.setText("(未执行，准备开始！)");
-			choose_download.setEnabled(false);
+//			choose_download.setEnabled(false);
 		}
 
 		@Override
@@ -344,7 +420,7 @@ public class FtpDesignDownload extends Activity {
 			doBtn.setText(R.string.button_start);
 			if(transTask==null){
 				toast("上传中断成功");
-				choose_download.setEnabled(true);
+//				choose_download.setEnabled(true);
 			}else{
 				toast("上传中断失败");
 			}
@@ -462,7 +538,7 @@ public class FtpDesignDownload extends Activity {
 			speedMinStr="[最小]"+f.format(speedMin);
 			
 			//下载大小
-			FtpDesignDownload.fileSize="[文件大小]"+FtpDesignUpload.getUploadFileSize();
+//			FtpDesignUpload.uploadFileSize="[文件大小]"+FtpDesignUpload.getUploadFileSize();
 			
 			publishProgress(totalTransferred);
 		}
@@ -493,10 +569,12 @@ public class FtpDesignDownload extends Activity {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
+			mFTPClient=FtpUtil.getFtpClient();
 
-			String workDir = "/autoTestTemp/download";// /测试组/autoTestTemp/download
-			String downFileName = params[0];// "test_001m.zip";//CR00715254.rar
-											// G.apk
+//			String workDir = "/autoTestTemp/download";
+			String workDir =params[0].substring(0,params[0].lastIndexOf("/"));
+			String downFileName = params[0].substring(params[0].lastIndexOf("/")+1);// 
+			
 			String localPath = Environment.getExternalStorageDirectory()
 					.toString();
 			localPath += "/autoTestTemp/download";
@@ -508,7 +586,7 @@ public class FtpDesignDownload extends Activity {
 				createDir(localPath);
 				mFTPClient.download(downFileName, new File(localPath + "/"
 						+ downFileName), new HappenedFTPDataTransferListener(
-						mFTPClient.fileSize(workDir + "/" + downFileName)));
+						mFTPClient.fileSize(params[0])));
 
 			} catch (Exception ex) {
 				Log.i(TAG, "CmdDownload e:" + ex);
@@ -526,7 +604,7 @@ public class FtpDesignDownload extends Activity {
 //			result.setText(p[0] + p[1] + "\n" + p[2] + " " + p[3] + "\n" + p[4]);
 			result.setText(
 					roundStr+"\n"
-					+FtpDesignDownload.fileSize+"\n"
+					+FtpDesignDownload.downloadSize+"\n"
 					+"[综合速度] "+"\n"
 					+speedMaxStr+"\n"
 					+speedMinStr+"\n"
@@ -543,7 +621,7 @@ public class FtpDesignDownload extends Activity {
 			doBtn.setText(R.string.button_start);
 			toast(result1 ? "下载成功" : "下载失败");
 			isDoing=!isDoing;//改变状态
-			choose_download.setEnabled(true);
+//			choose_download.setEnabled(true);
 			
 		}
 
@@ -552,7 +630,7 @@ public class FtpDesignDownload extends Activity {
 			super.onPreExecute();
 			doBtn.setText(R.string.button_stop);
 			result.setText("(未执行，准备开始！)");
-			choose_download.setEnabled(false);
+//			choose_download.setEnabled(false);
 		}
 
 		@Override
@@ -561,7 +639,7 @@ public class FtpDesignDownload extends Activity {
 			doBtn.setText(R.string.button_start);
 			if(transTask==null){
 				toast("下载中断成功");
-				choose_download.setEnabled(true);
+//				choose_download.setEnabled(true);
 			}else{
 				toast("下载中断失败");
 			}
@@ -678,7 +756,7 @@ public class FtpDesignDownload extends Activity {
 			speedMinStr="[最小]"+f.format(speedMin);
 			
 			//下载大小
-			FtpDesignDownload.fileSize="[文件大小]"+FtpDesignDownload.getDownloadSize();
+			FtpDesignDownload.downloadSize="[文件大小]"+FtpDesignDownload.downloadFileSize;
 			
 			publishProgress(totalTransferred);
 		}
