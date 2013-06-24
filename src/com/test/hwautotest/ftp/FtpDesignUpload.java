@@ -351,7 +351,7 @@ public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
 		protected void onPostExecute(Boolean result1) {
 			transTask = null;
 			doBtn.setText(R.string.button_start);
-			toast(result1 ? path + "上传成功" : "上传失败");
+			toast(result1 ? "上传成功" : "上传失败");
 			isDoing=!isDoing;//改变状态
 			btn_chooseUpload.setEnabled(true);
 		}
@@ -445,7 +445,7 @@ public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
 			f = new DecimalFormat("(0.00%)");
 			percentShow = f.format(percent);
 			// 大小
-			f = new DecimalFormat(",###.000KB");
+			f = new DecimalFormat(",##0.000KB");
 			String transedSize = f.format(totalTransferred / 1000);
 			String totalSize = f.format(fileSize / 1000);
 			transSizeShow = "[已传输]" + percentShow+transedSize + "/" + totalSize;
@@ -457,7 +457,7 @@ public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
 			passTimeShow = "[耗时]" + f.format(passTime / 1000.000);
 
 			// 速度
-			f = new DecimalFormat(",###KB/秒");
+			f = new DecimalFormat(",##0KB/秒");
 			speedShow = "[速度]" + f.format(totalTransferred / passTime);
 			
 
@@ -472,7 +472,7 @@ public class ConnectTask extends AsyncTask<String,Integer,FTPClient> {
 				
 			// 综合速度
 			///平均
-			f = new DecimalFormat(",###KB/秒");
+			f = new DecimalFormat(",##0KB/秒");
 			speedAve=(allTransferred+totalTransferred) /(allPassTime+ passTime);
 			speedAveStr="[平均]"+ f.format(speedAve);
 
