@@ -35,10 +35,11 @@ public class RebootActivity extends Activity implements OnClickListener {
 	boolean isStopSim1NetWork;
 	boolean isStopSim2NetWork;
 	private SharedPreferences prefs;
-	private int rebootTimes ;
+	private int rebootTimes = 0;
 	private int count = 0;
 	private boolean isReboot = false;
 	private boolean isSdExist;
+	private boolean isWriteLog = false;
 	boolean isSim1Insert;
 	boolean isSim2Insert;
 	private String ISSDEXIST = "isSdExist";
@@ -47,6 +48,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 	private String REBOOT_TIMES = "reboot_times";
 	private String ISREBOOT = "isRoot";
 	private String COUNT = "count";
+	private String ISWRITELOG = "isWriteLog";
 	private String fileName;
 	private String ISSTOPSD = "isStopSd";
 	private String ISSTOPINTRENAL = "isStopInternal";
@@ -126,6 +128,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 			isStopSd = stopSd.isChecked();
 			isStopInternal = stopInternal.isChecked();
 			isReboot = true;
+			isWriteLog = true;
 			fileName = mRebootUtils.fileName();
 			save_status(rebootTimes,isReboot,fileName);
 			Intent i = new Intent(RebootActivity.this,BootService.class);
@@ -153,7 +156,7 @@ public class RebootActivity extends Activity implements OnClickListener {
 	        editor.putBoolean(ISSTOPINTRENAL, isStopInternal);
 	        editor.putBoolean(ISSDEXIST, isSdExist);
 	        editor.putString(FILENAME, fileName);
-	        
+	        editor.putBoolean(ISWRITELOG, isWriteLog);
 	        editor.putInt(COUNT, count);
 	        editor.commit();  
 	   } 
