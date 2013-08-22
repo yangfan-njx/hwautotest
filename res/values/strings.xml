@@ -18,7 +18,7 @@
     <string name="tip_size_upload">上传文件大小：</string>
     <string name="tip_size_default">(未选择文件)</string>
     <string name="tip_choose_download">选择下载文件：</string>
-    <string name="tip_choose_upload">选择上传文件：暂不支持中文!</string>
+    <string name="tip_choose_upload">选择上传文件：</string>
     <string name="btn_choose_upload">浏览 </string>
     <string name="btn_reChoose">重选类型</string>
     <string name="btn_finishChoose">完成设置 </string>
@@ -33,5 +33,28 @@
     <string name="tip_close">╳退出</string>
     <string name="space">----</string>
     <string name="update">版本升级</string>
+     <!-- Emmagee  黄圣权 -->
+    <string name="hello">Hello World, RunningTaskActivity!</string>
+    <string name="emmagee_name">状态检测</string>
+    <string name="app_name1">Main</string>
+    <string name="emmagee_systemInfo">系统信息</string>
+    <string name="app_name3">测试</string>
+    <string name="emmagee_settins">设置</string>
+    <string name="system">检测系统信息</string>
+    <string name="start">启动程序</string>
+    <string name="cpu">开始测试</string>
+    <string name="bg">开始测试</string>
+    <string name="testmemory">测试内存</string>
+    <string name="memoryinfo">memoryInfo</string>
+    <string name="collect">采集频率：</string>
+    <string name="receiver">收件人(多人以空格分割):</string>
+    <string name="sender">发件人:</string>
+    <string name="password">密码:</string>
+    <string name="smtp">smtp服务器:</string>
+    <string name="seconds"> 秒</string>
+    <string name="window"> 是否显示浮窗</string>
+    <string name="ok">保存</string>
+    <string name="openwifi">开启wifi</string>
+    <string name="closewifi">关闭wifi</string>
 
 </resources>

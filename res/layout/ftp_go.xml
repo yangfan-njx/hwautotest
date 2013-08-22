@@ -64,7 +64,7 @@
         android:ems="8"
         android:enabled="false"
         android:inputType="textUri"
-        android:text="18.8.8.252"
+        android:text="18.8.8.157"
         android:textSize="10sp"
         android:selectAllOnFocus="true" 
         android:focusable="false">
@@ -115,7 +115,7 @@
         android:ems="8"
         android:enabled="false"
         android:inputType="text"
-        android:text="hwadmin"
+        android:text="swtest"
         android:textSize="10sp" 
         android:selectAllOnFocus="true"
         android:focusable="false">
@@ -152,7 +152,7 @@
         android:ems="8"
         android:enabled="false"
         android:inputType="textPassword"
-        android:text="123456"
+        android:text="y2322065"
         android:textSize="10sp" 
         android:selectAllOnFocus="true"
         android:focusable="false"/>

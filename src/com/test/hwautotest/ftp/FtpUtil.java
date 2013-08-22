@@ -29,10 +29,10 @@ import android.widget.TextView;
 public class FtpUtil {
 	private static final String TAG = "look";
 	
-	private static String mFTPHost= "18.8.8.252";
+	private static String mFTPHost= "18.8.8.157";
 	private static int mFTPPort=21;
-	private static String mFTPUser="hwadmin";
-	private static String mFTPPassword = "123456";
+	private static String mFTPUser="swtest";
+	private static String mFTPPassword = "y2322065";
 	public static FTPClient ftpClient=null;
 	
 	public static FTPClient getFtpClient() {
