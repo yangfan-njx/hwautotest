@@ -206,21 +206,30 @@ public class EmmageeService extends Service {
 		else
 			mDateTime = formatter.format(cal.getTime().getTime());
 
-//		if (android.os.Environment.getExternalStorageState().equals(
-//				android.os.Environment.MEDIA_MOUNTED)) {
+		if (android.os.Environment.getExternalStorageState().equals(
+				android.os.Environment.MEDIA_MOUNTED)) {
 			resultFilePath = android.os.Environment
 					.getExternalStorageDirectory()
-					+ "/"
-					+ "TestReport"+"/"
-					+ "状态监测_结果_" + processName+"_"+mDateTime + ".csv";
-//		} else {
-//			resultFilePath = getBaseContext().getFilesDir().getPath()
-//					+ "/" + "状态监测_结果_" + mDateTime
-//					+ ".csv";
-//		}
+					+ File.separator
+					+ "TestReport"+File.separator
+					+ "状态监测_结果_" 
+					+ processName+"_"+mDateTime + ".csv";
+		} else {
+			resultFilePath = getBaseContext().getFilesDir().getPath()
+					+ File.separator
+					+ "TestReport"+File.separator
+					+ "状态监测_结果_" 
+					+  processName+"_"+mDateTime+ ".csv";
+		}
 		try {
 			File resultFile = new File(resultFilePath);
-			resultFile.createNewFile();
+			//创建报告目录
+			if(!resultFile.getParentFile().exists()){
+				resultFile.getParentFile().mkdir();
+			}
+				
+			Log.e(LOG_TAG, "resultFile.createNewFile()："+resultFile.createNewFile());
+			
 			out = new FileOutputStream(resultFile);
 			osw = new OutputStreamWriter(out, "GBK");
 			bw = new BufferedWriter(osw);
@@ -237,7 +246,7 @@ public class EmmageeService extends Service {
 					+ " 机器剩余内存(MB)" + "," + "应用占用CPU率(%)" + "," + "CPU总使用率(%)"
 					+ "," + "流量(KB)：" + "\r\n");
 		} catch (IOException e) {
-			Log.e(LOG_TAG, e.getMessage());
+			Log.e(LOG_TAG, "resultFile异常啦！"+e.getMessage());
 		}
 	}
 

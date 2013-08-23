@@ -70,4 +70,6 @@ public class Programe {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
+
+
 }

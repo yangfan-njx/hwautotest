@@ -19,6 +19,7 @@ package com.test.hwautotest.emmagee.activity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,7 +38,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -77,12 +82,24 @@ public class EmmageeMainPageActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.i(LOG_TAG, "MainActivity::onCreate");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.emmagee_mainpage);
 		createNewFile();
 		processInfo = new ProcessInfo();
 		lstViProgramme = (ListView) findViewById(R.id.processList);
+//		lstViProgramme.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position,
+//					long arg3) {
+//				// TODO Auto-generated method stub
+//				Log.i(LOG_TAG, "选了哦！onItemClick");
+////				ListView list=((ListView)parent).getChildAt(position).;
+////				((View)parent.getItemAtPosition(position)).
+////				rb.setChecked(true);
+//			}
+//		});
 		btnTest = (Button) findViewById(R.id.test);
 		btnTest.setOnClickListener(new OnClickListener() {
 			@Override
@@ -355,15 +372,19 @@ public class EmmageeMainPageActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Viewholder holder = new Viewholder();
 			final int i = position;
-			convertView = EmmageeMainPageActivity.this.getLayoutInflater().inflate(
-					R.layout.emmagee_list_item, null);
+//			if(convertView==null){
+				convertView = EmmageeMainPageActivity.this.getLayoutInflater().inflate(
+						R.layout.emmagee_list_item, null);
+//			}
+			
 			holder.imgViAppIcon = (ImageView) convertView
 					.findViewById(R.id.image);
 			holder.txtAppName = (TextView) convertView.findViewById(R.id.text);
-			holder.rdoBtnApp = (RadioButton) convertView.findViewById(R.id.rb);
+			holder.rdoBtnApp = (RadioButton) convertView.findViewById(R.id.chooseBtn);
 			holder.rdoBtnApp.setId(position);
 			holder.rdoBtnApp
-					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					.setOnCheckedChangeListener(
+							new OnCheckedChangeListener() {
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView,
 								boolean isChecked) {
@@ -385,7 +406,8 @@ public class EmmageeMainPageActivity extends Activity {
 										.getProcessName();
 							}
 						}
-					});
+					}
+							);
 			if (tempPosition == position) {
 				if (!holder.rdoBtnApp.isChecked())
 					holder.rdoBtnApp.setChecked(true);
@@ -395,7 +417,9 @@ public class EmmageeMainPageActivity extends Activity {
 			holder.txtAppName.setText(pr.getProcessName());
 			return convertView;
 		}
+
 	}
+	
 
 	@Override
 	public void finish() {

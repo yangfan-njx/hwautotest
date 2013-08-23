@@ -17,6 +17,8 @@
 package com.test.hwautotest.emmagee.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -82,6 +84,7 @@ public class ProcessInfo {
 				programe.setIcon(appinfo.loadIcon(pm));
 			}
 			progressList.add(programe);
+			sortList(progressList);
 		}
 		return progressList;
 	}
@@ -99,4 +102,24 @@ public class ProcessInfo {
 				.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
 		return appList;
 	}
+	
+	/**
+	 * 对列表排序
+	 */
+	private void sortList(List<Programe>progressList){
+		Collections.sort(progressList, new Comparator<Programe>(){
+			@Override
+			public int compare(Programe lhs, Programe rhs) {
+				// TODO Auto-generated method stub
+				if(lhs==null||rhs==null){
+					return 0;
+				}else {
+					return lhs.getProcessName().compareTo(rhs.getProcessName());
+					
+				}
+			}}); 
+	}
+	
+	
+	
 }

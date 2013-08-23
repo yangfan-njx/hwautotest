@@ -106,6 +106,7 @@ public class CpuInfo {
 					+ Long.parseLong(toks[3]) + Long.parseLong(toks[4])
 					+ Long.parseLong(toks[6]) + Long.parseLong(toks[5])
 					+ Long.parseLong(toks[7]);
+
 			cpuInfo.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -167,6 +168,7 @@ public class CpuInfo {
 					traffic = -1;
 				else
 					traffic = (lastestTraffic - initialTraffic + 1023) / 1024;
+				
 				processCpuRatio = fomart.format(100 * ((double) (processCpu - processCpu2) 
 						/ ((double) (totalCpu - totalCpu2))));
 				totalCpuRatio = fomart.format(100 * ((double) ((totalCpu - idleCpu) - (totalCpu2 - idleCpu2)) 
@@ -188,9 +190,19 @@ public class CpuInfo {
 							+ "," + totalCpuRatio + "," + "本程序或本设备不支持流量统计"
 							+ "\r\n");
 				} else {
+					Log.e(LOG_TAG, "mDateTime2"+mDateTime2);
+					Log.e(LOG_TAG, "pMemory"+pMemory);
+					Log.e(LOG_TAG, "percent"+percent);
+					Log.e(LOG_TAG, "fMemory"+fMemory);
+					Log.e(LOG_TAG, "processCpuRatio"+processCpuRatio);
+					Log.e(LOG_TAG, "totalCpuRatio"+totalCpuRatio);
+					Log.e(LOG_TAG, "traffic"+traffic);
+					
 					EmmageeService.bw.write(mDateTime2 + "," + pMemory + ","
 							+ percent + "," + fMemory + "," + processCpuRatio
-							+ "," + totalCpuRatio + "," + traffic + "\r\n");
+							+ "," + totalCpuRatio + "," + 
+							traffic + 
+							"\r\n");
 				}
 			}
 			totalCpu2 = totalCpu;
@@ -199,7 +211,8 @@ public class CpuInfo {
 			cpuUsedRatio.add(processCpuRatio);
 			cpuUsedRatio.add(totalCpuRatio);
 			cpuUsedRatio.add(String.valueOf(traffic));
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 			// PttService.closeOpenedStream()
 		}
