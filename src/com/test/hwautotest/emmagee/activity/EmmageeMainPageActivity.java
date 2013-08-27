@@ -36,10 +36,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -48,6 +53,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -56,6 +62,7 @@ import com.test.hwautotest.R;
 import com.test.hwautotest.emmagee.service.EmmageeService;
 import com.test.hwautotest.emmagee.utils.ProcessInfo;
 import com.test.hwautotest.emmagee.utils.Programe;
+import com.test.utils.ViewHolder;
 
 /**
  * Main Page of Emmagee
@@ -79,7 +86,11 @@ public class EmmageeMainPageActivity extends Activity {
 
 	private boolean isServiceStop = false;
 	private UpdateReceiver receiver;
-
+	
+	private static ListAdapter listAdapter;
+	private  static int selectPosition = -1;//如果是实例成员，切换出当前界面后就重新赋值；而若是静态成员，则一直按之前的
+	private static int mFirstItemTop;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -87,20 +98,43 @@ public class EmmageeMainPageActivity extends Activity {
 		setContentView(R.layout.emmagee_mainpage);
 		createNewFile();
 		processInfo = new ProcessInfo();
+		
 		lstViProgramme = (ListView) findViewById(R.id.processList);
-//		lstViProgramme.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view, int position,
-//					long arg3) {
-//				// TODO Auto-generated method stub
-//				Log.i(LOG_TAG, "选了哦！onItemClick");
-////				ListView list=((ListView)parent).getChildAt(position).;
-////				((View)parent.getItemAtPosition(position)).
-////				rb.setChecked(true);
-//			}
-//		});
+		//点list勾选
+		lstViProgramme.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				selectPosition=arg2;
+				listAdapter.notifyDataSetChanged();//立即刷新当前界面的适配器内容数据，而不用等到拖动过后
+			}
+		});
+		
+		//保存当前滚动位置
+		lstViProgramme.setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int scrollState) {
+				// TODO Auto-generated method stub
+//				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+//					scrolledX = lstViProgramme.getScrollX();//无效
+//					scrolledY = lstViProgramme.getScrollY();//无效
+//				mFirstItem = lstViProgramme.getFirstVisiblePosition();
+				mFirstItemTop = lstViProgramme.getChildAt(0).getTop();
+//				} 
+				
+			}});
+		
+		listAdapter=new ListAdapter();//保存全局变量便于启用数据刷新方法notifyDataSetChanged()
+		lstViProgramme.setAdapter(listAdapter);
+		
 		btnTest = (Button) findViewById(R.id.test);
+		btnTest.setText("开始测试");
 		btnTest.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -139,6 +173,7 @@ public class EmmageeMainPageActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 					stopService(monitorService);
 				}
+				listAdapter.notifyDataSetChanged();//立即刷新当前界面的适配器内容数据，而不用等到拖动过后
 			}
 		});
 	}
@@ -160,21 +195,38 @@ public class EmmageeMainPageActivity extends Activity {
 	@Override
 	protected void onStart() {
 		Log.d(LOG_TAG, "onStart");
+		super.onStart();
 		receiver = new UpdateReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.test.hwautotest.action.emmageeService");
 		this.registerReceiver(receiver, filter);
-		super.onStart();
+//		listAdapter=new ListAdapter();//保存全局变量便于启用数据刷新方法notifyDataSetChanged()
+//		lstViProgramme.setAdapter(listAdapter);
+//		listAdapter.notifyDataSetChanged();//立即刷新当前界面的适配器内容数据，而不用等到拖动过后
+		
+		
 	}
 
+	
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		Log.d(LOG_TAG, "onRestart");
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
 	@Override
 	public void onResume() {
 		super.onResume();
 		Log.d(LOG_TAG, "onResume");
-		if (EmmageeService.isStop) {
-			btnTest.setText("开始测试");
-		}
-		lstViProgramme.setAdapter(new ListAdapter());
+		initBtnTest();
+		initSelected();
+		initListScroll();
 	}
 
 	/**
@@ -338,16 +390,7 @@ public class EmmageeMainPageActivity extends Activity {
 	 */
 	private class ListAdapter extends BaseAdapter {
 		List<Programe> programe;
-		int tempPosition = -1;
-
-		/**
-		 * save status of all installed processes
-		 */
-		class Viewholder {
-			TextView txtAppName;
-			ImageView imgViAppIcon;
-			RadioButton rdoBtnApp;
-		}
+//		int selectPosition = -1;
 
 		public ListAdapter() {
 			programe = processInfo.getRunningProcess(getBaseContext());
@@ -368,53 +411,74 @@ public class EmmageeMainPageActivity extends Activity {
 			return position;
 		}
 
+		/**
+		 * position 属于listview的第几个，从0开始
+		 * 
+		 */
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			Viewholder holder = new Viewholder();
-			final int i = position;
-//			if(convertView==null){
+			
+			Viewholder holder = null;
+			final int oldPosition = position;
+			if(convertView==null){
+				holder=new Viewholder();
 				convertView = EmmageeMainPageActivity.this.getLayoutInflater().inflate(
 						R.layout.emmagee_list_item, null);
-//			}
-			
-			holder.imgViAppIcon = (ImageView) convertView
-					.findViewById(R.id.image);
-			holder.txtAppName = (TextView) convertView.findViewById(R.id.text);
-			holder.rdoBtnApp = (RadioButton) convertView.findViewById(R.id.chooseBtn);
+				holder.imgViAppIcon = (ImageView) convertView.findViewById(R.id.image);//关联图标
+				holder.txtAppName = (TextView) convertView.findViewById(R.id.text);//关联名称
+				holder.rdoBtnApp = (RadioButton) convertView.findViewById(R.id.chooseBtn);//关联单选键
+				convertView.setTag(holder);//保存
+			}else{
+				holder=(Viewholder)convertView.getTag();//提取已保存的
+			}
 			holder.rdoBtnApp.setId(position);
 			holder.rdoBtnApp
-					.setOnCheckedChangeListener(
-							new OnCheckedChangeListener() {
+					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView,
 								boolean isChecked) {
 							if (isChecked) {
 								isRadioChecked = true;
-								// Radio function
-								if (tempPosition != -1) {
-									RadioButton tempButton = (RadioButton) findViewById(tempPosition);
+								// 取消上次勾选的
+								if (selectPosition != -1) {
+									RadioButton tempButton = (RadioButton) findViewById(selectPosition);
 									if ((tempButton != null)
-											&& (tempPosition != i)) {
+											&& (selectPosition != oldPosition)) {
 										tempButton.setChecked(false);
 									}
 								}
-
-								tempPosition = buttonView.getId();
-								packageName = programe.get(tempPosition)
+								// 获取当前勾选的
+								selectPosition = buttonView.getId();// 编号和listview的从属位置一致
+								packageName = programe.get(selectPosition)
 										.getPackageName();
-								processName = programe.get(tempPosition)
+								processName = programe.get(selectPosition)
 										.getProcessName();
+
 							}
 						}
-					}
-							);
-			if (tempPosition == position) {
+					});
+			
+			if (selectPosition == position){
 				if (!holder.rdoBtnApp.isChecked())
-					holder.rdoBtnApp.setChecked(true);
+					holder.rdoBtnApp.setChecked(true);//勾选单选键
+			}else{
+				holder.rdoBtnApp.setChecked(false);//取消单选键，防止多重勾选现象
 			}
+			
 			Programe pr = (Programe) programe.get(position);
-			holder.imgViAppIcon.setImageDrawable(pr.getIcon());
-			holder.txtAppName.setText(pr.getProcessName());
+			holder.imgViAppIcon.setImageDrawable(pr.getIcon());//赋值图标
+			holder.txtAppName.setText(pr.getProcessName());//赋值名称
+			
+			//按钮启动后，列表置灰
+			if ("停止测试".equals(btnTest.getText().toString())) {// 已启动，则置灰
+				holder.imgViAppIcon.setEnabled(false);
+				holder.rdoBtnApp.setEnabled(false);
+				holder.txtAppName.setEnabled(false);
+			}else{
+				holder.imgViAppIcon.setEnabled(true);
+				holder.rdoBtnApp.setEnabled(true);
+				holder.txtAppName.setEnabled(true);
+			}
 			return convertView;
 		}
 
@@ -435,4 +499,52 @@ public class EmmageeMainPageActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 	}
+	/**
+	 * save status of all installed processes
+	 */
+	class Viewholder {
+		TextView txtAppName;
+		ImageView imgViAppIcon;
+		RadioButton rdoBtnApp;
+	}
+	
+	/**
+	 * 初始化控制按钮的状态
+	 */
+	private void initBtnTest(){
+		Log.d(LOG_TAG, "！！！initBtnTest()");
+		if (!EmmageeService.isStop) {
+			btnTest.setText("停止测试");
+		}
+//		else {//不加此项修改，避免启动服务延迟造成误差
+//			btnTest.setText("开始测试");
+//		}
+	}
+	/**
+	 * 恢复列表开始测试时的位置
+	 */
+	private void initListScroll(){
+//		Log.d(LOG_TAG, "！！！initListScroll()"+mFirstItem+"/"+mFirstItemTop);
+		
+		
+//		if ("停止测试".equals(btnTest.getText().toString())) {//已启动则恢复之前已选的位置
+//			lstViProgramme.scrollTo(scrolledX, scrolledY);
+//		lstViProgramme.setSelectionFromTop(mFirstItem, mFirstItemTop);//恢复之前的界面
+		lstViProgramme.setSelectionFromTop(selectPosition-1, mFirstItemTop);//恢复以启动项置顶的界面
+//		}
+	}
+	/**
+	 * 初始化勾选状态
+	 */
+	private void initSelected(){
+		Log.d(LOG_TAG, "！！！initSelected()");
+		
+		if ("开始测试".equals(btnTest.getText().toString())) {
+//			selectPosition=-1;//未启动则清空
+		}else {//启动了，则保存之前启动过的勾选
+			//通过保存静态变量的位置参数实现
+		}
+	}
+	
+	
 }

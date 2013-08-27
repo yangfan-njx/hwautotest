@@ -94,7 +94,7 @@ public class EmmageeService extends Service {
 	private boolean isFloating;
 	private String processName, packageName, settingTempFile;
 	private int pid, uid;
-	private boolean isServiceStop = false;
+	private boolean isServiceStop = true;
 	private String sender, password, recipients, smtp;
 	private String[] receivers;
 	private EncryptData des;
@@ -103,7 +103,7 @@ public class EmmageeService extends Service {
 	public static FileOutputStream out;
 	public static OutputStreamWriter osw;
 	public static String resultFilePath;
-	public static boolean isStop = false;
+	public static boolean isStop = true;
 	
 	
 	private LinearLayout linLayout;
@@ -364,13 +364,15 @@ public class EmmageeService extends Service {
 	private Runnable task = new Runnable() {
 
 		public void run() {
+			Intent intent = new Intent();
 			if (!isServiceStop) {
+				intent.putExtra("isServiceStop", false);
 				dataRefresh();
 				handler.postDelayed(this, delaytime);
+				
 				if (isFloating)
 					windowManager.updateViewLayout(viFloatingWindow, wmParams);
 			} else {
-				Intent intent = new Intent();
 				intent.putExtra("isServiceStop", true);
 				intent.setAction("com.test.hwautotest.action.emmageeService");
 				sendBroadcast(intent);

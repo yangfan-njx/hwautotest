@@ -2,17 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    >
 
     <RadioButton
         android:id="@+id/chooseBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
+       android:focusable="false"
         /> 
   <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:focusable="false"
          />
 
   <ImageView
@@ -20,6 +23,7 @@
       android:layout_width="40dip"
       android:layout_height="40dip"
       android:paddingRight="1dip"
+      android:focusable="false"
       />
 
 </LinearLayout>

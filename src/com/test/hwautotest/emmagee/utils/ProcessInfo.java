@@ -25,6 +25,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
@@ -70,8 +71,8 @@ public class ProcessInfo {
 			}
 			for (RunningAppProcessInfo runningProcess : run) {
 				if ((runningProcess.processName != null)
-						&& runningProcess.processName
-								.equals(appinfo.processName)) {
+//						&& runningProcess.processName.equals(appinfo.processName)
+						) {
 					launchTag = true;
 					programe.setPid(runningProcess.pid);
 					programe.setUid(runningProcess.uid);
@@ -83,6 +84,21 @@ public class ProcessInfo {
 			if (launchTag) {
 				programe.setIcon(appinfo.loadIcon(pm));
 			}
+			
+//		ArrayList<Programe> appList = new ArrayList<Programe>(); //用来存储获取的应用信息数据
+//		List<PackageInfo> packages = context.getPackageManager().getInstalledPackages(0);
+//	        
+//	        for(int i=0;i<packages.size();i++) { 
+//	        PackageInfo packageInfo = packages.get(i); 
+//	        Programe tmpInfo = new Programe(); 
+//	        tmpInfo.setProcessName(packageInfo.applicationInfo.loadLabel(context.getPackageManager()).toString()); 
+//	        tmpInfo.setPackageName( packageInfo.packageName); 
+//	        tmpInfo.setPid(packageInfo.); 
+//	        tmpInfo.versionCode = packageInfo.versionCode; 
+//	        tmpInfo.setIcon(packageInfo.applicationInfo.loadIcon(context.getPackageManager()));
+//	        appList.add(tmpInfo);
+		
+		
 			progressList.add(programe);
 			sortList(progressList);
 		}
