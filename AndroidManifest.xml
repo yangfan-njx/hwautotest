@@ -109,7 +109,8 @@
         </activity>
         <activity
             android:name="com.test.hwautotest.update.updateOnline"
-            android:label="@string/update" >
+            android:label="@string/update" 
+            android:screenOrientation="portrait" >
         </activity>
         
         <!-- 状态监控 开始-->
@@ -117,20 +118,24 @@
             android:name="com.test.hwautotest.emmagee.activity.EmmageeMainPageActivity"
             android:label="@string/emmagee_name"
             android:configChanges="orientation|keyboardHidden" 
+            android:screenOrientation="portrait" 
            > <!-- 防止程序横屏以后重新启动  android:launchMode="singleInstance"   -->
         </activity>
         <activity
             android:name="com.test.hwautotest.emmagee.activity.SystemActivity"
-            android:label="@string/emmagee_systemInfo" >
+            android:label="@string/emmagee_systemInfo"
+            android:screenOrientation="portrait"  >
         </activity>
         
         <activity
             android:name="com.test.hwautotest.emmagee.activity.SettingsActivity"
-            android:label="@string/emmagee_settins" >
+            android:label="@string/emmagee_settins"
+            android:screenOrientation="portrait"  >
         </activity>
 
          <service 
-            android:name="com.test.hwautotest.emmagee.service.EmmageeService">
+            android:name="com.test.hwautotest.emmagee.service.EmmageeService"
+            android:screenOrientation="portrait" >
         </service>
 
         <!-- 状态监控 结束-->

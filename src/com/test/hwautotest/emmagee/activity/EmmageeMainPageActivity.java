@@ -62,6 +62,7 @@ import com.test.hwautotest.R;
 import com.test.hwautotest.emmagee.service.EmmageeService;
 import com.test.hwautotest.emmagee.utils.ProcessInfo;
 import com.test.hwautotest.emmagee.utils.Programe;
+import com.test.hwautotest.ftp.MyApplication;
 import com.test.utils.ViewHolder;
 
 /**
@@ -310,28 +311,77 @@ public class EmmageeMainPageActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	/**
-	 * set menu options,including cancel and setting options.
-	 * 
-	 * @return true
-	 */
+//	/**
+//	 * set menu options,including cancel and setting options.
+//	 * 
+//	 * @return true
+//	 */
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		menu.add(0, Menu.FIRST, 0, "退出").setIcon(
+//				android.R.drawable.ic_menu_delete);
+//		menu.add(0, Menu.FIRST, 1, "设置").setIcon(
+//				android.R.drawable.ic_menu_directions);
+//		return true;
+//	}
+
+//	/**
+//	 * trigger menu options.
+//	 * 
+//	 * @return false
+//	 */
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getOrder()) {
+//		case 0:
+////			showDialog(0);
+//			if (monitorService != null) {
+//				Log.d(LOG_TAG, "stop service");
+//				stopService(monitorService);
+//			}
+//			Log.d(LOG_TAG, "exit Emmagee");
+//			EmmageeService.closeOpenedStream();
+//			finish();
+//			System.exit(0);
+//			break;
+//		case 1:
+//			Intent intent = new Intent();
+//			intent.setClass(EmmageeMainPageActivity.this, SettingsActivity.class);
+//			intent.putExtra("settingTempFile", settingTempFile);
+//			startActivityForResult(intent, Activity.RESULT_FIRST_USER);
+//			break;
+//		default:
+//			break;
+//		}
+//		return false;
+//	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, Menu.FIRST, 0, "退出").setIcon(
-				android.R.drawable.ic_menu_delete);
-		menu.add(0, Menu.FIRST, 1, "设置").setIcon(
-				android.R.drawable.ic_menu_directions);
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.emmagee_main, menu);
 		return true;
 	}
-
-	/**
-	 * trigger menu options.
-	 * 
-	 * @return false
-	 */
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getOrder()) {
-		case 0:
-//			showDialog(0);
+	private void toast(String hint) {
+		Toast.makeText(this, hint,Toast.LENGTH_SHORT).show();
+	}
+	private static final String TAG = "look";
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		int selectId=item.getItemId();
+		switch (selectId) {
+		// 响应每个菜单项(通过菜单项的ID)
+		case R.id.action_about://关于
+			toast("负责人:黄圣权");
+			break;
+		case R.id.action_settings://设置
+			Intent intent = new Intent();
+			intent.setClass(EmmageeMainPageActivity.this, SettingsActivity.class);
+			intent.putExtra("settingTempFile", settingTempFile);
+			startActivityForResult(intent, Activity.RESULT_FIRST_USER);
+			break;
+			
+		case R.id.action_exit://退出
+			toast("退出程序");
+			// 退出
 			if (monitorService != null) {
 				Log.d(LOG_TAG, "stop service");
 				stopService(monitorService);
@@ -341,16 +391,12 @@ public class EmmageeMainPageActivity extends Activity {
 			finish();
 			System.exit(0);
 			break;
-		case 1:
-			Intent intent = new Intent();
-			intent.setClass(EmmageeMainPageActivity.this, SettingsActivity.class);
-			intent.putExtra("settingTempFile", settingTempFile);
-			startActivityForResult(intent, Activity.RESULT_FIRST_USER);
-			break;
 		default:
-			break;
+			// 对没有处理的事件，交给父类来处理
+			return super.onOptionsItemSelected(item);
+
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**

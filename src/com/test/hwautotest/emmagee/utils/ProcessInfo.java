@@ -16,6 +16,7 @@
  */
 package com.test.hwautotest.emmagee.utils;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -126,14 +127,22 @@ public class ProcessInfo {
 		Collections.sort(progressList, new Comparator<Programe>(){
 			@Override
 			public int compare(Programe lhs, Programe rhs) {
-				// TODO Auto-generated method stub
-				if(lhs==null||rhs==null){
-					return 0;
-				}else {
-					return lhs.getProcessName().compareTo(rhs.getProcessName());
-					
-				}
-			}}); 
+				Collator myCollator = Collator.getInstance(java.util.Locale.CHINA);//按中文字符排序，顺序按“中文拼音-英文字母”
+				return myCollator.compare(lhs.getProcessName(), rhs.getProcessName());
+			}
+			
+			//默认String按ASCII中文码比较，但并不完全按拼音排序
+//			@Override
+//			public int compare(Programe lhs, Programe rhs) {
+//				// TODO Auto-generated method stub
+//				if(lhs==null||rhs==null){
+//					return 0;
+//				}else {
+//					return lhs.getProcessName().compareTo(rhs.getProcessName());
+//					
+//				}
+//			}
+		}); 
 	}
 	
 	
