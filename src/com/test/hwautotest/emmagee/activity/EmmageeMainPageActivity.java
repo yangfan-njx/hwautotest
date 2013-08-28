@@ -162,6 +162,9 @@ public class EmmageeMainPageActivity extends Activity {
 						monitorService.putExtra("settingTempFile",
 								settingTempFile);
 						startService(monitorService);
+						
+						btnTest.setEnabled(false);
+						lstViProgramme.setEnabled(false);
 						btnTest.setText("停止测试");
 					} else {
 						Toast.makeText(EmmageeMainPageActivity.this, "请选择需要测试的应用程序",
@@ -169,6 +172,7 @@ public class EmmageeMainPageActivity extends Activity {
 					}
 				} else {
 					btnTest.setText("开始测试");
+					initSelected();
 					Toast.makeText(EmmageeMainPageActivity.this,
 							"测试结果文件：" + EmmageeService.resultFilePath,
 							Toast.LENGTH_LONG).show();
@@ -559,6 +563,7 @@ public class EmmageeMainPageActivity extends Activity {
 	 */
 	private void initBtnTest(){
 		Log.d(LOG_TAG, "！！！initBtnTest()");
+		btnTest.setEnabled(true);
 		if (!EmmageeService.isStop) {
 			btnTest.setText("停止测试");
 		}
@@ -585,10 +590,13 @@ public class EmmageeMainPageActivity extends Activity {
 	private void initSelected(){
 		Log.d(LOG_TAG, "！！！initSelected()");
 		
-		if ("开始测试".equals(btnTest.getText().toString())) {
+		if ("停止测试".equals(btnTest.getText().toString())) {//启动了，则保存之前启动过的勾选
+			lstViProgramme.setEnabled(false);
+			//通过保存静态变量的位置参数实现保存勾选
+		}else {
+			//激活列表选择
+			lstViProgramme.setEnabled(true);
 //			selectPosition=-1;//未启动则清空
-		}else {//启动了，则保存之前启动过的勾选
-			//通过保存静态变量的位置参数实现
 		}
 	}
 	
