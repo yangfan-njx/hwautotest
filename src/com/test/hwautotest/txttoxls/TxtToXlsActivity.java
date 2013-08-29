@@ -121,7 +121,7 @@ public class TxtToXlsActivity extends Activity {
 					for(int i = 0; i < dirNames.size(); i++){
 						isExist = isExist && fileIsExists(dirNames.get(i) + "/taskSummary.txt");
 //								&& fileIsExists(getSDPath() + "/TestReport/st_testCase.xls");
-						Log.i("YANG", fileIsExists(dirNames.get(i) + "/taskSummary.txt") + "");
+						Log.i("YANG"+"look", fileIsExists(dirNames.get(i) + "/taskSummary.txt") + "");
 						if(!isExist){
 							break;
 						}
@@ -135,7 +135,7 @@ public class TxtToXlsActivity extends Activity {
 				}else{
 					Toast.makeText(TxtToXlsActivity.this, "请连接WIFI后操作！", Toast.LENGTH_SHORT).show();
 				}
-				Log.i("YANG", "---------------end-------------------");
+				Log.i("YANG"+"look", "---------------end-------------------");
 			}
 		});
 		
@@ -149,8 +149,8 @@ public class TxtToXlsActivity extends Activity {
 				testReportName = version + "_RebootTestReport.xls";
 				
 				filePath = prefs.getString("filename", null);
-				Log.i("YANG", filePath + "-------------");
-				Log.i("YANG", "-----------end");
+				Log.i("YANG"+"look", filePath + "-------------");
+				Log.i("YANG"+"look", "-----------end");
 				if(isWiFiActive(TxtToXlsActivity.this)){
 //					File file = new File(getSDPath() + "/Reboot.txt");
 					File file = new File(filePath);
@@ -191,7 +191,7 @@ public class TxtToXlsActivity extends Activity {
 				ArrayList<String> taskSummarys = xls.ReadTxtFile(filePath);
 //				ArrayList<String> taskSummarys = xls.ReadTxtFile(getSDPath() + "/Reboot.txt");
 				for(int i = 0; i < taskSummarys.size(); i++){
-					Log.i("YANG", taskSummarys.get(i)+"------------");
+					Log.i("YANG"+"look", taskSummarys.get(i)+"------------");
 				}
 				xls.fillRebootResult(taskSummarys);
 			}else{
@@ -286,7 +286,7 @@ public class TxtToXlsActivity extends Activity {
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isDirectory()) {
 				dirNames.add(files[i].toString());
-				Log.i("YANG", files[i].toString());
+				Log.i("YANG"+"look", files[i].toString());
 			}
 		}
 		return dirNames;
@@ -305,7 +305,7 @@ public class TxtToXlsActivity extends Activity {
 	 */
 	public void DownLoadFTP(String templateName){
 		//连接ftp
-		String[] connectInfo = new String[]{"y383840206.oicp.net","21","hwtest","123456"};
+		String[] connectInfo = new String[]{"18.8.8.157","21","swtest","y2322065"};
 		mFTPClient=FtpUtil.connectFtp(connectInfo);
 		//下载文件
 		String[] downloadInfo=new String[]{"/TestReport",templateName+".xls"};
@@ -360,7 +360,7 @@ public class TxtToXlsActivity extends Activity {
 		}
 		@Override
 		public void completed() {
-			Log.i("YANG", "文件传输完成");
+			Log.i("YANG"+"look", "文件传输完成");
 		}
 		@Override
 		public void aborted() {

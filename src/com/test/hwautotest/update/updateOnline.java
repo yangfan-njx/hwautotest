@@ -158,7 +158,7 @@ public class updateOnline extends Activity{
 //		sb.append(" Code:");
 //		sb.append(verCode);
 		sb.append("已是最新版本，无需更新");
-		Dialog dialog = new AlertDialog.Builder(this).setTitle("软件更新")
+		Dialog dialog = new AlertDialog.Builder(this).setTitle("版本更新")
 				.setMessage(sb.toString())
 				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 

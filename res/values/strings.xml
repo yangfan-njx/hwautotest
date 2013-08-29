@@ -4,6 +4,13 @@
     <string name="app_name">海外自动化测试工具V1.3</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    
+    <string name="label_contacts">联系人容量设置</string>
+    <string name="label_sms">短信容量设置</string>
+    <string name="label_calllog">通话记录容量设置</string>
+    <string name="label_filemanager">文件管理器容量设置</string>
+    <string name="label_reboot">自动重启</string>
+    <string name="label_testreport">生成自动化测试报告</string>
 
     <!-- FTP  黄圣权 -->
     <string name="name_app">FTP速度测试</string>
@@ -32,14 +39,14 @@
     <string name="tip_forward">＞前进</string>
     <string name="tip_close">╳退出</string>
     <string name="space">----</string>
-    <string name="update">版本升级</string>
+    <string name="update">版本更新</string>
      <!-- Emmagee  黄圣权 -->
     <string name="hello">Hello World, RunningTaskActivity!</string>
-    <string name="emmagee_name">状态检测</string>
+    <string name="emmagee_name">状态监测</string>
     <string name="app_name1">Main</string>
     <string name="emmagee_systemInfo">系统信息</string>
     <string name="app_name3">测试</string>
-    <string name="emmagee_settins">设置</string>
+    <string name="emmagee_settins">状态监测设置</string>
     <string name="system">检测系统信息</string>
     <string name="start">启动程序</string>
     <string name="cpu">开始测试</string>
