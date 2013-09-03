@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import android.net.TrafficStats;
 import android.util.Log;
 
 /**
@@ -44,41 +45,84 @@ public class TrafficInfo {
 	 * @return total traffic include received and send traffic
 	 */
 	public long getTrafficInfo() {
-		Log.i(LOG_TAG, "get traffic information");
-		RandomAccessFile rafRcv = null, rafSnd = null;
-		String rcvPath = "/proc/uid_stat/" + uid + "/tcp_rcv";
-		String sndPath = "/proc/uid_stat/" + uid + "/tcp_snd";
+		Log.i(LOG_TAG+"look", "get traffic information UID:"+uid);
 		long rcvTraffic = -1;
 		long sndTraffic = -1;
-		try {
-			rafRcv = new RandomAccessFile(rcvPath, "r");
-			rafSnd = new RandomAccessFile(sndPath, "r");
-			rcvTraffic = Long.parseLong(rafRcv.readLine());
-			sndTraffic = Long.parseLong(rafSnd.readLine());
-		} catch (FileNotFoundException e) {
-			rcvTraffic = -1;
-			sndTraffic = -1;
-		} catch (NumberFormatException e) {
-			Log.e(LOG_TAG, "NumberFormatException: " + e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			Log.e(LOG_TAG, "IOException: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rafRcv != null) {
-					rafRcv.close();
-				}
-				if (rafSnd != null)
-					rafSnd.close();
-			} catch (IOException e) {
-				Log.i(LOG_TAG,
-						"close randomAccessFile exception: " + e.getMessage());
-			}
-		}
+
+		rcvTraffic=rUid();
+		sndTraffic=sUid();
+		
+//		RandomAccessFile rafRcv = null, rafSnd = null;
+//		String rcvPath = "/proc/uid_stat/" + uid + "/tcp_rcv";
+//		String sndPath = "/proc/uid_stat/" + uid + "/tcp_snd";
+//		
+//		try {
+//			rafRcv = new RandomAccessFile(rcvPath, "r");
+//			rafSnd = new RandomAccessFile(sndPath, "r");
+//			rcvTraffic = Long.parseLong(rafRcv.readLine());
+//			sndTraffic = Long.parseLong(rafSnd.readLine());
+//		} catch (FileNotFoundException e) {
+//			rcvTraffic = -1;
+//			sndTraffic = -1;
+//		} catch (NumberFormatException e) {
+//			Log.e(LOG_TAG, "NumberFormatException: " + e.getMessage());
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			Log.e(LOG_TAG, "IOException: " + e.getMessage());
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if (rafRcv != null) {
+//					rafRcv.close();
+//				}
+//				if (rafSnd != null)
+//					rafSnd.close();
+//			} catch (IOException e) {
+//				Log.i(LOG_TAG,
+//						"close randomAccessFile exception: " + e.getMessage());
+//			}
+//		}
+		Log.i(LOG_TAG+"look", "流量"+rcvTraffic+"/"+sndTraffic);
 		if (rcvTraffic == -1 || sndTraffic == -1) {
 			return -1;
 		} else
 			return rcvTraffic + sndTraffic;
 	}
+	
+//	/** 获取手机通过 2G/3G 接收的字节流量总数 */
+//    TrafficStats.getMobileRxBytes();
+//
+//    /** 获取手机通过 2G/3G 接收的数据包总数 */
+//    TrafficStats.getMobileRxPackets();
+//
+//    /** 获取手机通过 2G/3G 发出的字节流量总数 */
+//    TrafficStats.getMobileTxBytes();
+//
+//    /** 获取手机通过 2G/3G 发出的数据包总数 */
+//    TrafficStats.getMobileTxPackets();
+//
+//    /** 获取手机通过所有网络方式接收的字节流量总数(包括 wifi) */
+//    TrafficStats.getTotalRxBytes();
+//
+//    /** 获取手机通过所有网络方式接收的数据包总数(包括 wifi) */
+//    TrafficStats.getTotalRxPackets();
+//
+//    /** 获取手机通过所有网络方式发送的字节流量总数(包括 wifi) */
+//    TrafficStats.getTotalTxBytes();
+//
+//    /** 获取手机通过所有网络方式发送的数据包总数(包括 wifi) */
+//    TrafficStats.getTotalTxPackets();
+	
+	/** 获取手机指定 UID 对应的应程序用通过所有网络方式接收的字节流量总数(包括 wifi) */
+	private long rUid(){
+		
+		return TrafficStats.getUidRxBytes(Integer.valueOf(uid));
+	}
+	/** 获取手机指定 UID 对应的应程序用通过所有网络方式接收的字节流量总数(包括 wifi) */
+	private long sUid(){
+		
+		return TrafficStats.getUidRxBytes(Integer.valueOf(uid));
+	}
+	
+	
 }

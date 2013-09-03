@@ -37,7 +37,7 @@ import android.util.Log;
 public class ProcessInfo {
 
 	private static final String LOG_TAG = "Emmagee-"
-			+ ProcessInfo.class.getSimpleName();
+			+ ProcessInfo.class.getSimpleName()+"look";
 
 	private static final String PACKAGE_NAME = "com.test.hwautotest";
 
@@ -72,7 +72,7 @@ public class ProcessInfo {
 			}
 			for (RunningAppProcessInfo runningProcess : run) {
 				if ((runningProcess.processName != null)
-//						&& runningProcess.processName.equals(appinfo.processName)
+						&& runningProcess.processName.equals(appinfo.processName)
 						) {
 					launchTag = true;
 					programe.setPid(runningProcess.pid);
@@ -82,26 +82,18 @@ public class ProcessInfo {
 			}
 			programe.setPackageName(appinfo.processName);
 			programe.setProcessName(appinfo.loadLabel(pm).toString());
-			if (launchTag) {
+//			if (launchTag) {
 				programe.setIcon(appinfo.loadIcon(pm));
-			}
+//			}
 			
-//		ArrayList<Programe> appList = new ArrayList<Programe>(); //用来存储获取的应用信息数据
-//		List<PackageInfo> packages = context.getPackageManager().getInstalledPackages(0);
-//	        
-//	        for(int i=0;i<packages.size();i++) { 
-//	        PackageInfo packageInfo = packages.get(i); 
-//	        Programe tmpInfo = new Programe(); 
-//	        tmpInfo.setProcessName(packageInfo.applicationInfo.loadLabel(context.getPackageManager()).toString()); 
-//	        tmpInfo.setPackageName( packageInfo.packageName); 
-//	        tmpInfo.setPid(packageInfo.); 
-//	        tmpInfo.versionCode = packageInfo.versionCode; 
-//	        tmpInfo.setIcon(packageInfo.applicationInfo.loadIcon(context.getPackageManager()));
-//	        appList.add(tmpInfo);
-		
-		
 			progressList.add(programe);
 			sortList(progressList);
+		}
+		Log.i(LOG_TAG, "**all:");
+		for(Programe p:progressList){
+//			Log.i(LOG_TAG, "pro-"+p.getProcessName());
+//			Log.i(LOG_TAG, "uid-"+p.getUid());
+//			Log.i(LOG_TAG, "pid-"+p.getPid());
 		}
 		return progressList;
 	}

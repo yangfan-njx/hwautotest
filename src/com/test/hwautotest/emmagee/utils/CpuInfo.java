@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import com.test.hwautotest.emmagee.service.EmmageeService;
 
@@ -63,7 +64,7 @@ public class CpuInfo {
 		this.pid = pid;
 		this.context = context;
 		trafficInfo = new TrafficInfo(uid);
-		formatterFile = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		formatterFile = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA);
 		mi = new MemoryInfo();
 		totalMemorySize = mi.getTotalMemory();
 		cpuUsedRatio = new ArrayList<String>();
@@ -155,9 +156,11 @@ public class CpuInfo {
 			if ((Build.MODEL.equals("sdk"))
 					|| (Build.MODEL.equals("google_sdk"))) {
 				mDateTime2 = formatterFile.format(cal.getTime().getTime() + 8
-						* 60 * 60 * 1000);
+						* 60 * 60 * 1000);//加时区
+				Log.d("look","mDateTime2:"+mDateTime2);
 			} else
 				mDateTime2 = formatterFile.format(cal.getTime().getTime());
+			Log.d("look","mDateTime2:"+mDateTime2);
 
 			if (isInitialStatics) {
 				initialTraffic = trafficInfo.getTrafficInfo();
@@ -185,18 +188,22 @@ public class CpuInfo {
 
 				// whether certain device supports traffic statics or not
 				if (traffic == -1) {
-					EmmageeService.bw.write(mDateTime2 + "," + pMemory + ","
-							+ percent + "," + fMemory + "," + processCpuRatio
+					EmmageeService.bw.write(
+							mDateTime2 
+							+ "," + pMemory 
+							+ ","+ percent 
+							+ "," + fMemory 
+							+ "," + processCpuRatio
 							+ "," + totalCpuRatio + "," + "本程序或本设备不支持流量统计"
 							+ "\r\n");
 				} else {
-					Log.e(LOG_TAG, "mDateTime2"+mDateTime2);
-					Log.e(LOG_TAG, "pMemory"+pMemory);
-					Log.e(LOG_TAG, "percent"+percent);
-					Log.e(LOG_TAG, "fMemory"+fMemory);
-					Log.e(LOG_TAG, "processCpuRatio"+processCpuRatio);
-					Log.e(LOG_TAG, "totalCpuRatio"+totalCpuRatio);
-					Log.e(LOG_TAG, "traffic"+traffic);
+//					Log.e(LOG_TAG, "mDateTime2"+mDateTime2);
+//					Log.e(LOG_TAG, "pMemory"+pMemory);
+//					Log.e(LOG_TAG, "percent"+percent);
+//					Log.e(LOG_TAG, "fMemory"+fMemory);
+//					Log.e(LOG_TAG, "processCpuRatio"+processCpuRatio);
+//					Log.e(LOG_TAG, "totalCpuRatio"+totalCpuRatio);
+//					Log.e(LOG_TAG, "traffic"+traffic);
 					
 					EmmageeService.bw.write(mDateTime2 + "," + pMemory + ","
 							+ percent + "," + fMemory + "," + processCpuRatio

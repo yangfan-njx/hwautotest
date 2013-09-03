@@ -87,6 +87,8 @@ public class EmmageeMainPageActivity extends Activity {
 
 	private boolean isServiceStop = false;
 	private UpdateReceiver receiver;
+
+	private MenuItem menu_settings;
 	
 	private static ListAdapter listAdapter;
 	private  static int selectPosition = -1;//如果是实例成员，切换出当前界面后就重新赋值；而若是静态成员，则一直按之前的
@@ -99,7 +101,6 @@ public class EmmageeMainPageActivity extends Activity {
 		setContentView(R.layout.emmagee_mainpage);
 		createNewFile();
 		processInfo = new ProcessInfo();
-		
 		lstViProgramme = (ListView) findViewById(R.id.processList);
 		//点list勾选
 		lstViProgramme.setOnItemClickListener(new OnItemClickListener() {
@@ -368,6 +369,18 @@ public class EmmageeMainPageActivity extends Activity {
 		Toast.makeText(this, hint,Toast.LENGTH_SHORT).show();
 	}
 	private static final String TAG = "look";
+	
+	
+	@Override
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		// TODO Auto-generated method stub
+		menu_settings=menu.getItem(1);
+		initSettings();
+		
+		return super.onMenuOpened(featureId, menu);
+	}
+
+
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		int selectId=item.getItemId();
@@ -597,6 +610,17 @@ public class EmmageeMainPageActivity extends Activity {
 			//激活列表选择
 			lstViProgramme.setEnabled(true);
 //			selectPosition=-1;//未启动则清空
+		}
+	}
+	
+	/**
+	 * 初始化菜单设置项状态
+	 */
+	private void initSettings(){
+		if (!EmmageeService.isStop) {
+			menu_settings.setEnabled(false);
+		}else{
+			menu_settings.setEnabled(true);
 		}
 	}
 	

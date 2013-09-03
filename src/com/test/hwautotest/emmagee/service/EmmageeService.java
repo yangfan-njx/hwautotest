@@ -16,11 +16,15 @@
  */
 package com.test.hwautotest.emmagee.service;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -28,9 +32,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
 
+import org.apache.http.util.EncodingUtils;
+
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -221,33 +228,34 @@ public class EmmageeService extends Service {
 					+ "状态监测_结果_" 
 					+  processName+"_"+mDateTime+ ".csv";
 		}
-		try {
-			File resultFile = new File(resultFilePath);
-			//创建报告目录
-			if(!resultFile.getParentFile().exists()){
-				resultFile.getParentFile().mkdir();
-			}
-				
-			Log.e(LOG_TAG, "resultFile.createNewFile()："+resultFile.createNewFile());
-			
-			out = new FileOutputStream(resultFile);
-			osw = new OutputStreamWriter(out, "GBK");
-			bw = new BufferedWriter(osw);
-			long totalMemorySize = memoryInfo.getTotalMemory();
-			String totalMemory = fomart.format((double) totalMemorySize / 1024);
-			bw.write("指定应用的CPU内存监控情况\r\n" + "应用包名：," + packageName + "\r\n"
-					+ "应用名称: ," + processName + "\r\n" + "应用PID: ," + pid
-					+ "\r\n" + "机器内存大小(MB)：," + totalMemory + "MB\r\n"
-					+ "机器CPU型号：," + cpuInfo.getCpuName() + "\r\n"
-					+ "机器android系统版本：," + memoryInfo.getSDKVersion() + "\r\n"
-					+ "手机型号：," + memoryInfo.getPhoneType() + "\r\n" + "UID：,"
-					+ uid + "\r\n");
-			bw.write("时间" + "," + "应用占用内存PSS(MB)" + "," + "应用占用内存比(%)" + ","
-					+ " 机器剩余内存(MB)" + "," + "应用占用CPU率(%)" + "," + "CPU总使用率(%)"
-					+ "," + "流量(KB)：" + "\r\n");
-		} catch (IOException e) {
-			Log.e(LOG_TAG, "resultFile异常啦！"+e.getMessage());
-		}
+		readyResultFile();
+//		try {
+//			File resultFile = new File(resultFilePath);
+//			//创建报告目录
+//			if(!resultFile.getParentFile().exists()){
+//				resultFile.getParentFile().mkdir();
+//			}
+//				
+////			Log.e(LOG_TAG, "resultFile.createNewFile()："+resultFile.createNewFile());
+//			readyResultFile();
+//			out = new FileOutputStream(resultFile,true);
+//			osw = new OutputStreamWriter(out, "GBK");
+//			bw = new BufferedWriter(osw);
+//			long totalMemorySize = memoryInfo.getTotalMemory();
+//			String totalMemory = fomart.format((double) totalMemorySize / 1024);
+//			bw.write("指定应用的CPU内存监控情况\r\n" + "应用包名：," + packageName + "\r\n"
+//					+ "应用名称: ," + processName + "\r\n" + "应用PID: ," + pid
+//					+ "\r\n" + "机器内存大小(MB)：," + totalMemory + "MB\r\n"
+//					+ "机器CPU型号：," + cpuInfo.getCpuName() + "\r\n"
+//					+ "机器android系统版本：," + memoryInfo.getSDKVersion() + "\r\n"
+//					+ "手机型号：," + memoryInfo.getPhoneType() + "\r\n" + "UID：,"
+//					+ uid + "\r\n");
+//			bw.write("时间" + "," + "应用占用内存PSS(MB)" + "," + "应用占用内存比(%)" + ","
+//					+ " 机器剩余内存(MB)" + "," + "应用占用CPU率(%)" + "," + "CPU总使用率(%)"
+//					+ "," + "流量(KB)" + "\r\n");
+//		} catch (IOException e) {
+//			Log.e(LOG_TAG, "resultFile异常啦！"+e.getMessage());
+//		}
 	}
 
 	/**
@@ -500,4 +508,83 @@ public class EmmageeService extends Service {
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
+	
+	public String getFromAsset(String fileName) {
+		String res = "";
+		try {
+			InputStream in = getResources().getAssets().open(fileName);
+			int length = in.available();
+			byte[] buffer = new byte[length];
+			in.read(buffer);
+			res = EncodingUtils.getString(buffer, "GBK");
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}  
+	
+	private void readyResultFile(){
+//		InputStream in = getResources().getAssets().open("状态监测结果_模版xls.csv");
+		InputStream input;
+		try {
+			///输出CSV
+			//xls2.csv一般csv 能追加
+			//xls.csv兼容模式-图 保持原样，未追加
+			//xls.xls表格格式-图 保持原样，未追加
+			
+			///输出XLS
+			//xls2.csv一般csv 能追加
+			//xls.csv兼容模式-图 保持原样，未追加
+			//xls.xls不变
+			
+			//图合并
+			///输出XLS
+			//xls2.csv一般csv 
+			//xls.csv兼容模式-图 有图 无加
+			//xls.xls  有图 无加
+//			input = getResources().getAssets().open("xls2node.xls");
+//			OutputStream output;
+//			
+			File resultFile = new File(resultFilePath);
+			//创建报告目录
+			if(!resultFile.getParentFile().exists()){
+				resultFile.getParentFile().mkdir();
+			}
+//				
+//			
+//			
+//			output = new FileOutputStream(resultFile);
+//			byte[] temp = new byte[1024];
+//			int count = 0;
+//			while ((count = input.read(temp)) > 0) {
+//				output.write(temp, 0, count);
+//			}
+//			output.flush();
+//			output.close();
+//			input.close();
+			
+			Log.e(LOG_TAG, "resultFile.createNewFile()："+resultFile.createNewFile());
+			out = new FileOutputStream(resultFile,true);
+			osw = new OutputStreamWriter(out, "GBK");
+			bw = new BufferedWriter(osw);
+			long totalMemorySize = memoryInfo.getTotalMemory();
+			String totalMemory = fomart.format((double) totalMemorySize / 1024);
+			bw.write("指定应用的CPU内存监控情况\r\n" + "应用包名：," + packageName + "\r\n"
+					+ "应用名称: ," + processName + "\r\n" + "应用PID: ," + pid
+					+ "\r\n" + "机器内存大小(MB)：," + totalMemory + "MB\r\n"
+					+ "机器CPU型号：," + cpuInfo.getCpuName() + "\r\n"
+					+ "机器android系统版本：," + memoryInfo.getSDKVersion() + "\r\n"
+					+ "手机型号：," + memoryInfo.getPhoneType() + "\r\n" + "UID：,"
+					+ uid + "\r\n");
+			bw.write("时间" + "," + "应用占用内存PSS(MB)" + "," + "应用占用内存比(%)" + ","
+					+ " 机器剩余内存(MB)" + "," + "应用占用CPU率(%)" + "," + "CPU总使用率(%)"
+					+ "," + "流量(KB)" + "\r\n");
+		} catch (IOException e) {
+			Log.e(LOG_TAG, "resultFile异常啦！"+e.getMessage());
+		}
+
+		
+	}
+	
 }
