@@ -1,16 +1,29 @@
 ﻿package com.test.hwautotest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.http.util.EncodingUtils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StatFs;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.test.hwautotest.R;
 import com.test.hwautotest.calllog.CallLogActivity;
@@ -124,8 +137,10 @@ public class MainActivity extends Activity {
 
 			}
 		});
-
+		
 	}
+	
+	
 	
 	
 }

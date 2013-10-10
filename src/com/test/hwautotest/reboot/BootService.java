@@ -96,7 +96,7 @@ public class BootService extends Service {
 		handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-
+				Log.i("look", "线程处理:rebootTime "+rebootTimes+" count "+count+" isRoot "+isReboot);
 				if (msg.what == LOGINOVER) {
 					if (count > 0) {
 						
@@ -135,6 +135,8 @@ public class BootService extends Service {
 					
 					if (isReboot) {
 						if (rebootTimes > 0) {
+							Log.i("look", "重启开始:rebootTime "+rebootTimes+" count "+count);
+							mRebootUtils.DisplayToast("重启开始");
 							mRebootUtils.reboot();
 							rebootTimes = rebootTimes - 1;
 							count = count + 1;
@@ -216,7 +218,7 @@ public class BootService extends Service {
 	private void read_status() {
 		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		this.rebootTimes = prefs.getInt(REBOOT_TIMES, 1);
+		this.rebootTimes = prefs.getInt(REBOOT_TIMES, 0);//原龚杨阳赋默认值为1，导致安装完第一次开机锁屏加载完卡后会多余重启一次
 		this.isReboot = prefs.getBoolean(ISREBOOT, true);
 		this.count = prefs.getInt(COUNT, 0);
 		this.fileName = prefs.getString(FILENAME, null);
