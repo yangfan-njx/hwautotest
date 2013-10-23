@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg2" >
+    android:background="@drawable/bg2"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/calllogTitle"
@@ -14,58 +14,141 @@
         android:textSize="20dp" >
     </TextView>
 
-    <RadioGroup
-        android:id="@+id/Type"
-        android:layout_width="fill_parent"
+    <!-- <RadioGroup -->
+    <!-- android:id="@+id/Type" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_below="@+id/calllogTitle" -->
+    <!-- android:orientation="vertical" > -->
+
+    <CheckBox
+        android:id="@+id/Received"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/calllogTitle"
-        android:orientation="vertical" >
+        android:layout_below="@id/calllogTitle"
+        android:text="已接电话" />
 
-			
-        <RadioButton
-            android:id="@+id/Outgoing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已拨电话" />
+    <CheckBox
+        android:id="@+id/Outgoing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Received"
+        android:text="已拨电话" />
 
-        <RadioButton
-            android:id="@+id/Received"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已接电话" />
+    <CheckBox
+        android:id="@+id/Missed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Outgoing"
+        android:text="未接电话" />
 
-        <RadioButton
-            android:id="@+id/Missed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="未接电话" />
+    <!-- </RadioGroup> -->
 
-    </RadioGroup>
+    <View
+        android:id="@+id/line2"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/Missed"
+        android:background="#C0C0C0" >
+    </View>
 
-    <Button
-        android:id="@+id/addCallLog"
-        android:layout_width="80dp"
+    
+    
+    <CheckBox
+        android:id="@+id/iscallnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line2"
+        android:text="号码" />
+
+    <EditText
+        android:id="@+id/callnumber"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/Type"
-        android:text="新增" />
+        android:layout_alignTop="@id/iscallnumber"
+        android:layout_toRightOf="@id/Missed"
+        android:hint="自定义(默认随机)" 
+        android:gravity="center"
+        android:enabled="false"
+        />
+
+    <CheckBox
+        android:id="@+id/iscalldate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iscallnumber"
+        android:text="日期" />
+
+    <Button
+        android:id="@+id/calldate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iscalldate"
+        android:layout_alignBottom="@id/iscalldate"
+        android:layout_alignLeft="@id/callnumber"
+        android:layout_alignParentRight="true"
+        android:text="自定义（默认当前）"
+        android:textSize="12dp"
+        android:gravity="center"
+        android:enabled="false"
+         />
+  <CheckBox
+        android:id="@+id/iscalltime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iscalldate"
+        android:text="时间" />
+
+    <Button
+        android:id="@+id/calltime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iscalltime"
+        android:layout_alignBottom="@id/iscalltime"
+        android:layout_alignLeft="@id/callnumber"
+        android:layout_alignParentRight="true"
+        android:text="自定义（默认当前）"
+        android:textSize="12dp"
+        android:gravity="center"
+        android:enabled="false"
+         />
+    <View
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/iscalltime"
+        android:background="#C0C0C0" >
+    </View>
 
     <EditText
         android:id="@+id/calllogNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addCallLog"
+        android:layout_below="@id/line1"
         android:ems="10"
         android:hint="输入增加通话记录条数"
         android:textSize="18dp" >
     </EditText>
 
     <Button
+        android:id="@+id/addCallLog"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/calllogNumber"
+        android:layout_alignBottom="@id/calllogNumber"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/line1"
+        android:text="新增" />
+
+    <Button
         android:id="@+id/clearCallLog"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/addCallLog"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/calllogNumber"
         android:text="清空通话记录" />
+    
+    
 
 </RelativeLayout>
