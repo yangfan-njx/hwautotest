@@ -23,7 +23,7 @@
         android:id="@+id/contactSetting"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/contactTitle" 
+        android:layout_below="@id/contactTitle" 
 		android:text="添加联系人选项："
         android:textSize="15dp" >
         
@@ -35,20 +35,28 @@
 	    android:id="@+id/name"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/contactSetting" >
+	    android:layout_below="@id/contactSetting" >
+		<RadioButton
+        android:id="@+id/chineseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+        android:text="中文联系人" 
+        android:checked="true"/>
 		
 	     <RadioButton
         android:id="@+id/englishName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="英文联系人" />
-
-        <RadioButton
-        android:id="@+id/chineseName"
+	     
+	     <RadioButton
+        android:id="@+id/chineseandenglishName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-         android:layout_alignParentRight="true"
-        android:text="中文联系人" />
+        android:text="中英文联系人" />
+
+        
 	</RadioGroup>
 	
 	<ListView 
@@ -56,7 +64,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:cacheColorHint ="#00000000"
-	android:layout_below="@+id/name"
+	android:layout_below="@id/name"
 	android:layout_above="@+id/addContacts"
 	></ListView>
 	

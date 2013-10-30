@@ -4,16 +4,23 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.test.hwautotest.R;
 import com.test.hwautotest.mms.Telephony.Sms;;
@@ -36,6 +43,10 @@ public class SMSActivity extends Activity {
 	private RadioGroup read;
 	private RadioButton alreadyRead;
 	private RadioButton unRead;
+	private CheckBox mIsSmsnumber;//复选号码
+	private EditText mSmsnumber;//填入号码
+	
+	private String customSmsnumber;//自定义号码
 	
 	private ProgressDialog m_pDialog;
 	
@@ -52,6 +63,7 @@ public class SMSActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms);
+		d();
 		messageTitle = (TextView)findViewById(R.id.messageTitle);
 		addMessage = (Button)findViewById(R.id.addMessage);
 		clearMessage = (Button)findViewById(R.id.clearMessage);
@@ -68,6 +80,9 @@ public class SMSActivity extends Activity {
 		read = (RadioGroup)findViewById(R.id.read);
 		alreadyRead = (RadioButton)findViewById(R.id.alreadyRead);
 		unRead = (RadioButton)findViewById(R.id.unRead);
+		mIsSmsnumber=(CheckBox)findViewById(R.id.issmsnumber);
+		mSmsnumber=(EditText)findViewById(R.id.smsnumber);
+		
 		
 		messageTitle.setText("信息(当前数量:" + mMessageUtils.getCount() + ")");
 		
@@ -122,28 +137,34 @@ public class SMSActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 
-			// TODO Auto-generated method stub
-			try {
-				mNumber = messageNumber.getText().toString();
+			mNumber = messageNumber.getText().toString();
+			customSmsnumber=mSmsnumber.getText().toString().trim();
+			if (mNumber.equals("")|| !mNumber.matches("\\d*")) {//防止输入非数字的条数
+				mMessageUtils.DisplayToast("新增条数：请输入整数");
+			}else if(mIsSmsnumber.isChecked()
+					&& customSmsnumber.equals("")|| !customSmsnumber.matches("\\d*")||customSmsnumber.length()>11){//
+				mMessageUtils.DisplayToast("号码：请输入11位以内数字");
+			}
+//			else if(!words.isSelected()){
+//				mMessageUtils.DisplayToast("号码：请输入11位以内数字");
+//			}
+			else {
 				number = Integer.parseInt(mNumber);
+				
 				m_pDialog = new ProgressDialog(SMSActivity.this);
 				m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-				m_pDialog.setTitle("正在添加");
+				m_pDialog.setTitle("正在添加"+"记录");
 				m_pDialog.setCanceledOnTouchOutside(false);
 				m_pDialog.setMax(number);
 				m_pDialog.setIndeterminate(false);
 				m_pDialog.setCancelable(true);
 				m_pDialog.show();
-				ProgressDailogAsyncTask asyncTask = new ProgressDailogAsyncTask(number,wordsNumber, readSatuts, messageType);
-				asyncTask.execute(1000);	
-			} catch (Exception e) {
-				// TODO: handle exception
-				if (mNumber != "") {
-					mMessageUtils.DisplayToast("请输入整数");
-				}
+				ProgressDailogAsyncTask asyncTask = new ProgressDailogAsyncTask(number);
+				asyncTask.execute();
 
 			}
-			messageTitle.setText("信息(当前数量:" + mMessageUtils.getCount() + ")");
+
+				messageTitle.setText("信息(当前数量:" + mMessageUtils.getCount() + ")");
 			
 			}
 		});
@@ -164,31 +185,47 @@ public class SMSActivity extends Activity {
 			}
 			}
 		});
+		
+		//添加号码自定义，监听复选框
+		mIsSmsnumber.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					
+					@Override
+					public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+						// TODO Auto-generated method stub
+						mSmsnumber.setEnabled(arg1);
+							
+					}
+				});
 	}
-	private class ProgressDailogAsyncTask extends AsyncTask<Integer, Integer, String> {
+	private class ProgressDailogAsyncTask extends AsyncTask<Integer, Integer, Boolean> {
 		
 		private int number;
-		private int wordsNumber;
-		private int readSatuts;
-		private int messageType;
+//		private int wordsNumber;
+//		private int readSatuts;
+//		private int messageType;
 		
-		private ProgressDailogAsyncTask (int number,int wordsNumber,int readSatuts,int messageType){
+		private ProgressDailogAsyncTask (int number){
 			super();
 			this.number = number;
-			this.wordsNumber = wordsNumber;
-			this.readSatuts = readSatuts;
-			this.messageType = messageType;
+//			this.wordsNumber = wordsNumber;
+//			this.readSatuts = readSatuts;
+//			this.messageType = messageType;
 		}
 		
 		@Override
-		protected String doInBackground(Integer... params) {
+		protected Boolean doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
 			int i = 0;
 			Random mRandom = new Random();
 			for (i = 0; i < number; i++) {
 		
 				try {
-					mMessageUtils.insertSms(wordsNumber, readSatuts, messageType);
+					if(mIsSmsnumber.isChecked()){
+						mMessageUtils.insertSms(wordsNumber, readSatuts, messageType,customSmsnumber);
+					}else{
+						mMessageUtils.insertSms(wordsNumber, readSatuts, messageType);
+					}
+					
 		
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -197,12 +234,13 @@ public class SMSActivity extends Activity {
 				publishProgress(i + 1);
 		
 			}
-			return params[0].intValue() + "";
+//			return params[0].intValue() + "";
+			return true;
 		
 		}
 		
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(Boolean result) {
 			m_pDialog.setTitle("添加完成");
 			messageTitle.setText("信息(当前数量:" + mMessageUtils.getCount() + ")");
 			m_pDialog.cancel();
@@ -226,6 +264,18 @@ public class SMSActivity extends Activity {
 		}
 		}
 			
-	
+	/**
+	 * 查询数据库字段名称
+	 */
+	public void d(){
+		ContentResolver CR = this.getContentResolver();
+		Uri uri = Uri.parse("content://sms");
+		Cursor cursor = CR.query(uri, null, null, null, null);
+		String []cols=cursor.getColumnNames();
+		for(int i=0;i<cols.length;i++){
+			Log.i("look", cols[i]);
+		}
+		
+	}
 	
 }

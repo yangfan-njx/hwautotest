@@ -3,8 +3,162 @@ package com.test.utils;
 import java.util.Random;
 
 public class RandomUtils {
-	
-	
+	final String[] firstEngNames = { "Mary", "Patricia", "Linda", "Barbara",
+			"Elizabeth", "Jennifer", "Maria", "Susan", "Margaret",
+			"Dorothy", "Lisa", "Nancy", "Karen", "Betty", "Helen",
+			"Sandra", "Donna", "Carol", "Ruth", "Sharon", "Michelle",
+			"Laura", "Sarah", "Kimberly", "Deborah", "Jessica", "Shirley",
+			"Cynthia", "Angela", "Melissa", "Brenda", "Amy", "Anna",
+			"Rebecca", "Virginia", "Kathleen", "Pamela", "Martha", "Debra",
+			"Amanda", "Stephanie", "Carolyn", "Christine", "Marie",
+			"Janet", "Catherine", "Frances", "Ann", "Joyce", "Diane",
+			"Alice", "Julie", "Heather", "Teresa", "Doris", "Gloria",
+			"Evelyn", "Jean", "Cheryl", "Mildred", "Katherine", "Joan",
+			"Ashley", "Judith", "Rose", "Janice", "Kelly", "Nicole",
+			"Judy", "Christina", "Kathy", "Theresa", "Beverly", "Denise",
+			"Tammy", "Irene", "Jane", "Lori", "Rachel", "Marilyn",
+			"Andrea", "Kathryn", "Louise", "Sara", "Anne", "Jacqueline",
+			"Wanda", "Bonnie", "Julia", "Ruby", "Lois", "Tina", "Phyllis",
+			"Norma", "Paula", "Diana", "Annie", "Lillian", "Emily",
+			"Robin", "Peggy", "Crystal", "Gladys", "Rita", "Dawn",
+			"Connie", "Florence", "Tracy", "Edna", "Tiffany", "Carmen",
+			"Rosa", "Cindy", "Grace", "Wendy", "Victoria", "Edith", "Kim",
+			"Sherry", "Sylvia", "Josephine", "Thelma", "Shannon", "Sheila",
+			"Ethel", "Ellen", "Elaine", "Marjorie", "Carrie", "Charlotte",
+			"Monica", "Esther", "Pauline", "Emma", "Juanita", "Anita",
+			"Rhonda", "Hazel", "Amber", "Eva", "Debbie", "April", "Leslie",
+			"Clara", "Lucille", "Jamie", "Joanne", "Eleanor", "Valerie",
+			"Danielle", "Megan", "Alicia", "Suzanne", "Michele", "Gail",
+			"Bertha", "Darlene", "Veronica", "Jill", "Erin", "Geraldine",
+			"Lauren", "Cathy", "Joann", "Lorraine", "Lynn", "Sally",
+			"Regina", "Erica", "Beatrice", "Dolores", "Bernice", "Audrey",
+			"Yvonne", "Annette", "June", "Samantha", "Marion", "Dana",
+			"Stacy", "Ana", "Renee", "Ida", "Vivian", "Roberta", "Holly",
+			"Brittany", "Melanie", "Loretta", "Yolanda", "Jeanette",
+			"Laurie", "Katie", "Kristen", "Vanessa", "Alma", "Sue",
+			"Elsie", "Beth", "Jeanne", "James", "John", "Robert",
+			"Michael", "William", "David", "Richard", "Charles", "Joseph",
+			"Thomas", "Christopher", "Daniel", "Paul", "Mark", "Donald",
+			"George", "Kenneth", "Steven", "Edward", "Brian", "Ronald",
+			"Anthony", "Kevin", "Jason", "Matthew", "Gary", "Timothy",
+			"Jose", "Larry", "Jeffrey", "Frank", "Scott", "Eric",
+			"Stephen", "Andrew", "Raymond", "Gregory", "Joshua", "Jerry",
+			"Dennis", "Walter", "Patrick", "Peter", "Harold", "Douglas",
+			"Henry", "Carl", "Arthur", "Ryan", "Roger", "Joe", "Juan",
+			"Jack", "Albert", "Jonathan", "Justin", "Terry", "Gerald",
+			"Keith", "Samuel", "Willie", "Ralph", "Lawrence", "Nicholas",
+			"Roy", "Benjamin", "Bruce", "Brandon", "Adam", "Harry", "Fred",
+			"Wayne", "Billy", "Steve", "Louis", "Jeremy", "Aaron", "Randy",
+			"Howard", "Eugene", "Carlos", "Russell", "Bobby", "Victor",
+			"Martin", "Ernest", "Phillip", "Todd", "Jesse", "Craig",
+			"Alan", "Shawn", "Clarence", "Sean", "Philip", "Chris",
+			"Johnny", "Earl", "Jimmy", "Antonio", "Danny", "Bryan", "Tony",
+			"Luis", "Mike", "Stanley", "Leonard", "Nathan", "Dale",
+			"Manuel", "Rodney", "Curtis", "Norman", "Allen", "Marvin",
+			"Vincent", "Glenn", "Jeffery", "Travis", "Jeff", "Chad",
+			"Jacob", "Lee", "Melvin", "Alfred", "Kyle", "Francis",
+			"Bradley", "Jesus", "Herbert", "Frederick", "Ray", "Joel",
+			"Edwin", "Don", "Eddie", "Ricky", "Troy", "Randall", "Barry",
+			"Alexander", "Bernard", "Mario", "Leroy", "Francisco",
+			"Marcus", "Micheal", "Theodore", "Clifford", "Miguel", "Oscar",
+			"Jay", "Jim", "Tom", "Calvin", "Alex", "Jon", "Ronnie", "Bill",
+			"Lloyd", "Tommy", "Leon", "Derek", "Warren", "Darrell",
+			"Jerome", "Floyd", "Leo", "Alvin", "Tim", "Wesley", "Gordon",
+			"Dean", "Greg", "Jorge", "Dustin", "Pedro", "Derrick", "Dan",
+			"Lewis", "Zachary", "Corey", "Herman", "Maurice", "Vernon",
+			"Roberto", "Clyde", "Glen", "Hector", "Shane", "Ricardo",
+			"Sam", "Rick", "Lester", "Brent", "Ramon", "Charlie", "Tyler",
+			"Gilbert", "Gene" };
+	final String[] lastEngNames = { "Smith", "Johnson", "Williams", "Jones",
+			"Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
+			"Anderson", "Thomas", "Jackson", "White", "Harris", "Martin",
+			"Thompson", "Garcia", "Martinez", "Robinson", "Clark",
+			"Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen",
+			"Young", "Hernandez", "King", "Wright", "Lopez", "Hill",
+			"Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson",
+			"Carter", "Mitchell", "Perez", "Roberts", "Turner", "Phillips",
+			"Campbell", "Parker", "Evans", "Edwards", "Collins", "Stewart",
+			"Sanchez", "Morris", "Rogers", "Reed", "Cook", "Morgan",
+			"Bell", "Murphy", "Bailey", "Rivera", "Cooper", "Richardson",
+			"Cox", "Howard", "Ward", "Torres", "Peterson", "Gray",
+			"Ramirez", "James", "Watson", "Brooks", "Kelly", "Sanders",
+			"Price", "Bennett", "Wood", "Barnes", "Ross", "Henderson",
+			"Coleman", "Jenkins", "Perry", "Powell", "Long", "Patterson",
+			"Hughes", "Flores", "Washington", "Butler", "Simmons",
+			"Foster", "Gonzales", "Bryant", "Alexander", "Russell",
+			"Griffin", "Diaz", "Hayes", "Myers", "Ford", "Hamilton",
+			"Graham", "Sullivan", "Wallace", "Woods", "Cole", "West",
+			"Jordan", "Owens", "Reynolds", "Fisher", "Ellis", "Harrison",
+			"Gibson", "Mcdonald", "Cruz", "Marshall", "Ortiz", "Gomez",
+			"Murray", "Freeman", "Wells", "Webb", "Simpson", "Stevens",
+			"Tucker", "Porter", "Hunter", "Hicks", "Crawford", "Henry",
+			"Boyd", "Mason", "Morales", "Kennedy", "Warren", "Dixon",
+			"Ramos", "Reyes", "Burns", "Gordon", "Shaw", "Holmes", "Rice",
+			"Robertson", "Hunt", "Black", "Daniels", "Palmer", "Mills",
+			"Nichols", "Grant", "Knight", "Ferguson", "Rose", "Stone",
+			"Hawkins", "Dunn", "Perkins", "Hudson", "Spencer", "Gardner",
+			"Stephens", "Payne", "Pierce", "Berry", "Matthews", "Arnold",
+			"Wagner", "Willis", "Ray", "Watkins", "Olson", "Carroll",
+			"Duncan", "Snyder", "Hart", "Cunningham", "Bradley", "Lane",
+			"Andrews", "Ruiz", "Harper", "Fox", "Riley", "Armstrong",
+			"Carpenter", "Weaver", "Greene", "Lawrence", "Elliott",
+			"Chavez", "Sims", "Austin", "Peters", "Kelley", "Franklin",
+			"Lawson" };
+	final String[] firstCnNames = { "赵", "钱", "孙", "李", "周", "吴", "郑", "王",
+			"冯", "陈", "诸 ", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许",
+			"何", "吕", "施", "张", "孔", "曹", "严 ", "华", "金", "魏", "陶", "姜",
+			"戚", "谢", "邹", "喻", "柏", "水", "窦", "章", "云", "苏", "潘 ", "葛",
+			"奚", "范", "彭", "郎", "鲁", "韦", "昌", "马", "苗", "凤", "花", "方",
+			"俞", "任", "袁 ", "柳", "酆", "鲍", "史", "唐", "费", "廉", "岑", "薛",
+			"雷", "贺", "倪", "汤", "滕", "殷", "罗 ", "毕", "郝", "邬", "安", "常",
+			"乐", "于", "时", "傅", "皮", "卡", "齐", "康", "伍", "余", "元 ", "卜",
+			"顾", "孟", "平", "黄", "和", "穆", "萧", "尹", "姚", "邵", "堪", "汪",
+			"祁", "毛", "禹 ", "狄", "米", "贝", "明", "臧", "计", "伏", "成", "戴",
+			"谈", "宋", "茅", "庞", "熊", "纪", "舒 ", "屈", "项", "祝", "董", "粱",
+			"杜", "阮", "蓝", "闵", "席", "季", "麻", "强", "贾", "路", "娄 ", "危",
+			"江", "童", "颜", "郭", "梅", "盛", "林", "刁", "钟", "徐", "邱", "骆",
+			"高", "夏", "蔡 ", "田", "樊", "胡", "凌", "霍", "虞", "万", "支", "柯",
+			"咎", "管", "卢", "莫", "经", "房", "裘 ", "缪", "干", "解", "应", "宗",
+			"丁", "宣", "贲", "邓", "郁", "单", "杭", "洪", "包", "诸", "左 ", "石",
+			"崔", "吉", "钮", "龚", "程", "嵇", "邢", "滑", "裴", "陆", "荣", "翁",
+			"荀", "羊", "於 ", "惠", "甄", "魏", "家", "封", "芮", "羿", "储", "靳",
+			"汲", "邴", "糜", "松", "井", "段", "富 ", "巫", "乌", "焦", "巴", "弓",
+			"牧", "隗", "山", "谷", "车", "侯", "宓", "蓬", "全", "郗", "班 ", "仰",
+			"秋", "仲", "伊", "宫", "宁", "仇", "栾", "暴", "甘", "钭", "厉", "戎",
+			"祖", "武", "符 ", "刘", "景", "詹", "束", "龙", "司马", "上官", "欧阳",
+			"夏侯", "诸葛", "东方", "尉迟", "公孙 ", "长孙", "慕容", "司徒", "西门" };
+	final String[] lastCnNames = { "超", "媛", "念", "立", "思", "嘉", "雨", "伟",
+			"权", "秋", "佩 ", "雅", "联", "如", "渠", "保", "室", "铜", "梧", "胤",
+			"昱", "佳", "伊", "校", "诗", "节", "如 ", "阁", "耕", "宫", "古", "谷",
+			"观", "桂", "贵", "国", "广", "冠 ", "汉", "翰", "航", "杭", "海", "豪",
+			"浩", "皓", "和", "河", "贺", "恒", "弘", "虹", "宏", "红 ", "厚", "鹄",
+			"虎", "华", "欢", "怀", "辉", "惠", "会", "奇", "吉 ", "骥", "嘉", "佳",
+			"甲", "稼", "江", "坚", "剑", "锦", "经", "镜", "界", "竞", "介", "京",
+			"建 ", "净", "精", "敬", "静", "靖", "津", "进", "菁", "景", "炯", "驹 ",
+			"举", "炬", "君", "俊", "军", "骏", "郡", "峻", "恺", "楷", "康", "可",
+			"克", "珂", "逵", "魁 ", "阔", "昆", "奎", "宽", "况", "乐", "雷", "岭",
+			"廉", "霖", "麟 ", "灵", "利", "良", "联", "烈", "罗", "陵", "梁", "立",
+			"礼", "力", "莉", "烁", "隆", "龙", "禄 ", "璐", "露", "律", "茂", "梦",
+			"密", "铭", "明", "绵", "妙", "默 ", "木", "能", "年", "宁", "念", "怒",
+			"庞", "佩", "培", "朋", "鹏", "屏", "平", "魄", "珀", "璞 ", "奇", "琦",
+			"齐", "启", "谦", "乾", "茜", "倩", "芹", "琴", "青 ", "卿", "秋", "权",
+			"求", "情", "渠", "全", "荃", "群", "泉", "然", "让", "仁", "任", "荣",
+			"儒 ", "锐", "若", "瑞", "三", "瑟", "森", "韶", "绍", "尚", "商", "珊 ",
+			"善", "生", "升", "声", "晟", "胜", "盛", "诗", "时", "石", "实", "凇",
+			"慎", "设", "守", "随 ", "世", "寿", "仕", "余", "帅", "双", "朔", "硕",
+			"水", "誓", "适 ", "书", "舒", "殊", "顺", "思", "嗣", "似", "松", "颂",
+			"素", "岁", "棠", "泰", "腾", "添", "铁 ", "同", "桐", "童", "彤", "团",
+			"涂", "图", "土", "万", "旺", "望 ", "王", "闻", "威", "薇", "嵬", "伟",
+			"卫", "蔚", "文", "微", "巍", "玮", "为", "畏", "吾", "午 ", "西", "熙",
+			"玺", "仙", "先", "孝", "湘", "祥", "行", "献", "享 ", "效", "兴", "夏",
+			"宣", "协", "向", "校", "轩", "瑕", "衔", "筱", "羡", "相", "香", "贤",
+			"翔 ", "杏", "新", "信", "幸", "心", "星", "绣", "秀", "欣", "鑫", "兴 ",
+			"行", "雄", "许", "炫", "雪", "学", "旭", "璇", "勋", "萱", "迅", "亚",
+			"雅", "扬", "耀", "彦 ", "延", "岩", "炎", "永", "砚", "演", "焱", "洋",
+			"阳", "曜", "耀 ", "夜", "译", "逸", "伊", "义", "艺", "意", "异", "怡",
+			"翼", "毅", "银", "瑛", "仪", "易", "寅 ", "印", "苡", "野", "业", "英",
+			"璎", "盈", "颖", "影", "雍", "勇 ", "悠", "由", "游", "佑", "友", "瑜",
+			"遇", "玉", "岳", "元", "宇", "愚", "钰", "裕", "郁", "于 " };
 	
 	/**
 	 * 生成随机的号码
@@ -32,63 +186,9 @@ public class RandomUtils {
 
 		String name = null;
 
-		final String[] firstNames = { "赵", "钱", "孙", "李", "周", "吴", "郑", "王",
-				"冯", "陈", "诸 ", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许",
-				"何", "吕", "施", "张", "孔", "曹", "严 ", "华", "金", "魏", "陶", "姜",
-				"戚", "谢", "邹", "喻", "柏", "水", "窦", "章", "云", "苏", "潘 ", "葛",
-				"奚", "范", "彭", "郎", "鲁", "韦", "昌", "马", "苗", "凤", "花", "方",
-				"俞", "任", "袁 ", "柳", "酆", "鲍", "史", "唐", "费", "廉", "岑", "薛",
-				"雷", "贺", "倪", "汤", "滕", "殷", "罗 ", "毕", "郝", "邬", "安", "常",
-				"乐", "于", "时", "傅", "皮", "卡", "齐", "康", "伍", "余", "元 ", "卜",
-				"顾", "孟", "平", "黄", "和", "穆", "萧", "尹", "姚", "邵", "堪", "汪",
-				"祁", "毛", "禹 ", "狄", "米", "贝", "明", "臧", "计", "伏", "成", "戴",
-				"谈", "宋", "茅", "庞", "熊", "纪", "舒 ", "屈", "项", "祝", "董", "粱",
-				"杜", "阮", "蓝", "闵", "席", "季", "麻", "强", "贾", "路", "娄 ", "危",
-				"江", "童", "颜", "郭", "梅", "盛", "林", "刁", "钟", "徐", "邱", "骆",
-				"高", "夏", "蔡 ", "田", "樊", "胡", "凌", "霍", "虞", "万", "支", "柯",
-				"咎", "管", "卢", "莫", "经", "房", "裘 ", "缪", "干", "解", "应", "宗",
-				"丁", "宣", "贲", "邓", "郁", "单", "杭", "洪", "包", "诸", "左 ", "石",
-				"崔", "吉", "钮", "龚", "程", "嵇", "邢", "滑", "裴", "陆", "荣", "翁",
-				"荀", "羊", "於 ", "惠", "甄", "魏", "家", "封", "芮", "羿", "储", "靳",
-				"汲", "邴", "糜", "松", "井", "段", "富 ", "巫", "乌", "焦", "巴", "弓",
-				"牧", "隗", "山", "谷", "车", "侯", "宓", "蓬", "全", "郗", "班 ", "仰",
-				"秋", "仲", "伊", "宫", "宁", "仇", "栾", "暴", "甘", "钭", "厉", "戎",
-				"祖", "武", "符 ", "刘", "景", "詹", "束", "龙", "司马", "上官", "欧阳",
-				"夏侯", "诸葛", "东方", "尉迟", "公孙 ", "长孙", "慕容", "司徒", "西门" };
-		final String[] lastNames = { "超", "媛", "念", "立", "思", "嘉", "雨", "伟",
-				"权", "秋", "佩 ", "雅", "联", "如", "渠", "保", "室", "铜", "梧", "胤",
-				"昱", "佳", "伊", "校", "诗", "节", "如 ", "阁", "耕", "宫", "古", "谷",
-				"观", "桂", "贵", "国", "广", "冠 ", "汉", "翰", "航", "杭", "海", "豪",
-				"浩", "皓", "和", "河", "贺", "恒", "弘", "虹", "宏", "红 ", "厚", "鹄",
-				"虎", "华", "欢", "怀", "辉", "惠", "会", "奇", "吉 ", "骥", "嘉", "佳",
-				"甲", "稼", "江", "坚", "剑", "锦", "经", "镜", "界", "竞", "介", "京",
-				"建 ", "净", "精", "敬", "静", "靖", "津", "进", "菁", "景", "炯", "驹 ",
-				"举", "炬", "君", "俊", "军", "骏", "郡", "峻", "恺", "楷", "康", "可",
-				"克", "珂", "逵", "魁 ", "阔", "昆", "奎", "宽", "况", "乐", "雷", "岭",
-				"廉", "霖", "麟 ", "灵", "利", "良", "联", "烈", "罗", "陵", "梁", "立",
-				"礼", "力", "莉", "烁", "隆", "龙", "禄 ", "璐", "露", "律", "茂", "梦",
-				"密", "铭", "明", "绵", "妙", "默 ", "木", "能", "年", "宁", "念", "怒",
-				"庞", "佩", "培", "朋", "鹏", "屏", "平", "魄", "珀", "璞 ", "奇", "琦",
-				"齐", "启", "谦", "乾", "茜", "倩", "芹", "琴", "青 ", "卿", "秋", "权",
-				"求", "情", "渠", "全", "荃", "群", "泉", "然", "让", "仁", "任", "荣",
-				"儒 ", "锐", "若", "瑞", "三", "瑟", "森", "韶", "绍", "尚", "商", "珊 ",
-				"善", "生", "升", "声", "晟", "胜", "盛", "诗", "时", "石", "实", "凇",
-				"慎", "设", "守", "随 ", "世", "寿", "仕", "余", "帅", "双", "朔", "硕",
-				"水", "誓", "适 ", "书", "舒", "殊", "顺", "思", "嗣", "似", "松", "颂",
-				"素", "岁", "棠", "泰", "腾", "添", "铁 ", "同", "桐", "童", "彤", "团",
-				"涂", "图", "土", "万", "旺", "望 ", "王", "闻", "威", "薇", "嵬", "伟",
-				"卫", "蔚", "文", "微", "巍", "玮", "为", "畏", "吾", "午 ", "西", "熙",
-				"玺", "仙", "先", "孝", "湘", "祥", "行", "献", "享 ", "效", "兴", "夏",
-				"宣", "协", "向", "校", "轩", "瑕", "衔", "筱", "羡", "相", "香", "贤",
-				"翔 ", "杏", "新", "信", "幸", "心", "星", "绣", "秀", "欣", "鑫", "兴 ",
-				"行", "雄", "许", "炫", "雪", "学", "旭", "璇", "勋", "萱", "迅", "亚",
-				"雅", "扬", "耀", "彦 ", "延", "岩", "炎", "永", "砚", "演", "焱", "洋",
-				"阳", "曜", "耀 ", "夜", "译", "逸", "伊", "义", "艺", "意", "异", "怡",
-				"翼", "毅", "银", "瑛", "仪", "易", "寅 ", "印", "苡", "野", "业", "英",
-				"璎", "盈", "颖", "影", "雍", "勇 ", "悠", "由", "游", "佑", "友", "瑜",
-				"遇", "玉", "岳", "元", "宇", "愚", "钰", "裕", "郁", "于 " };
-		int lastNamesLength = lastNames.length - 1;
-		int firstNameLength = firstNames.length - 1;
+		
+		int lastNamesLength = lastCnNames.length - 1;
+		int firstNameLength = firstCnNames.length - 1;
 		Random random = new Random();
 		System.out.println(lastNamesLength + " " + firstNameLength);
 		try {
@@ -98,9 +198,9 @@ public class RandomUtils {
 			System.out.println(r1 + " " + r2 + " " + r3);
 			int number = random.nextInt(1);
 			if (number  == 0) {
-				name = firstNames[r1].concat(lastNames[r2]);
+				name = firstCnNames[r1].concat(lastCnNames[r2]);
 			} else {
-				name = firstNames[r1] + lastNames[r2] + lastNames[r3];
+				name = firstCnNames[r1] + lastCnNames[r2] + lastCnNames[r3];
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -122,116 +222,16 @@ public class RandomUtils {
 
 		String name = null;
 
-		final String[] firstNames = { "Mary", "Patricia", "Linda", "Barbara",
-				"Elizabeth", "Jennifer", "Maria", "Susan", "Margaret",
-				"Dorothy", "Lisa", "Nancy", "Karen", "Betty", "Helen",
-				"Sandra", "Donna", "Carol", "Ruth", "Sharon", "Michelle",
-				"Laura", "Sarah", "Kimberly", "Deborah", "Jessica", "Shirley",
-				"Cynthia", "Angela", "Melissa", "Brenda", "Amy", "Anna",
-				"Rebecca", "Virginia", "Kathleen", "Pamela", "Martha", "Debra",
-				"Amanda", "Stephanie", "Carolyn", "Christine", "Marie",
-				"Janet", "Catherine", "Frances", "Ann", "Joyce", "Diane",
-				"Alice", "Julie", "Heather", "Teresa", "Doris", "Gloria",
-				"Evelyn", "Jean", "Cheryl", "Mildred", "Katherine", "Joan",
-				"Ashley", "Judith", "Rose", "Janice", "Kelly", "Nicole",
-				"Judy", "Christina", "Kathy", "Theresa", "Beverly", "Denise",
-				"Tammy", "Irene", "Jane", "Lori", "Rachel", "Marilyn",
-				"Andrea", "Kathryn", "Louise", "Sara", "Anne", "Jacqueline",
-				"Wanda", "Bonnie", "Julia", "Ruby", "Lois", "Tina", "Phyllis",
-				"Norma", "Paula", "Diana", "Annie", "Lillian", "Emily",
-				"Robin", "Peggy", "Crystal", "Gladys", "Rita", "Dawn",
-				"Connie", "Florence", "Tracy", "Edna", "Tiffany", "Carmen",
-				"Rosa", "Cindy", "Grace", "Wendy", "Victoria", "Edith", "Kim",
-				"Sherry", "Sylvia", "Josephine", "Thelma", "Shannon", "Sheila",
-				"Ethel", "Ellen", "Elaine", "Marjorie", "Carrie", "Charlotte",
-				"Monica", "Esther", "Pauline", "Emma", "Juanita", "Anita",
-				"Rhonda", "Hazel", "Amber", "Eva", "Debbie", "April", "Leslie",
-				"Clara", "Lucille", "Jamie", "Joanne", "Eleanor", "Valerie",
-				"Danielle", "Megan", "Alicia", "Suzanne", "Michele", "Gail",
-				"Bertha", "Darlene", "Veronica", "Jill", "Erin", "Geraldine",
-				"Lauren", "Cathy", "Joann", "Lorraine", "Lynn", "Sally",
-				"Regina", "Erica", "Beatrice", "Dolores", "Bernice", "Audrey",
-				"Yvonne", "Annette", "June", "Samantha", "Marion", "Dana",
-				"Stacy", "Ana", "Renee", "Ida", "Vivian", "Roberta", "Holly",
-				"Brittany", "Melanie", "Loretta", "Yolanda", "Jeanette",
-				"Laurie", "Katie", "Kristen", "Vanessa", "Alma", "Sue",
-				"Elsie", "Beth", "Jeanne", "James", "John", "Robert",
-				"Michael", "William", "David", "Richard", "Charles", "Joseph",
-				"Thomas", "Christopher", "Daniel", "Paul", "Mark", "Donald",
-				"George", "Kenneth", "Steven", "Edward", "Brian", "Ronald",
-				"Anthony", "Kevin", "Jason", "Matthew", "Gary", "Timothy",
-				"Jose", "Larry", "Jeffrey", "Frank", "Scott", "Eric",
-				"Stephen", "Andrew", "Raymond", "Gregory", "Joshua", "Jerry",
-				"Dennis", "Walter", "Patrick", "Peter", "Harold", "Douglas",
-				"Henry", "Carl", "Arthur", "Ryan", "Roger", "Joe", "Juan",
-				"Jack", "Albert", "Jonathan", "Justin", "Terry", "Gerald",
-				"Keith", "Samuel", "Willie", "Ralph", "Lawrence", "Nicholas",
-				"Roy", "Benjamin", "Bruce", "Brandon", "Adam", "Harry", "Fred",
-				"Wayne", "Billy", "Steve", "Louis", "Jeremy", "Aaron", "Randy",
-				"Howard", "Eugene", "Carlos", "Russell", "Bobby", "Victor",
-				"Martin", "Ernest", "Phillip", "Todd", "Jesse", "Craig",
-				"Alan", "Shawn", "Clarence", "Sean", "Philip", "Chris",
-				"Johnny", "Earl", "Jimmy", "Antonio", "Danny", "Bryan", "Tony",
-				"Luis", "Mike", "Stanley", "Leonard", "Nathan", "Dale",
-				"Manuel", "Rodney", "Curtis", "Norman", "Allen", "Marvin",
-				"Vincent", "Glenn", "Jeffery", "Travis", "Jeff", "Chad",
-				"Jacob", "Lee", "Melvin", "Alfred", "Kyle", "Francis",
-				"Bradley", "Jesus", "Herbert", "Frederick", "Ray", "Joel",
-				"Edwin", "Don", "Eddie", "Ricky", "Troy", "Randall", "Barry",
-				"Alexander", "Bernard", "Mario", "Leroy", "Francisco",
-				"Marcus", "Micheal", "Theodore", "Clifford", "Miguel", "Oscar",
-				"Jay", "Jim", "Tom", "Calvin", "Alex", "Jon", "Ronnie", "Bill",
-				"Lloyd", "Tommy", "Leon", "Derek", "Warren", "Darrell",
-				"Jerome", "Floyd", "Leo", "Alvin", "Tim", "Wesley", "Gordon",
-				"Dean", "Greg", "Jorge", "Dustin", "Pedro", "Derrick", "Dan",
-				"Lewis", "Zachary", "Corey", "Herman", "Maurice", "Vernon",
-				"Roberto", "Clyde", "Glen", "Hector", "Shane", "Ricardo",
-				"Sam", "Rick", "Lester", "Brent", "Ramon", "Charlie", "Tyler",
-				"Gilbert", "Gene" };
-		final String[] lastNames = { "Smith", "Johnson", "Williams", "Jones",
-				"Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
-				"Anderson", "Thomas", "Jackson", "White", "Harris", "Martin",
-				"Thompson", "Garcia", "Martinez", "Robinson", "Clark",
-				"Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen",
-				"Young", "Hernandez", "King", "Wright", "Lopez", "Hill",
-				"Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson",
-				"Carter", "Mitchell", "Perez", "Roberts", "Turner", "Phillips",
-				"Campbell", "Parker", "Evans", "Edwards", "Collins", "Stewart",
-				"Sanchez", "Morris", "Rogers", "Reed", "Cook", "Morgan",
-				"Bell", "Murphy", "Bailey", "Rivera", "Cooper", "Richardson",
-				"Cox", "Howard", "Ward", "Torres", "Peterson", "Gray",
-				"Ramirez", "James", "Watson", "Brooks", "Kelly", "Sanders",
-				"Price", "Bennett", "Wood", "Barnes", "Ross", "Henderson",
-				"Coleman", "Jenkins", "Perry", "Powell", "Long", "Patterson",
-				"Hughes", "Flores", "Washington", "Butler", "Simmons",
-				"Foster", "Gonzales", "Bryant", "Alexander", "Russell",
-				"Griffin", "Diaz", "Hayes", "Myers", "Ford", "Hamilton",
-				"Graham", "Sullivan", "Wallace", "Woods", "Cole", "West",
-				"Jordan", "Owens", "Reynolds", "Fisher", "Ellis", "Harrison",
-				"Gibson", "Mcdonald", "Cruz", "Marshall", "Ortiz", "Gomez",
-				"Murray", "Freeman", "Wells", "Webb", "Simpson", "Stevens",
-				"Tucker", "Porter", "Hunter", "Hicks", "Crawford", "Henry",
-				"Boyd", "Mason", "Morales", "Kennedy", "Warren", "Dixon",
-				"Ramos", "Reyes", "Burns", "Gordon", "Shaw", "Holmes", "Rice",
-				"Robertson", "Hunt", "Black", "Daniels", "Palmer", "Mills",
-				"Nichols", "Grant", "Knight", "Ferguson", "Rose", "Stone",
-				"Hawkins", "Dunn", "Perkins", "Hudson", "Spencer", "Gardner",
-				"Stephens", "Payne", "Pierce", "Berry", "Matthews", "Arnold",
-				"Wagner", "Willis", "Ray", "Watkins", "Olson", "Carroll",
-				"Duncan", "Snyder", "Hart", "Cunningham", "Bradley", "Lane",
-				"Andrews", "Ruiz", "Harper", "Fox", "Riley", "Armstrong",
-				"Carpenter", "Weaver", "Greene", "Lawrence", "Elliott",
-				"Chavez", "Sims", "Austin", "Peters", "Kelley", "Franklin",
-				"Lawson" };
-		int lastNamesLength = lastNames.length - 1;
-		int firstNameLength = firstNames.length - 1;
+		
+		int lastNamesLength = lastEngNames.length - 1;
+		int firstNameLength = firstEngNames.length - 1;
 		Random random = new Random();
 		System.out.println(lastNamesLength + " " + firstNameLength);
 		try {
 			int r1 = random.nextInt(lastNamesLength);
 			int r2 = random.nextInt(firstNameLength);
 			System.out.println(r1 + " " + r2);
-			name = firstNames[r1] + " " + lastNames[r2];
+			name = firstEngNames[r1] + " " + lastEngNames[r2];
 		} catch (Exception e) {
 			// TODO: handle exception
 			name = "Miacheal jakson";
@@ -355,6 +355,47 @@ public class RandomUtils {
 		}
 		return message;
 		
+	}
+	
+	/**
+	 * 
+	 * 方法名：随机生成中英文姓名
+	 * 
+	 * @return
+	 */
+	public String chineseandenglishNameRandom() {
+
+		String name = null;
+
+		int lastNamesLength = lastCnNames.length - 1;
+		int firstNameLength = firstCnNames.length - 1;
+		Random random = new Random();
+		System.out.println(lastNamesLength + " " + firstNameLength);
+		try {
+			int r1 = random.nextInt(lastNamesLength);
+			int r2 = random.nextInt(firstNameLength);
+			int r3 = random.nextInt(firstNameLength);
+			int r4 = random.nextInt(firstEngNames.length-1);
+//			int r5 = random.nextInt(lastEngNames.length-1);
+			System.out.println(r1 + " " + r2 + " " + r3);
+			int number = random.nextInt(1);
+			if (number  == 0) {
+				name = firstCnNames[r1]+firstEngNames[r4]
+//						+lastEngNames[r5]
+								;
+			} else {
+				name = firstCnNames[r1] +firstEngNames[r4]
+//						+lastEngNames[r5]
+								;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			name = "张三Haha";
+		}
+
+		return name;
+
 	}
 	
 }

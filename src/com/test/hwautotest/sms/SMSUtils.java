@@ -39,7 +39,7 @@ public class SMSUtils extends Utils{
 	}
 	
 	/**
-	 * 插入短信
+	 * 插入一条随机短信
 	 * 
 	 * 
 	 */
@@ -53,4 +53,27 @@ public class SMSUtils extends Utils{
 		values.put(BODY,mRandomUtils.contentRandom(number)); /* smsbody *//* insert sql */
 		mContext.getContentResolver().insert(Uri.parse("content://sms"), values);
 	}
+	
+	/**
+	 * 插入一条自定义短信
+	 * 
+	 * 
+	 */
+	public void insertSms(int number,int read,int type,String phone) {
+		final String ADDRESS = "address";
+		final String BODY = "body";
+		ContentValues values = new ContentValues();
+//		values.put(ADDRESS, mRandomUtils.numberRandom()); /* 发送的号码 */
+		values.put(ADDRESS, phone); /* 发送的号码 */
+		values.put("read", read);
+		values.put("type", type); /* 1INBOX收件箱／2SENT发件箱 ,3DRAG草稿箱*/
+		values.put(BODY,mRandomUtils.contentRandom(number)); /* smsbody *//* insert sql */
+		mContext.getContentResolver().insert(Uri.parse("content://sms"), values);
+	}
+	
+	
+	
 }
+
+
+

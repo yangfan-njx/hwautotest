@@ -9,10 +9,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.RawContacts;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,10 +51,11 @@ public class ContactsActivity extends Activity {
 	RadioGroup name;
 	RadioButton chineseName;
 	RadioButton englishName;
+	RadioButton chineseandenglishName;
 	ProgressDialog m_pDialog;
 	ListView lv;
 	
-	String chioce[] = { "添加Email", "添加IM", "添加公司", "添加地址", "添加备注", "添加昵称", "添加网站" }; 
+	String chioces[] = { "添加Email", "添加IM", "添加公司", "添加地址", "添加备注", "添加昵称", "添加网站" }; 
 	 
 	ArrayList<String> listStr = null; 
 	private List<HashMap<String, Object>> list = null; 
@@ -74,7 +78,7 @@ public class ContactsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contacts);
-
+		
 		addContacts = (Button) this.findViewById(R.id.addContacts);
 		clearContacts = (Button) this.findViewById(R.id.clearContacts);
 		contactAmount = (TextView) this.findViewById(R.id.contactTitle);
@@ -83,6 +87,7 @@ public class ContactsActivity extends Activity {
 		name = (RadioGroup) this.findViewById(R.id.name);
 		chineseName = (RadioButton)this.findViewById(R.id.chineseName);
 		englishName = (RadioButton)this.findViewById(R.id.englishName);
+		chineseandenglishName = (RadioButton)this.findViewById(R.id.chineseandenglishName);
 		showCheckBoxListView(); 
 		amount = mContactsUtils.getCount();
 		contactAmount.setText("电话本(当前数量:" + amount + ")");
@@ -93,10 +98,12 @@ public class ContactsActivity extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				// TODO Auto-generated method stub
-				if(checkedId == englishName.getId()){
-					language = "english";
-				}else{
+				if(checkedId == chineseName.getId()){
 					language = "chinese";
+				}else if(checkedId == englishName.getId()){
+					language = "english";
+				}else if(checkedId == chineseandenglishName.getId()){
+					language = "chineseandenglish";
 				}
 			}
 		});
@@ -317,69 +324,96 @@ public class ContactsActivity extends Activity {
 	}
 	
 	// 显示带有checkbox的listview 
-	private void showCheckBoxListView() { 
-		list = new ArrayList<HashMap<String, Object>>(); 
-		for (int i = 0; i < chioce.length; i++) { 
-		 
-			HashMap<String, Object> map = new HashMap<String, Object>(); 
-			map.put("item_tv", chioce[i]); 
-			map.put("app_select", false); 
-			list.add(map); 
-		} 
-			adapter = new MyAdapter(this, list, R.layout.con_list, 
-			new String[] { "item_tv", "item_cb" }, new int[] { 
-			R.id.item_tv, R.id.app_select }); 
-			lv.setAdapter(adapter); 
-			listStr = new ArrayList<String>(); 
-			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
-			 
-			public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) { 
-				ViewHolder holder = (ViewHolder) view.getTag(); 
-				 
-				holder.cb.toggle();// 在每次获取点击的item时改变checkbox的状态 
+	private void showCheckBoxListView() {
+		list = new ArrayList<HashMap<String, Object>>();
+		for (int i = 0; i < chioces.length; i++) {
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("item_tv", chioces[i]);
+			map.put("app_select", false);
+			list.add(map);
+		}
+		adapter = new MyAdapter(this, list, R.layout.con_list, new String[] {
+				"item_tv", "item_cb" }, new int[] { R.id.item_tv,
+				R.id.app_select });
+		lv.setAdapter(adapter);
+		listStr = new ArrayList<String>();
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> arg0, View view,
+					int position, long arg3) {
+				ViewHolder holder = (ViewHolder) view.getTag();
+
+				holder.cb.toggle();// 在每次获取点击的item时改变checkbox的状态
 				MyAdapter.isSelected.put(position, holder.cb.isChecked()); // 同时修改map的值保存状态
-				switch(position){
+				switch (position) {
 				case EMAIL:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addEmail = true;
+					}else{
+						addEmail = false;
 					}
 					break;
 				case IM:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addIM = true;
+					}else{
+						addIM = false;
 					}
 					break;
 				case COMPANY:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addCompany = true;
+					}else{
+						addCompany = false;
 					}
 					break;
 				case ADDRESS:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addAddress = true;
+					}else{
+						addAddress = false;
 					}
 					break;
 				case NOTES:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addNotes = true;
+					}else{
+						addNotes = false;
 					}
 					break;
 				case NICKNAME:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addNickName = true;
+					}else{
+						addNickName = false;
 					}
 					break;
 				case WEBSITE:
-					if (holder.cb.isChecked() == true) { 
+					if (holder.cb.isChecked() == true) {
 						addWebsite = true;
+					}else{
+						addWebsite = false;
 					}
 					break;
 				}
 
 			}
-		 
-		}); 
-		 
-	}
 
+		});
+
+	}
+	/**
+	 * 查询数据库字段名称
+	 */
+	public void d(){
+		ContentResolver CR = this.getContentResolver();
+		Uri uri = RawContacts.CONTENT_URI;
+		Cursor cursor = CR.query(uri, null, null, null, null);
+		String []cols=cursor.getColumnNames();
+		for(int i=0;i<cols.length;i++){
+			Log.i("look", cols[i]);
+		}
+		
+	}
 }

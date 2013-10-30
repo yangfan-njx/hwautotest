@@ -79,6 +79,7 @@ public class CallLogActivity extends Activity {
 	CallLogUtils mCallLogUtils = new CallLogUtils(this);
 
 	protected void onCreate(Bundle savedInstanceState) {
+		System.out.println("hhh");
 		Log.i("look", "customYear"+customYear);
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -99,7 +100,7 @@ public class CallLogActivity extends Activity {
 		showCalldate=(Button)findViewById(R.id.calldate);
 		showCalltime=(Button)findViewById(R.id.calltime);
 		
-		 
+		
 		
 		time = new Time();
 		time.setToNow();
@@ -111,6 +112,8 @@ public class CallLogActivity extends Activity {
 		
 //		mType = (RadioGroup) findViewById(R.id.Type);
 		types=new TreeSet<Integer>();
+		types.add(CallLog.Calls.INCOMING_TYPE);//默认添加已接电话
+		
 		mReceive = (CheckBox) findViewById(R.id.Received);
 		mOutgoing = (CheckBox) findViewById(R.id.Outgoing);
 		mMissed = (CheckBox) findViewById(R.id.Missed);
@@ -609,7 +612,10 @@ public class CallLogActivity extends Activity {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * 查询数据库字段名称
+	 */
 	public void d(){
 		ContentResolver CR = this.getContentResolver();
 		Uri uri = CallLog.Calls.CONTENT_URI;

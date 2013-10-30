@@ -15,7 +15,9 @@ import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.provider.ContactsContract.CommonDataKinds.Organization;
 import android.provider.ContactsContract.CommonDataKinds.SipAddress;
+import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
+import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.RawContacts;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -50,7 +52,7 @@ public class ContactsUtils extends Utils{
 	}
 
 	/**
-	 * 方法名：添加联系人
+	 * 方法名：添加一名随机联系人
 	 * 
 	 * @param number
 	 */
@@ -58,38 +60,55 @@ public class ContactsUtils extends Utils{
 			boolean addAddress ,boolean addCompany ,boolean addIM ,boolean addNickName,boolean addWebsite) {
 
 			String name = null;
-	
 			ContentValues values = new ContentValues();
 			
 			values.put(RawContacts.ACCOUNT_TYPE, "Local Phone Account");
 			values.put(RawContacts.ACCOUNT_NAME, "Phone");
 			Uri rawContactUri = mContext.getContentResolver().insert(RawContacts.CONTENT_URI, values);
 			long rawContactId = ContentUris.parseId(rawContactUri);
-			 
+//			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
+			
+			//姓名
 			values.clear();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
+			
 			values.put(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE);
-			if (language.equals("english")) {
-				name = mRandonUtils.englishNameRandom();
-			} else {
+			if (language.equals("chinese")) {
 				name = mRandonUtils.chineseNameRandom();
+			} else if(language.equals("english")){
+				name = mRandonUtils.englishNameRandom();
+			}else if(language.equals("chineseandenglish")){
+				name = mRandonUtils.chineseandenglishNameRandom();
 			}
 
 			values.put(StructuredName.GIVEN_NAME, name);
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
+			
+			addEmail(rawContactId,addEmail, values);//
+			addCompany(rawContactId,addCompany, values);//
+			addAddress(rawContactId, addAddress, values);
+			addWebsite(rawContactId, addWebsite, values);//
+			addnickname(rawContactId, addNickName, values);//
+			addNotes(rawContactId, addNotes, values);//
+			addIM(rawContactId, addIM, values);//
+//			addEmail(addEmail,values);
+//			addCompany(addCompany,values);
+//			addAddress(addAddress,values);
+//			addWebsite(addWebsite,values);
+//			addnickname(addNickName,values);
+//			addNotes(addNotes,values);
+//			addIM(addIM,values);
+			
+//			
+			//号码
 			values.clear();
-			values.put(Data.RAW_CONTACT_ID, rawContactId);
+			values.put(Data.RAW_CONTACT_ID, rawContactId);//加上后号码和姓名才出现，但速度也变慢了
 			values.put(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE);
 			values.put(Phone.TYPE, Phone.TYPE_HOME);
 			values.put(Phone.NUMBER,mRandonUtils.numberRandom());
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			addEmail(rawContactId,addEmail);
-			addCompany(rawContactId,addCompany);
-			addAddress(rawContactId, addAddress);
-			addWebsite(rawContactId, addWebsite);
-			addnickname(rawContactId, addNickName);
-			addNotes(rawContactId, addNotes);
-			addIM(rawContactId, addIM);
+			
+			
 		
 	}
 	/**
@@ -97,15 +116,16 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addEmail
 	 */
-	public void addEmail(long rawContactId,boolean addEmail){
+	public void addEmail(long rawContactId,boolean addEmail,ContentValues values){
 		if(addEmail){
-			ContentValues values = new ContentValues();
+			values.clear();
+//			 values = new ContentValues();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
 			values.put(Data.MIMETYPE, Email.CONTENT_ITEM_TYPE);
 			values.put(Email.ADDRESS, mRandonUtils.emailRandom());
 			System.out.println(mRandonUtils.emailRandom());
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
+			
 		}
 	}
 	
@@ -114,14 +134,15 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addNotes
 	 */
-	public void addNotes(long rawContactId , boolean addNotes){
+	public void addNotes(long rawContactId , boolean addNotes,ContentValues values){
 		if(addNotes){
-			ContentValues values = new ContentValues();
+			values.clear();
+//			 values = new ContentValues();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
 			values.put(Data.MIMETYPE, Note.CONTENT_ITEM_TYPE);
 			values.put(Note.NOTE, mRandonUtils.noteRandom());
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
+			
 		}
 	}
 	
@@ -130,15 +151,32 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addAddress
 	 */
-	public void addAddress(long rawContactId , boolean addAddress){
+	public void addAddress(long rawContactId , boolean addAddress,ContentValues values){
+		Log.i("look", "address:"+addAddress);
 		if(addAddress){
-			ContentValues values = new ContentValues();
-			values.put(Data.RAW_CONTACT_ID, rawContactId);
-			values.put(Data.MIMETYPE, SipAddress.CONTENT_ITEM_TYPE);
-			values.put(SipAddress.SIP_ADDRESS, mRandonUtils.noteRandom());
-			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
+			values.clear();  
+	        values.put(Data.RAW_CONTACT_ID, rawContactId);  
+	        values.put(Data.MIMETYPE, StructuredPostal.CONTENT_ITEM_TYPE);  
+	        String address=mRandonUtils.noteRandom();
+	        values.put(StructuredPostal.FORMATTED_ADDRESS,address);  
+//	        values.put(StructuredPostal.POSTCODE, mEmployee.getPostCode());  
+//	        values.put(StructuredPostal.TYPE, StructuredPostal.TYPE_WORK);  
+	        mContext.getContentResolver().insert(Data.CONTENT_URI, values);  
 		}
+		
+		
+		
+//		if(addAddress){
+//			values.clear();
+////			ContentValues values = new ContentValues();
+//			values.put(Data.RAW_CONTACT_ID, rawContactId);
+//			values.put(Data.MIMETYPE, SipAddress.CONTENT_ITEM_TYPE);
+//			String address=mRandonUtils.noteRandom();
+//			values.put(android.provider.ContactsContract.CommonDataKinds.SipAddress.SIP_ADDRESS, "hhh");
+//			Log.i("look", "address:"+addAddress+" 内容："+address);
+//			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
+//			
+//		}
 	}
 	
 	/**
@@ -146,14 +184,15 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addNickname
 	 */
-	public void addnickname(long rawContactId , boolean addNickName){
+	public void addnickname(long rawContactId , boolean addNickName,ContentValues values){
 		if(addNickName){
-			ContentValues values = new ContentValues();
+			values.clear();
+//			ContentValues values = new ContentValues();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
 			values.put(Data.MIMETYPE, Nickname.CONTENT_ITEM_TYPE);
 			values.put(Nickname.NAME, mRandonUtils.noteRandom());
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
+			
 		}
 	}
 	
@@ -162,14 +201,15 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addWebsite
 	 */
-	public void addWebsite(long rawContactId , boolean addWebsite){
+	public void addWebsite(long rawContactId , boolean addWebsite,ContentValues values){
 		if(addWebsite){
-			ContentValues values = new ContentValues();
+			values.clear();
+//			ContentValues values = new ContentValues();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
 			values.put(Data.MIMETYPE, Website.CONTENT_ITEM_TYPE);
 			values.put(Website.URL, "www."+mRandonUtils.noteRandom()+".com");
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
+			
 		}
 	}
 	
@@ -178,14 +218,15 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addCompangy
 	 */
-	public void addCompany(long rawContactId , boolean addCompangy){
+	public void addCompany(long rawContactId , boolean addCompangy,ContentValues values){
 		if(addCompangy){
-			ContentValues values = new ContentValues();
+			values.clear();
+//			ContentValues values = new ContentValues();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
 			values.put(Data.MIMETYPE, Organization.CONTENT_ITEM_TYPE);
 			values.put(Organization.COMPANY,mRandonUtils.noteRandom());
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
+			
 		}
 	}
 	/**
@@ -193,16 +234,17 @@ public class ContactsUtils extends Utils{
 	 * @param rawContactId
 	 * @param addIM
 	 */
-	public void addIM(long rawContactId ,boolean addIM){
+	public void addIM(long rawContactId ,boolean addIM,ContentValues values){
 		if(addIM){
-			ContentValues values = new ContentValues();
+			values.clear();
+//			ContentValues values = new ContentValues();
 			values.put(Data.RAW_CONTACT_ID, rawContactId);
 			values.put(Data.MIMETYPE, Im.CONTENT_ITEM_TYPE);
 			values.put(Im.DATA,mRandonUtils.noteRandom());
 			mContext.getContentResolver().insert(Data.CONTENT_URI, values);
-			values.clear();
 		}
 	}
+	
 	
 	
 }
